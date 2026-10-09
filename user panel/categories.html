@@ -1,0 +1,387 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ABREXA E-Commerce • All Categories</title>
+  <!-- Tailwind CSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              light: '#fb7185',
+              DEFAULT: '#e11d48',
+              dark: '#be123c'
+            },
+            orange: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#e11d48',
+              600: '#be123c',
+              700: '#9f1239',
+              800: '#881337',
+              900: '#4c0519',
+              950: '#27000b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom.css">
+  <!-- Favicon / Site Icon -->
+  <link class="favicon-icon" rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body class="bg-[#f4f6fa] min-h-screen flex flex-col">
+
+  <!-- ==============================================
+       DESKTOP HEADER & TOP NAVIGATION
+       ============================================== -->
+  <header class="hidden lg:block bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shrink-0 sticky top-0 z-40 shadow-sm">
+        <!-- Top Tiny Bar -->
+    <div class="bg-[#f8fafc] dark:bg-slate-950 border-b border-slate-200/60 dark:border-slate-850 text-slate-500 dark:text-slate-400 text-[10.5px] py-2 font-medium tracking-wide">
+      <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="save_app">
+            <i class="fa-solid fa-mobile-screen-button text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            Save more on App
+          </a>
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="sell_abrexa">
+            <i class="fa-solid fa-store text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="sell_abrexa">Sell on ABREXA</span>
+          </a>
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="customer_care">
+            <i class="fa-solid fa-headset text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            Customer Care
+          </a>
+        </div>
+        <div class="flex gap-6 items-center">
+          <a href="account.html" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink">
+            <i class="fa-solid fa-truck-fast text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="track_order">Track Order</span>
+          </a>
+          <a href="account.html" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink font-semibold text-slate-600 dark:text-slate-300 hover:dark:text-orange-400">
+            <i class="fa-solid fa-circle-user text-[11px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="sign_in_up">Sign In / Sign Up</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header Row -->
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-8">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
+        <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-sm overflow-hidden border border-slate-100 group-hover:border-orange-200 transition-colors">
+          <img src="images/logo.png" alt="ABREXA Logo" class="w-8 h-8 object-contain">
+        </div>
+        <span class="text-xl font-black text-slate-800 tracking-tight group-hover:text-orange-500 transition-colors logo-font">ABRE<span class="text-orange-500">X</span>A<span class="text-orange-500">.</span></span>
+      </a>
+
+      <!-- Large Center Search Bar -->
+      <div class="flex-grow max-w-2xl bg-slate-100 dark:bg-slate-800 rounded-full flex items-center px-4 py-2 border border-slate-200 dark:border-slate-700 shadow-inner">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm mr-3"></i>
+        <input id="desktop-search-input" type="text" placeholder="Search in ABREXA (e.g. watch, phone, television...)" class="bg-transparent border-none text-xs focus:outline-none w-full text-slate-700 dark:text-slate-200">
+        <button class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-5 py-1.5 rounded-full transition-colors ml-2 shadow-sm">
+          Search
+        </button>
+      </div>
+
+      <!-- Action items: Account & Cart -->
+      <div class="flex items-center gap-6 shrink-0">
+        <a href="account.html" class="flex items-center gap-2.5 text-slate-700 hover:text-orange-500 transition-colors group">
+          <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-orange-950/30 text-slate-500 dark:text-slate-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all">
+            <i class="fa-solid fa-user text-sm"></i>
+          </div>
+          <div class="text-left leading-tight">
+            <div class="text-[10px] text-slate-400"><span data-translate-key="welcome">Welcome</span></div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 dark:group-hover:text-orange-400">Fahim Rahman</div>
+          </div>
+        </a>
+
+        <a href="cart.html" class="relative flex items-center gap-2.5 text-slate-700 hover:text-orange-500 transition-colors group">
+          <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-orange-950/30 text-slate-500 dark:text-slate-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all relative">
+            <i class="fa-solid fa-cart-shopping text-sm cart-nav-icon"></i>
+            <span class="cart-badge absolute -top-1 -right-1.5 bg-orange-500 text-white text-[9px] font-extrabold rounded-full h-4.5 w-4.5 flex items-center justify-center border border-white hidden">0</span>
+          </div>
+          <span class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 dark:group-hover:text-orange-400" data-translate-key="cart" data-translate-key="cart">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation/Category Sub-header -->
+    <div class="bg-orange-500 text-white py-2">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-semibold">
+        <div class="flex items-center gap-6">
+          <a href="categories.html" class="bg-orange-600 hover:bg-orange-700 px-4 py-1.5 rounded flex items-center gap-2 shadow-inner transition-colors">
+            <i class="fa-solid fa-bars"></i> <span data-translate-key="all_categories">All Categories</span>
+          </a>
+          <a href="index.html" class="text-orange-100 hover:text-white transition-colors" data-translate-key="home_page">Home Page</a>
+          <a href="categories.html" class="hover:text-orange-100 transition-colors font-bold text-yellow-300" data-translate-key="abrexa_mall">ABREXAMall</a>
+          <a href="categories.html" class="hover:text-orange-100 transition-colors" data-translate-key="flash_sale">Flash Sale Offers</a>
+          <a href="#" onclick="alert('Contacting ABREXA Support')" class="hover:text-orange-100 transition-colors" data-translate-key="help_support">Help & Support</a>
+        </div>
+        <div class="flex items-center gap-2 text-yellow-300">
+          <i class="fa-solid fa-fire-flame-curved text-sm animate-pulse"></i>
+          <span><span data-translate-key="save_promo">Save up to 60% today!</span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ==============================================
+       MOBILE HEADER (Visible only on mobile viewports)
+       ============================================== -->
+  <header class="block lg:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shrink-0 sticky top-0 z-40">
+    <div class="px-4 py-3 flex items-center justify-between bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="text-slate-700 hover:text-slate-900 transition-colors">
+          <i class="fa-solid fa-arrow-left text-lg"></i>
+        </a>
+        <h1 class="text-slate-800 dark:text-slate-100 text-base font-bold">Categories</h1>
+      </div>
+      <a href="index.html" class="text-slate-700 hover:text-slate-900 transition-colors">
+        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+      </a>
+    </div>
+  </header>
+
+
+  <!-- ==============================================
+       MAIN RESPONSIVE CONTENT AREA
+       ============================================== -->
+  <main class="flex-grow w-full max-w-7xl mx-auto px-4 py-6 pb-24 lg:pb-12">
+    
+    <!-- Micro toast alert for cart additions -->
+    <div id="app-toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-slate-800/95 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 transform translate-y-[-10px] border border-white/10 flex items-center gap-1.5">
+      Item added to cart!
+    </div>
+
+    <!-- Category Browser Layout -->
+    <div id="tab-categories">
+      <!-- Mobile Search Bar (Visible only on mobile viewports) -->
+      <div class="block lg:hidden mb-4">
+        <div class="bg-white rounded-full flex items-center px-4 py-2 border border-slate-200 shadow-sm focus-within:border-rose-400 transition-colors">
+          <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs mr-2.5"></i>
+          <input id="mobile-category-search" type="text" placeholder="Search brands, products..." class="bg-transparent border-none text-xs focus:outline-none w-full text-slate-700 dark:text-slate-200">
+        </div>
+      </div>
+
+      <!-- Amazon-Style Category Grids -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Module 1: Home -->
+        <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-extrabold text-slate-800 tracking-tight mb-3">Fantastic Finds for Home</h3>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-4">
+              <!-- Item 1: Kitchen -->
+              <a href="#" onclick="handleCategorySearch(event, 'Kitchen')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=400&auto=format&fit=crop&q=80" alt="Kitchen" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Kitchen</span>
+              </a>
+              <!-- Item 2: Home Decor -->
+              <a href="#" onclick="handleCategorySearch(event, 'Decor')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=400&auto=format&fit=crop&q=80" alt="Home Decor" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Home Decor</span>
+              </a>
+              <!-- Item 3: Dining -->
+              <a href="#" onclick="handleCategorySearch(event, 'Dining')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&auto=format&fit=crop&q=80" alt="Dining" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Dining</span>
+              </a>
+              <!-- Item 4: Smart Home -->
+              <a href="#" onclick="handleCategorySearch(event, 'Smart')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=400&auto=format&fit=crop&q=80" alt="Smart Home" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Smart Home</span>
+              </a>
+            </div>
+          </div>
+          <a href="#" onclick="handleCategorySearch(event, 'Home')" class="text-xs font-bold text-orange-500 hover:text-orange-650 transition-colors mt-4 block w-fit hover:underline">See more</a>
+        </div>
+
+        <!-- Module 2: Apparel -->
+        <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-extrabold text-slate-800 tracking-tight mb-3">Apparel & Fashion</h3>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-4">
+              <!-- Item 1: Women -->
+              <a href="#" onclick="handleCategorySearch(event, 'Saree')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&auto=format&fit=crop&q=80" alt="Women" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Women</span>
+              </a>
+              <!-- Item 2: Men -->
+              <a href="#" onclick="handleCategorySearch(event, 'Men')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&auto=format&fit=crop&q=80" alt="Men" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Men</span>
+              </a>
+              <!-- Item 3: Girls -->
+              <a href="#" onclick="handleCategorySearch(event, 'Baby')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=400&auto=format&fit=crop&q=80" alt="Girls" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Girls</span>
+              </a>
+              <!-- Item 4: Boys -->
+              <a href="#" onclick="handleCategorySearch(event, 'Boy')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1471286174890-9c112ffca5b4?w=400&auto=format&fit=crop&q=80" alt="Boys" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Boys</span>
+              </a>
+            </div>
+          </div>
+          <a href="#" onclick="handleCategorySearch(event, 'Fashion')" class="text-xs font-bold text-orange-500 hover:text-orange-650 transition-colors mt-4 block w-fit hover:underline">Shop all</a>
+        </div>
+
+        <!-- Module 3: Electronics -->
+        <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-extrabold text-slate-800 tracking-tight mb-3">Plug in with electronics</h3>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-4">
+              <!-- Item 1: Headphones -->
+              <a href="#" onclick="handleCategorySearch(event, 'Earphones')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d35e?w=400&auto=format&fit=crop&q=80" alt="Headphones" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Headphones</span>
+              </a>
+              <!-- Item 2: Tablets -->
+              <a href="#" onclick="handleCategorySearch(event, 'Tablets')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&auto=format&fit=crop&q=80" alt="Tablets" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Tablets</span>
+              </a>
+              <!-- Item 3: Gaming -->
+              <a href="#" onclick="handleCategorySearch(event, 'Gimbal')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1600861195091-690c92f1d2cc?w=400&auto=format&fit=crop&q=80" alt="Gaming" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Gaming</span>
+              </a>
+              <!-- Item 4: Speakers -->
+              <a href="#" onclick="handleCategorySearch(event, 'Earphones')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?w=400&auto=format&fit=crop&q=80" alt="Speakers" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Speakers</span>
+              </a>
+            </div>
+          </div>
+          <a href="#" onclick="handleCategorySearch(event, 'Electronic')" class="text-xs font-bold text-orange-500 hover:text-orange-650 transition-colors mt-4 block w-fit hover:underline">Shop more</a>
+        </div>
+
+        <!-- Module 4: PC -->
+        <div class="bg-white rounded-2xl p-4 md:p-5 border border-slate-100 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-extrabold text-slate-800 tracking-tight mb-3">PCs & Accessories</h3>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-4">
+              <!-- Item 1: Desktops -->
+              <a href="#" onclick="handleCategorySearch(event, 'TV')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1547082299-de196ea013d6?w=400&auto=format&fit=crop&q=80" alt="Desktops" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Desktops</span>
+              </a>
+              <!-- Item 2: Laptops -->
+              <a href="#" onclick="handleCategorySearch(event, 'Laptop')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1496181130204-7552cc15545a?w=400&auto=format&fit=crop&q=80" alt="Laptops" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Laptops</span>
+              </a>
+              <!-- Item 3: Hard Drives -->
+              <a href="#" onclick="handleCategorySearch(event, 'Cable')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=400&auto=format&fit=crop&q=80" alt="Hard Drives" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">Hard Drives</span>
+              </a>
+              <!-- Item 4: PC Accessories -->
+              <a href="#" onclick="handleCategorySearch(event, 'Charger')" class="flex flex-col group">
+                <div class="aspect-square rounded-lg overflow-hidden bg-slate-50 border border-slate-100 mb-1 flex items-center justify-center">
+                  <img src="https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&auto=format&fit=crop&q=80" alt="PC Accessories" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <span class="text-[11px] font-semibold text-slate-700 leading-tight group-hover:text-orange-500 transition-colors">PC Accessories</span>
+              </a>
+            </div>
+          </div>
+          <a href="#" onclick="handleCategorySearch(event, 'Device')" class="text-xs font-bold text-orange-500 hover:text-orange-650 transition-colors mt-4 block w-fit hover:underline">See more</a>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ==============================================
+       BOTTOM NAVIGATION BAR (Visible ONLY on mobile devices)
+       ============================================== -->
+  <div class="block lg:hidden fixed bottom-0 inset-x-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 h-14 flex items-center justify-around z-40 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+    
+    <a id="nav-home" href="index.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-house text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="home_page">Home</span>
+    </a>
+
+    <a id="nav-categories" href="categories.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-list-ul text-base text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-orange-500 font-semibold mt-0.5 leading-none transition-colors" data-translate-key="categories">Categories</span>
+    </a>
+
+    <a id="nav-chat" href="#" onclick="toggleChatWindow(event)" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-comments text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="chat">Chat</span>
+    </a>
+
+    <a id="nav-cart" href="cart.html" class="flex flex-col items-center justify-center flex-1 py-1 group relative">
+      <div class="relative">
+        <i class="fa-solid fa-cart-shopping text-base text-slate-400 group-hover:text-orange-500 transition-colors cart-nav-icon"></i>
+        <span class="cart-badge absolute -top-2 -right-2.5 bg-orange-500 text-white text-[8px] font-extrabold rounded-full h-4 w-4 flex items-center justify-center border border-white hidden">0</span>
+      </div>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="cart" data-translate-key="cart">Cart</span>
+    </a>
+
+    <a id="nav-account" href="account.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-user text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="account">Account</span>
+    </a>
+
+  </div>
+
+  <!-- Include App Logic -->
+  <script src="js/app.js"></script>
+</body>
+</html>

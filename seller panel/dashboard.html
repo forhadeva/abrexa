@@ -1,0 +1,3146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABREXA Seller Hub • Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              light: '#f472b6',
+              DEFAULT: '#db2777', // Cherry Pink
+              dark: '#9d174d'
+            },
+            cherry: {
+              50: '#fdf2f8',
+              100: '#fce7f3',
+              200: '#fbcfe8',
+              300: '#f9a8d4',
+              400: '#f472b6',
+              500: '#ec4899',
+              600: '#db2777',
+              700: '#be185d',
+              800: '#9d174d',
+              900: '#831843',
+              950: '#500724'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(219, 39, 119, 0.2);
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(219, 39, 119, 0.4);
+    }
+
+    /* Modern Seller Toast & Popup Animations */
+    @keyframes sellerToastIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-24px) scale(0.92);
+      }
+      60% {
+        transform: translateY(4px) scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes sellerToastOut {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.92);
+      }
+    }
+
+    @keyframes toastProgressAnim {
+      0% { width: 100%; }
+      100% { width: 0%; }
+    }
+
+    .seller-toast-item {
+      animation: sellerToastIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .seller-toast-item.toast-hiding {
+      animation: sellerToastOut 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+
+  <!-- ==============================================
+       MODERN SELLER TOAST NOTIFICATION SYSTEM
+       ============================================== -->
+  <div id="sellerToastContainer" class="fixed top-5 right-5 z-[999999] flex flex-col gap-3 pointer-events-none max-w-sm w-full px-3 sm:px-0"></div>
+
+  <!-- ==============================================
+       TOP HEADER NAVBAR (Cherry Pink + Black + White)
+       ============================================== -->
+  <header class="w-full bg-[#090d16] dark:bg-slate-950 text-white py-4 px-4 lg:px-8 sticky top-0 z-40 shadow-[0_4px_20px_rgba(219,39,119,0.08)] border-b border-primary/20 flex justify-between items-center">
+    
+    <!-- Left Section: Brand & Badge -->
+    <div class="flex items-center gap-3">
+      <a href="../user panel/index.html" class="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden p-1">
+        <img src="../user panel/images/logo.png" alt="ABREXA Logo" class="w-7 h-7 object-contain" onerror="this.src='https://placehold.co/60x60/db2777/white?text=A'">
+      </a>
+      <div class="flex flex-col">
+        <div class="flex items-center gap-2">
+          <span class="text-sm lg:text-base font-black tracking-tight leading-none text-white logo-font">ABRE<span class="text-primary">X</span>A</span>
+          <span class="bg-primary/20 text-primary text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border border-primary/30">Seller Hub</span>
+        </div>
+        <span class="text-[8px] text-slate-400 uppercase tracking-widest mt-1 font-bold">Partner Portal</span>
+      </div>
+    </div>
+    
+    <!-- Right Section: Utilities & Profile -->
+    <div class="flex items-center gap-3 lg:gap-5">
+      <!-- Dark/Light mode toggle -->
+      <button id="theme-toggle-btn" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-all focus:outline-none cursor-pointer">
+        <i class="fa-solid fa-moon dark:hidden"></i>
+        <i class="fa-solid fa-sun hidden dark:block"></i>
+      </button>
+
+      <!-- Quick notification button -->
+      <button onclick="switchTab('notifications')" class="relative w-8 h-8 rounded-full hover:bg-white/10 text-slate-350 hover:text-white flex items-center justify-center transition-colors focus:outline-none">
+        <i class="fa-solid fa-bell text-sm"></i>
+        <span id="notif-badge" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-primary rounded-full animate-pulse border border-[#090d16]"></span>
+      </button>
+
+      <!-- Profile Container -->
+      <div class="flex items-center gap-3 bg-white/5 border border-white/10 rounded-full pl-3.5 pr-1 py-1 shadow-inner max-w-[200px]">
+        <div class="text-right leading-tight max-w-[110px] hidden sm:block">
+          <h4 id="store-title" class="text-xs font-black text-white truncate max-w-[100px]" title="My Shop">My Shop</h4>
+          <span id="seller-membership-badge" class="text-[8px] text-primary truncate max-w-[100px] font-bold tracking-wider block uppercase" title="Membership">Free Plan</span>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-cherry-800 text-white font-black text-xs flex items-center justify-center shadow-md border border-primary/40 cursor-default" id="avatar-letters">
+          S
+        </div>
+      </div>
+
+      <!-- Logout -->
+      <button onclick="logoutSeller()" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-rose-500/20 border border-white/10 hover:border-rose-500/30 text-slate-300 hover:text-rose-500 flex items-center justify-center transition-all focus:outline-none cursor-pointer" title="Log Out">
+        <i class="fa-solid fa-power-off text-sm"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==============================================
+       MAIN LAYOUT SHELL
+       ============================================== -->
+  <div class="flex-grow flex flex-col lg:flex-row overflow-hidden">
+    
+    <!-- ==============================================
+         SIDEBAR NAVIGATION
+         ============================================== -->
+    <aside class="w-full lg:w-64 bg-[#0d121f] dark:bg-slate-950 text-slate-400 shrink-0 border-r border-slate-200/5 dark:border-slate-850 flex flex-col p-4 gap-1.5 overflow-y-auto custom-scrollbar max-h-[250px] lg:max-h-none">
+      <button id="tab-overview" onclick="switchTab('overview')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl font-bold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-chart-pie text-sm"></i>
+        <span>Overview</span>
+      </button>
+      <button id="tab-products" onclick="switchTab('products')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-boxes-stacked text-sm"></i>
+        <span>Products Management</span>
+      </button>
+      <button id="tab-orders" onclick="switchTab('orders')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-receipt text-sm"></i>
+        <span>Orders Control</span>
+      </button>
+      <button id="tab-inventory" onclick="switchTab('inventory')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-warehouse text-sm"></i>
+        <span>Inventory Stock</span>
+      </button>
+      <button id="tab-shipping" onclick="switchTab('shipping')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-truck-fast text-sm"></i>
+        <span>Fulfillment & Shipping</span>
+      </button>
+      <button id="tab-wallet" onclick="switchTab('wallet')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-wallet text-sm"></i>
+        <span>Payout Wallet</span>
+      </button>
+      <button id="tab-analytics" onclick="switchTab('analytics')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-chart-line text-sm"></i>
+        <span>Analytics Reports</span>
+      </button>
+      <button id="tab-chat" onclick="switchTab('chat')" class="flex items-center justify-between py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-comments text-sm"></i>
+          <span>Customer Live Chat</span>
+        </div>
+        <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" id="chat-alert"></span>
+      </button>
+      <button id="tab-reviews" onclick="switchTab('reviews')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-star text-sm"></i>
+        <span>Customer Reviews</span>
+      </button>
+      <button id="tab-returns" onclick="switchTab('returns')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-rotate-left text-sm"></i>
+        <span>Return Center</span>
+      </button>
+      <button id="tab-finance" onclick="switchTab('finance')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-file-invoice-dollar text-sm"></i>
+        <span>Finance & Invoices</span>
+      </button>
+      <button id="tab-ai-assistant" onclick="switchTab('ai-assistant')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-robot text-sm"></i>
+        <span class="text-primary font-bold">AI Assistant Tool</span>
+      </button>
+      <button id="tab-ads" onclick="switchTab('ads')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-rectangle-ad text-sm"></i>
+        <span>Sponsored Ads</span>
+      </button>
+      <button id="tab-notifications" onclick="switchTab('notifications')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-bell text-sm"></i>
+        <span>Notifications Log</span>
+      </button>
+      <button id="tab-profile" onclick="switchTab('profile')" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn">
+        <i class="fa-solid fa-circle-user text-sm"></i>
+        <span>Seller Profile info</span>
+      </button>
+      
+      <a href="../user%20panel/index.html" class="flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-850 hover:text-white font-semibold text-xs mt-auto border-t border-slate-800 pt-4 transition-all">
+        <i class="fa-solid fa-shopping-bag text-sm"></i>
+        <span>Go to Marketplace</span>
+      </a>
+    </aside>
+
+    <!-- ==============================================
+         MAIN DASHBOARD PANELS (SCROLLABLE CONTAINER)
+         ============================================== -->
+    <main id="main-scroll-content" class="flex-grow p-6 lg:p-8 overflow-y-auto custom-scrollbar flex flex-col gap-6 max-h-[calc(100vh-250px)] lg:max-h-[calc(100vh-76px)]">
+
+      <!-- ==============================================
+           MODULE 1: OVERVIEW / DASHBOARD
+           ============================================== -->
+      <div id="section-overview" class="flex flex-col gap-6 tab-section">
+        <!-- Welcome Header Banner -->
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-gradient-to-r from-primary to-cherry-900 rounded-3xl p-6 lg:p-8 text-white shadow-md relative overflow-hidden">
+          <div class="absolute -right-16 -top-16 w-48 h-48 bg-white/5 rounded-full blur-2xl"></div>
+          <div class="z-10">
+            <h2 class="text-xl lg:text-2xl font-black tracking-tight logo-font">Store Overview & Performance</h2>
+            <p class="text-xs text-cherry-100 mt-1" id="welcome-sub-name">Your shop is now active and ready to sell products on ABREXA.</p>
+          </div>
+          <div class="flex gap-2 shrink-0 z-10">
+            <button onclick="openAddProductModal()" class="bg-white hover:bg-slate-100 text-primary font-extrabold text-xs px-5 py-3 rounded-full flex items-center gap-2 transition-all shadow-md active:scale-95 focus:outline-none cursor-pointer">
+              <i class="fa-solid fa-plus"></i> Add Product
+            </button>
+            <button onclick="switchTab('ads')" class="bg-primary-dark hover:bg-slate-900 text-white font-extrabold text-xs px-5 py-3 rounded-full flex items-center gap-2 transition-all shadow-md active:scale-95 focus:outline-none cursor-pointer">
+              <i class="fa-solid fa-rectangle-ad"></i> Sponsor Shop
+            </button>
+          </div>
+        </div>
+
+        <!-- Overview Stats Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200/50 dark:border-slate-850 shadow-sm flex flex-col gap-1">
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Total Sales</span>
+            <h3 class="text-xl md:text-2xl font-black text-slate-800 dark:text-white" id="stats-total-sales">৳0.00</h3>
+            <span class="text-[9px] text-slate-400 mt-1">Accumulated completed sales</span>
+          </div>
+          
+          <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200/50 dark:border-slate-850 shadow-sm flex flex-col gap-1">
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Today's Sales</span>
+            <h3 class="text-xl md:text-2xl font-black text-slate-850 dark:text-white" id="stats-today-sales">৳0.00</h3>
+            <span class="text-[9px] text-emerald-500 font-bold bg-emerald-50 dark:bg-emerald-950/20 px-1 rounded self-start mt-1">Completed today</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200/50 dark:border-slate-850 shadow-sm flex flex-col gap-1">
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Pending Orders</span>
+            <h3 class="text-xl md:text-2xl font-black text-slate-800 dark:text-white" id="stats-orders-pending">0</h3>
+            <span class="text-[9px] text-amber-500 font-bold bg-amber-50 dark:bg-amber-950/20 px-1 rounded self-start mt-1">Requires packaging</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200/50 dark:border-slate-850 shadow-sm flex flex-col gap-1">
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Completed Orders</span>
+            <h3 class="text-xl md:text-2xl font-black text-slate-800 dark:text-white" id="stats-orders-completed">0</h3>
+            <span class="text-[9px] text-slate-400 mt-1">Successfully delivered</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200/50 dark:border-slate-850 shadow-sm flex flex-col gap-1">
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Cancelled Orders</span>
+            <h3 class="text-xl md:text-2xl font-black text-rose-500 dark:text-rose-400" id="stats-orders-cancelled">0</h3>
+            <span class="text-[9px] text-slate-400 mt-1">Cancelled by customer / system</span>
+          </div>
+          
+          <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200/50 dark:border-slate-850 shadow-sm flex flex-col gap-1">
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Total Products</span>
+            <h3 class="text-xl md:text-2xl font-black text-slate-800 dark:text-white" id="stats-product-count">0</h3>
+            <span class="text-[9px] text-slate-400 mt-1">Active live listings</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200/50 dark:border-slate-850 shadow-sm flex flex-col gap-1">
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Wallet Balance</span>
+            <h3 class="text-xl md:text-2xl font-black text-primary" id="stats-wallet-balance">৳0.00</h3>
+            <span class="text-[9px] text-slate-400 mt-1">Available for payout withdraw</span>
+          </div>
+
+          <div class="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-200/50 dark:border-slate-850 shadow-sm flex flex-col gap-1">
+            <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Performance Score</span>
+            <h3 class="text-xl md:text-2xl font-black text-emerald-500 dark:text-emerald-400">96%</h3>
+            <span class="text-[9px] text-slate-400 mt-1">Very Good (Customer Rating: 4.8★)</span>
+          </div>
+        </div>
+
+        <!-- Charts & Recent Orders Rows -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Charts Section -->
+          <div class="lg:col-span-8 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-4">
+            <div class="flex justify-between items-center">
+              <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Sales Analytics</h3>
+              <div class="flex bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-0.5">
+                <button onclick="renderSalesGraph('daily')" class="text-[10px] font-bold px-3 py-1 rounded-md bg-white dark:bg-slate-800 text-primary shadow-sm focus:outline-none nav-chart-btn">Daily</button>
+                <button onclick="renderSalesGraph('weekly')" class="text-[10px] font-bold px-3 py-1 rounded-md text-slate-500 dark:text-slate-400 hover:text-primary focus:outline-none nav-chart-btn">Weekly</button>
+                <button onclick="renderSalesGraph('monthly')" class="text-[10px] font-bold px-3 py-1 rounded-md text-slate-500 dark:text-slate-400 hover:text-primary focus:outline-none nav-chart-btn">Monthly</button>
+              </div>
+            </div>
+            
+            <!-- SVG Line Graph Container -->
+            <div class="w-full h-56 flex items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 rounded-xl relative p-4 border border-slate-200/40 dark:border-slate-800">
+              <svg id="sales-svg-chart" viewBox="0 0 500 200" class="w-full h-full overflow-visible">
+                <!-- Grid Lines -->
+                <line x1="50" y1="20" x2="480" y2="20" stroke="rgba(219,39,119,0.05)" stroke-width="1"/>
+                <line x1="50" y1="70" x2="480" y2="70" stroke="rgba(219,39,119,0.05)" stroke-width="1"/>
+                <line x1="50" y1="120" x2="480" y2="120" stroke="rgba(219,39,119,0.05)" stroke-width="1"/>
+                <line x1="50" y1="170" x2="480" y2="170" stroke="rgba(219,39,119,0.1)" stroke-width="1"/>
+                <!-- Path (Dynamic) -->
+                <path id="chart-line-path" d="" fill="none" stroke="#db2777" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path id="chart-area-path" d="" fill="url(#chart-gradient)" opacity="0.1"/>
+                <!-- Gradients -->
+                <defs>
+                  <linearGradient id="chart-gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#db2777"/>
+                    <stop offset="100%" stop-color="transparent"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <!-- Absolute Chart Axis Labels -->
+              <span class="absolute left-2 top-[20px] text-[8px] font-bold text-slate-400">15k</span>
+              <span class="absolute left-2 top-[70px] text-[8px] font-bold text-slate-400">10k</span>
+              <span class="absolute left-2 top-[120px] text-[8px] font-bold text-slate-400">5k</span>
+              <span class="absolute left-2 top-[170px] text-[8px] font-bold text-slate-400">0</span>
+              <div id="chart-x-labels" class="absolute bottom-1 inset-x-12 flex justify-between text-[8px] font-bold text-slate-400">
+                <!-- X axis ticks inserted via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Orders / Low stock Panel -->
+          <div class="lg:col-span-4 flex flex-col gap-4">
+            <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-3 flex-grow">
+              <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Recent Orders</h3>
+              <div class="flex flex-col gap-2.5" id="recent-orders-list-summary">
+                <!-- Dynamic recent orders summary list -->
+              </div>
+              <button onclick="switchTab('orders')" class="w-full py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 hover:text-primary hover:border-primary/50 text-[10px] font-bold rounded-xl transition-all cursor-pointer">
+                View All Orders <i class="fa-solid fa-arrow-right ml-1"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 2: PRODUCT MANAGEMENT
+           ============================================== -->
+      <div id="section-products" class="flex flex-col gap-6 tab-section hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Products Management</h2>
+            <p class="text-[10px] text-slate-450 mt-0.5" id="inventory-count-text">0 items listed</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="triggerBulkUpload()" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 font-bold text-xs px-4 py-2.5 rounded-xl transition-colors cursor-pointer">
+              <i class="fa-solid fa-file-excel mr-1"></i> Bulk Upload
+            </button>
+            <button onclick="openAddProductModal()" class="bg-primary hover:bg-cherry-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-colors shadow-md flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-plus"></i> Add Product
+            </button>
+          </div>
+        </div>
+
+        <!-- Products Table Card -->
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-850 text-slate-400 font-bold uppercase tracking-wider text-[9px]">
+                  <th class="py-3 px-4">Product Details</th>
+                  <th class="py-3 px-4 hidden sm:table-cell">Category</th>
+                  <th class="py-3 px-4">Price</th>
+                  <th class="py-3 px-4 hidden sm:table-cell">Stock Level</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body" class="font-medium text-slate-700 dark:text-slate-350">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 3: ORDER MANAGEMENT
+           ============================================== -->
+      <div id="section-orders" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Orders Control</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Track and update delivery flows</p>
+        </div>
+
+        <!-- Tabbed filtering inside Orders -->
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/60 dark:border-slate-850 rounded-2xl p-2 flex gap-1.5 overflow-x-auto custom-scrollbar">
+          <button onclick="filterOrdersTab('All')" class="flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl bg-primary text-white shadow-sm focus:outline-none inner-order-tab-btn">All</button>
+          <button onclick="filterOrdersTab('Pending')" class="flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-primary focus:outline-none inner-order-tab-btn">Pending</button>
+          <button onclick="filterOrdersTab('Processing')" class="flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-primary focus:outline-none inner-order-tab-btn">Processing</button>
+          <button onclick="filterOrdersTab('Ready to Ship')" class="flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-primary focus:outline-none inner-order-tab-btn">Ready to Ship</button>
+          <button onclick="filterOrdersTab('Delivered')" class="flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-primary focus:outline-none inner-order-tab-btn">Delivered</button>
+          <button onclick="filterOrdersTab('Cancelled')" class="flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-primary focus:outline-none inner-order-tab-btn">Cancelled</button>
+          <button onclick="filterOrdersTab('Returned')" class="flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-primary focus:outline-none inner-order-tab-btn">Returned</button>
+          <button onclick="filterOrdersTab('Refund Request')" class="flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-primary focus:outline-none inner-order-tab-btn">Refunds</button>
+        </div>
+
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-850 text-slate-400 font-bold uppercase tracking-wider text-[9px]">
+                  <th class="py-3 px-4">Order ID</th>
+                  <th class="py-3 px-4">Customer</th>
+                  <th class="py-3 px-4">Product Details</th>
+                  <th class="py-3 px-4">Price</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Fulfillment Flow</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body" class="font-medium text-slate-700 dark:text-slate-350">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 4: INVENTORY Stock
+           ============================================== -->
+      <div id="section-inventory" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Inventory Stock Controls</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Warehouse tracking & stock warnings</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-850 text-slate-400 font-bold uppercase tracking-wider text-[9px]">
+                  <th class="py-3 px-4">Product</th>
+                  <th class="py-3 px-4">SKU / Barcode</th>
+                  <th class="py-3 px-4">Available Stock</th>
+                  <th class="py-3 px-4">Reserved Stock</th>
+                  <th class="py-3 px-4">Warehouse Hub</th>
+                  <th class="py-3 px-4">Status</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table-body" class="font-medium text-slate-700 dark:text-slate-350">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 5: SHIPPING & DELIVERY
+           ============================================== -->
+      <div id="section-shipping" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Fulfillment & Shipping Options</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Select fulfillment method and generate labels</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Selection panel -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-4">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Shipping Provider Selection</h3>
+            
+            <div class="flex flex-col gap-3">
+              <!-- Abrexa Fulfillment Option -->
+              <label class="relative flex items-start gap-3 border border-slate-200 dark:border-slate-800 focus-within:border-primary rounded-2xl p-4 cursor-pointer hover:bg-slate-50/50 dark:hover:bg-slate-900 transition-colors">
+                <input type="radio" name="ship-provider" id="ship-abrexa" value="ABREXA Fulfillment" checked class="accent-primary mt-1">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-850 dark:text-white">ABREXA Fulfillment (Recommended)</h4>
+                  <p class="text-[10px] text-slate-400 mt-0.5">Drop products off at ABREXA warehouses. We take care of express courier scheduling and tracking.</p>
+                </div>
+              </label>
+
+              <!-- Self Shipping Option -->
+              <label class="relative flex items-start gap-3 border border-slate-200 dark:border-slate-800 focus-within:border-primary rounded-2xl p-4 cursor-pointer hover:bg-slate-50/50 dark:hover:bg-slate-900 transition-colors">
+                <input type="radio" name="ship-provider" id="ship-self" value="Self Shipping" class="accent-primary mt-1">
+                <div>
+                  <h4 class="text-xs font-bold text-slate-850 dark:text-white">Self Shipping (Manage Independently)</h4>
+                  <p class="text-[10px] text-slate-400 mt-0.5">Package and ship orders directly via local couriers. Seller must upload valid Tracking details.</p>
+                </div>
+              </label>
+            </div>
+            
+            <button onclick="saveShippingConfig()" class="bg-primary hover:bg-cherry-700 text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-colors shadow-sm self-start cursor-pointer">
+              Save Shipping Configuration
+            </button>
+          </div>
+
+          <!-- Tracking configuration (Self Shipping specific) -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-4">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Generate Ship Labels</h3>
+            <form onsubmit="handleShippingLabelSubmit(event)" class="space-y-4">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Select Order</label>
+                <select id="ship-label-order-id" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+                  <!-- Injected via JS -->
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Select Courier</label>
+                  <select id="ship-label-courier" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+                    <option>Pathao Delivery</option>
+                    <option>RedX Express</option>
+                    <option>Steadfast Courier</option>
+                    <option>Paperfly</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Tracking Number</label>
+                  <input type="text" id="ship-label-tracking" placeholder="e.g. TRK908234" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 focus:border-primary rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+                </div>
+              </div>
+
+              <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-colors shadow-sm cursor-pointer">
+                Confirm & Print Air Waybill (AWB)
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 6: WALLET / PAYOUTS
+           ============================================== -->
+      <div id="section-wallet" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Payout Wallet & Balance</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Manage earnings withdrawals</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Balance display cards -->
+          <div class="lg:col-span-1 flex flex-col gap-4">
+            <div class="bg-gradient-to-br from-primary to-cherry-900 rounded-3xl p-6 text-white shadow-md flex flex-col justify-between h-44 relative overflow-hidden">
+              <div class="absolute -right-12 -top-12 w-32 h-32 bg-white/5 rounded-full blur-xl"></div>
+              <div>
+                <span class="text-[9px] font-bold uppercase tracking-widest text-cherry-100">Wallet Balance</span>
+                <h3 class="text-3xl font-black mt-2" id="wallet-balance-main">৳0.00</h3>
+              </div>
+              <p class="text-[9px] text-cherry-100 font-semibold">Updated immediately after order delivery</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-1.5">
+              <span class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider">Pending Balance</span>
+              <h4 class="text-lg font-black text-slate-800 dark:text-white" id="wallet-balance-pending">৳0.00</h4>
+              <p class="text-[9px] text-slate-400">Reserved for processing orders or returns</p>
+            </div>
+          </div>
+
+          <!-- Withdrawal form -->
+          <div class="lg:col-span-2 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Request Withdrawal</h3>
+            <form onsubmit="handlePayoutRequest(event)" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Withdraw Amount (৳)</label>
+                  <input type="number" id="payout-amount" placeholder="e.g. 5000" min="500" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 focus:border-primary rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Select Channel</label>
+                  <select id="payout-method" onchange="toggleWalletPayoutDetails(this.value)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+                    <option value="bKash">bKash Personal</option>
+                    <option value="Nagad">Nagad Personal</option>
+                    <option value="Rocket">Rocket Personal</option>
+                    <option value="Bank">Bank Account (Saved in Profile)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Extra account field (conditional) -->
+              <div id="payout-account-row">
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Mobile Wallet Account Number</label>
+                <input type="tel" id="payout-account-num" placeholder="e.g. 017XXXXXXXX" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 focus:border-primary rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+              </div>
+
+              <button type="submit" class="bg-primary hover:bg-cherry-700 text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-colors shadow-sm cursor-pointer">
+                Submit Withdraw Request
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Withdraw History Log -->
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm">
+          <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-4 pb-2 border-b border-slate-100 dark:border-slate-850">Withdrawal History Log</h3>
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="text-slate-400 font-bold uppercase tracking-wider text-[9px]">
+                  <th class="py-2.5 px-2">Request ID</th>
+                  <th class="py-2.5 px-2">Method</th>
+                  <th class="py-2.5 px-2">Account</th>
+                  <th class="py-2.5 px-2">Amount</th>
+                  <th class="py-2.5 px-2">Status</th>
+                </tr>
+              </thead>
+              <tbody id="wallet-history-table-body" class="font-medium text-slate-700 dark:text-slate-350">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 7: ANALYTICS
+           ============================================== -->
+      <div id="section-analytics" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Store Sales Analytics & Reports</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Visualize your store performance stats</p>
+        </div>
+
+        <!-- Extra charts / indicators -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- Conversion stats -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-3">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Conversion Funnel</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-bold mb-1">
+                  <span>Store Visitors (Unique)</span>
+                  <span>14,502</span>
+                </div>
+                <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                  <div class="h-full bg-primary rounded-full" style="width: 100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs font-bold mb-1">
+                  <span>Product Views</span>
+                  <span>42,120</span>
+                </div>
+                <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                  <div class="h-full bg-primary rounded-full" style="width: 85%;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs font-bold mb-1">
+                  <span>Checkout Initiations</span>
+                  <span>1,240</span>
+                </div>
+                <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                  <div class="h-full bg-amber-400 rounded-full" style="width: 30%;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs font-bold mb-1">
+                  <span>Conversion Rate (%)</span>
+                  <span>3.12% (390 Sales)</span>
+                </div>
+                <div class="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-500 rounded-full" style="width: 10.4%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Refund & Cancel Rate gauge -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-3">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Performance Scores</h3>
+            <div class="space-y-4 text-xs font-medium">
+              <div class="flex justify-between items-center">
+                <span>Cancellation Rate (%)</span>
+                <span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">0.82% (Excellent)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span>Returns Rate (%)</span>
+                <span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">1.25% (Standard)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span>Late Shipment Rate</span>
+                <span class="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded text-[10px] font-bold border border-emerald-100">0.0% (Zero delays)</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span>Total Commissions Paid</span>
+                <span class="font-extrabold text-slate-800 dark:text-slate-100" id="analytics-total-commission">৳0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top products list -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-3">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Top Rated Products</h3>
+            <ul class="space-y-2 text-xs font-medium" id="top-rated-list-analytics">
+              <!-- Dynamically populated via JS -->
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 8: CUSTOMER CHAT
+           ============================================== -->
+      <div id="section-chat" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Customer Live Chat Support</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Solve customer inquiries and use automated AI assistance</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-3xl overflow-hidden shadow-sm flex h-[480px]">
+          <!-- Left side: clients roster -->
+          <div class="w-1/3 border-r border-slate-150 dark:border-slate-850 flex flex-col">
+            <div class="bg-slate-50 dark:bg-slate-900 border-b border-slate-150 dark:border-slate-850 p-4 shrink-0 flex items-center justify-between">
+              <span class="text-xs font-black text-slate-700 dark:text-slate-200">Conversations</span>
+              <span class="text-[8px] bg-primary text-white font-bold px-1.5 py-0.5 rounded-full" id="unread-chat-count">1</span>
+            </div>
+            <div class="flex-grow overflow-y-auto custom-scrollbar" id="chat-roster-list">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+
+          <!-- Right side: chat viewport -->
+          <div class="w-2/3 flex flex-col bg-slate-50/30 dark:bg-slate-900/10">
+            <!-- Roster header info -->
+            <div class="bg-white dark:bg-slate-950 border-b border-slate-150 dark:border-slate-850 p-4 shrink-0 flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center" id="chat-active-avatar">
+                C
+              </div>
+              <div class="leading-tight">
+                <h4 class="text-xs font-bold text-slate-850 dark:text-white" id="chat-active-name">Customer</h4>
+                <span class="text-[8px] text-emerald-500 font-bold">Online</span>
+              </div>
+            </div>
+
+            <!-- Messages pane -->
+            <div class="flex-grow overflow-y-auto custom-scrollbar p-4 space-y-3.5" id="chat-messages-container">
+              <!-- Message bubbles -->
+            </div>
+
+            <!-- AI Suggested Replies / Templates -->
+            <div class="bg-slate-50 dark:bg-slate-900 border-t border-slate-150 dark:border-slate-850 p-3 shrink-0 flex flex-col gap-2">
+              <div class="flex items-center gap-1.5 text-[8.5px] text-slate-400 font-bold uppercase tracking-wider mb-1">
+                <i class="fa-solid fa-robot text-primary"></i> AI Generated Reply Suggestions
+              </div>
+              <div class="flex flex-wrap gap-2 text-[9px] font-bold" id="ai-replies-triggers">
+                <!-- Suggested replies generated based on active client -->
+              </div>
+            </div>
+
+            <!-- Input area -->
+            <div class="bg-white dark:bg-slate-950 border-t border-slate-150 dark:border-slate-850 p-3.5 shrink-0 flex items-center gap-3">
+              <!-- Extra action attachments -->
+              <button onclick="simulatePhotoAttachment()" class="text-slate-400 hover:text-primary transition-colors focus:outline-none cursor-pointer" title="Send Photo"><i class="fa-solid fa-image text-sm"></i></button>
+              <button onclick="simulateVoiceAttachment()" class="text-slate-400 hover:text-primary transition-colors focus:outline-none cursor-pointer" title="Send Voice"><i class="fa-solid fa-microphone text-sm"></i></button>
+              
+              <input type="text" id="chat-reply-input" placeholder="Type your response or click an AI suggestion..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+              
+              <button onclick="sendChatMessage()" class="w-8 h-8 rounded-full bg-primary hover:bg-cherry-700 text-white flex items-center justify-center shrink-0 shadow-md focus:outline-none transition-colors cursor-pointer">
+                <i class="fa-solid fa-paper-plane text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 9: NOTIFICATIONS LOG
+           ============================================== -->
+      <div id="section-notifications" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Store Notifications Log</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Critical system updates, order alerts, and promotions</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-3" id="notif-log-container">
+          <!-- Notification logs injected dynamically -->
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 10: SELLER PROFILE
+           ============================================== -->
+      <div id="section-profile" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Seller Profile & Company Info</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Manage legal licenses, verified addresses, and NID credentials</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-850 pb-2 mb-2">Company Information</h3>
+            <form onsubmit="saveProfileDetails(event)" class="space-y-4">
+              <div class="grid grid-cols-1 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Company Registered Name</label>
+                  <input type="text" id="prof-company" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+                </div>
+              </div>
+
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Warehouse Location Address</label>
+                  <input type="text" id="prof-warehouse" placeholder="e.g. Sector 4, Uttara, Dhaka" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Product Returns Address</label>
+                  <input type="text" id="prof-return" placeholder="e.g. Sector 4, Uttara, Dhaka" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+                </div>
+              </div>
+
+              <button type="submit" id="btn-save-profile" class="bg-primary hover:bg-cherry-700 text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-all shadow-sm cursor-pointer flex items-center gap-2">
+                <span>Save Profile Configuration</span>
+              </button>
+            </form>
+          </div>
+          
+          <div class="lg:col-span-4 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm h-fit space-y-4">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400">Account status</h3>
+            <div class="space-y-3.5 text-xs">
+              <div class="flex justify-between items-center">
+                <span class="text-slate-400">Membership tier</span>
+                <span class="bg-cherry-50 dark:bg-cherry-950/20 text-primary border border-cherry-100 font-bold px-2 py-0.5 rounded text-[10px]" id="prof-membership-tier">Free</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-400">Merchant status</span>
+                <span class="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 border border-emerald-100 font-bold px-2 py-0.5 rounded text-[10px]">Verified Shop</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-slate-400">Commission rate</span>
+                <span class="font-extrabold text-slate-800 dark:text-slate-200">5.0%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- ==============================================
+           MODULE 12: CUSTOMER REVIEWS
+           ============================================== -->
+      <div id="section-reviews" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Customer Reviews & Ratings</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Read reviews, submit replies, and flag inappropriate comments</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-850 text-slate-400 font-bold uppercase tracking-wider text-[9px]">
+                  <th class="py-3 px-4">Review Details</th>
+                  <th class="py-3 px-4">Comment</th>
+                  <th class="py-3 px-4">Reply</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="reviews-table-body" class="font-medium text-slate-700 dark:text-slate-350">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 13: RETURN CENTER
+           ============================================== -->
+      <div id="section-returns" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Return & Refund Center</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Manage customer return claims and upload review evidence</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-850 text-slate-400 font-bold uppercase tracking-wider text-[9px]">
+                  <th class="py-3 px-4">Order / Product</th>
+                  <th class="py-3 px-4">Reason</th>
+                  <th class="py-3 px-4">Evidence Document</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="returns-table-body" class="font-medium text-slate-700 dark:text-slate-350">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 14: FINANCE & INVOICES
+           ============================================== -->
+      <div id="section-finance" class="flex flex-col gap-6 tab-section hidden">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Finance & Billing Invoices</h2>
+            <p class="text-[10px] text-slate-450 mt-0.5">Download invoices and tax statements</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="downloadReport('PDF')" class="bg-primary hover:bg-cherry-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-colors shadow-md cursor-pointer">
+              <i class="fa-solid fa-file-pdf mr-1"></i> Download PDF
+            </button>
+            <button onclick="downloadReport('Excel')" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 font-bold text-xs px-4 py-2.5 rounded-xl transition-colors cursor-pointer">
+              <i class="fa-solid fa-file-excel mr-1"></i> Download Excel
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-850 text-slate-400 font-bold uppercase tracking-wider text-[9px]">
+                  <th class="py-3 px-4">Invoice ID</th>
+                  <th class="py-3 px-4">Invoice Period</th>
+                  <th class="py-3 px-4">Sales Earnings</th>
+                  <th class="py-3 px-4">ABREXA Commission</th>
+                  <th class="py-3 px-4">VAT/Tax (5%)</th>
+                  <th class="py-3 px-4">Net Payout</th>
+                </tr>
+              </thead>
+              <tbody id="finance-table-body" class="font-medium text-slate-700 dark:text-slate-350">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE 15: AI ASSISTANT TOOL
+           ============================================== -->
+      <div id="section-ai-assistant" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">AI Assistant selling Assistant</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Optimize product descriptions, SEO tags, pricing structures, and replies</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Commands selectors -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-5 shadow-sm flex flex-col gap-3">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Select AI Task</h3>
+            <button onclick="runAiAssistant('description')" class="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary text-left text-xs font-bold flex items-center gap-2.5 hover:bg-slate-50/50 dark:hover:bg-slate-900 transition-all focus:outline-none cursor-pointer">
+              <i class="fa-solid fa-file-pen text-primary"></i> <span>Write Product Description</span>
+            </button>
+            <button onclick="runAiAssistant('seo')" class="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary text-left text-xs font-bold flex items-center gap-2.5 hover:bg-slate-50/50 dark:hover:bg-slate-900 transition-all focus:outline-none cursor-pointer">
+              <i class="fa-solid fa-hashtag text-primary"></i> <span>Generate SEO keywords</span>
+            </button>
+            <button onclick="runAiAssistant('price')" class="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary text-left text-xs font-bold flex items-center gap-2.5 hover:bg-slate-50/50 dark:hover:bg-slate-900 transition-all focus:outline-none cursor-pointer">
+              <i class="fa-solid fa-tags text-primary"></i> <span>Optimal Price Suggestions</span>
+            </button>
+            <button onclick="runAiAssistant('sales')" class="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary text-left text-xs font-bold flex items-center gap-2.5 hover:bg-slate-50/50 dark:hover:bg-slate-900 transition-all focus:outline-none cursor-pointer">
+              <i class="fa-solid fa-chart-pie text-primary"></i> <span>Sales Performance Analysis</span>
+            </button>
+            <button onclick="runAiAssistant('stock')" class="w-full py-3 px-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-primary text-left text-xs font-bold flex items-center gap-2.5 hover:bg-slate-50/50 dark:hover:bg-slate-900 transition-all focus:outline-none cursor-pointer">
+              <i class="fa-solid fa-clipboard-list text-primary"></i> <span>Inventory Restock Suggestions</span>
+            </button>
+          </div>
+
+          <!-- Prompt Parameters and Output -->
+          <div class="md:col-span-2 bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-850 pb-2">
+              <h3 class="text-xs font-black uppercase tracking-wider text-slate-400" id="ai-task-label">AI Output Viewport</h3>
+              <span class="text-[8px] bg-primary/10 text-primary border border-primary/20 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Copilot</span>
+            </div>
+            
+            <div class="flex flex-col gap-2">
+              <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Input Context Parameter</label>
+              <input type="text" id="ai-prompt-param" placeholder="Type a product name or category (e.g. Wireless Headphones)" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 focus:border-primary rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+            </div>
+
+            <div class="flex-grow bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-4 text-xs font-medium min-h-[140px] max-h-[220px] overflow-y-auto custom-scrollbar relative" id="ai-response-viewport">
+              <p class="text-slate-400 italic">Select an AI task on the left and enter context parameters above, then click run.</p>
+            </div>
+
+            <button onclick="executeAiTask()" class="bg-primary hover:bg-cherry-700 text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-colors shadow-sm self-start flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-bolt"></i> Run AI Processing
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           MODULE: SPONSORED ADS SYSTEM
+           ============================================== -->
+      <div id="section-ads" class="flex flex-col gap-6 tab-section hidden">
+        <div>
+          <h2 class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Sponsored Ads & Promotion Center</h2>
+          <p class="text-[10px] text-slate-450 mt-0.5">Subscribe to premium visibility boosts and placement options</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <!-- Plan 1: Bronze -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-72 hover:shadow-md hover:border-primary/20 transition-all text-center">
+            <div>
+              <span class="text-[8px] bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">Bronze</span>
+              <h3 class="text-lg font-black text-slate-800 dark:text-white mt-2">৳500</h3>
+              <p class="text-[10px] text-slate-400">Duration: 7 Days</p>
+              <ul class="text-[10px] text-slate-500 dark:text-slate-400 space-y-1.5 mt-4">
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[8px]"></i> Search Boost</li>
+              </ul>
+            </div>
+            <button onclick="subscribeAdPlan('Bronze', 500)" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-[10px] font-bold rounded-xl transition-colors cursor-pointer mt-4">Buy Plan</button>
+          </div>
+
+          <!-- Plan 2: Silver -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-72 hover:shadow-md hover:border-primary/20 transition-all text-center">
+            <div>
+              <span class="text-[8px] bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">Silver</span>
+              <h3 class="text-lg font-black text-slate-800 dark:text-white mt-2">৳1000</h3>
+              <p class="text-[10px] text-slate-400">Duration: 7 Days</p>
+              <ul class="text-[10px] text-slate-500 dark:text-slate-400 space-y-1.5 mt-4">
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[8px]"></i> Category Highlight</li>
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[8px]"></i> Search Boost</li>
+              </ul>
+            </div>
+            <button onclick="subscribeAdPlan('Silver', 1000)" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-[10px] font-bold rounded-xl transition-colors cursor-pointer mt-4">Buy Plan</button>
+          </div>
+
+          <!-- Plan 3: Gold (Recommended) -->
+          <div class="bg-white dark:bg-slate-950 border-2 border-primary rounded-2xl p-4 shadow-md flex flex-col justify-between h-72 hover:shadow-lg relative text-center">
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-full tracking-wider shadow-sm">Popular</span>
+            <div>
+              <span class="text-[8px] bg-primary/10 text-primary font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">Gold</span>
+              <h3 class="text-lg font-black text-slate-800 dark:text-white mt-2">৳3000</h3>
+              <p class="text-[10px] text-slate-400">Duration: 15 Days</p>
+              <ul class="text-[10px] text-slate-500 dark:text-slate-400 space-y-1.5 mt-4">
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[8px]"></i> Category Banner</li>
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[8px]"></i> Search Top Grid</li>
+              </ul>
+            </div>
+            <button onclick="subscribeAdPlan('Gold', 3000)" class="w-full py-2 bg-primary hover:bg-cherry-700 text-white text-[10px] font-bold rounded-xl transition-colors shadow-sm cursor-pointer mt-4">Buy Plan</button>
+          </div>
+
+          <!-- Plan 4: Platinum -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-72 hover:shadow-md hover:border-primary/20 transition-all text-center">
+            <div>
+              <span class="text-[8px] bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">Platinum</span>
+              <h3 class="text-lg font-black text-slate-800 dark:text-white mt-2">৳7000</h3>
+              <p class="text-[10px] text-slate-400">Duration: 30 Days</p>
+              <ul class="text-[10px] text-slate-500 dark:text-slate-400 space-y-1.5 mt-4">
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[8px]"></i> Homepage First Row</li>
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[8px]"></i> Search Top Grid</li>
+              </ul>
+            </div>
+            <button onclick="subscribeAdPlan('Platinum', 7000)" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-[10px] font-bold rounded-xl transition-colors cursor-pointer mt-4">Buy Plan</button>
+          </div>
+
+          <!-- Plan 5: Diamond -->
+          <div class="bg-white dark:bg-slate-950 border border-slate-200/50 dark:border-slate-850 rounded-2xl p-4 shadow-sm flex flex-col justify-between h-72 hover:shadow-md hover:border-primary/20 transition-all text-center font-semibold">
+            <div>
+              <span class="text-[8px] bg-slate-100 dark:bg-slate-900 text-slate-650 dark:text-slate-350 font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">Diamond</span>
+              <h3 class="text-lg font-black text-slate-800 dark:text-white mt-2">৳15000</h3>
+              <p class="text-[10px] text-slate-400">Duration: 30 Days</p>
+              <ul class="text-[9.5px] text-slate-500 dark:text-slate-400 space-y-1.5 mt-3">
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[7.5px]"></i> Main Home Banner</li>
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[7.5px]"></i> Push Notifications</li>
+                <li><i class="fa-solid fa-circle-check text-primary mr-1 text-[7.5px]"></i> Premium Shop Badge</li>
+              </ul>
+            </div>
+            <button onclick="subscribeAdPlan('Diamond', 15000)" class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-[10px] font-bold rounded-xl transition-colors cursor-pointer mt-4">Buy Plan</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ==============================================
+       ADD NEW PRODUCT DIALOG MODAL
+       ============================================== -->
+  <div id="add-product-modal" class="fixed inset-0 z-50 bg-slate-900/50 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="w-full max-w-xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-3xl shadow-2xl p-6 md:p-8 transform translate-y-4 transition-transform duration-300 flex flex-col max-h-[90vh]">
+      <div class="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-850 shrink-0">
+        <h3 class="text-sm font-black text-slate-850 dark:text-white uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-square-plus text-primary"></i> Add New Product</h3>
+        <button onclick="closeAddProductModal()" class="text-slate-400 hover:text-slate-650 focus:outline-none cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="add-product-form" onsubmit="submitAddProductForm(event)" class="space-y-4 py-4 overflow-y-auto custom-scrollbar flex-grow pr-1">
+        <!-- Title -->
+        <div class="flex flex-col gap-1">
+          <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Product Title</label>
+          <input type="text" id="prod-title" required placeholder="e.g. Wireless Gaming Mouse" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Category -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Category</label>
+            <select id="prod-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none cursor-pointer">
+              <option value="audio">Audio Equipment</option>
+              <option value="smartphones">Smartphones</option>
+              <option value="wearables">Wearables</option>
+              <option value="accessories">Computer Accessories</option>
+            </select>
+          </div>
+          <!-- SKU -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">SKU / Model Number</label>
+            <input type="text" id="prod-sku" placeholder="e.g. SK-M90" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Price -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Sale Price (৳)</label>
+            <input type="number" id="prod-price" required placeholder="e.g. 1500" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+          </div>
+          <!-- Stock -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Stock Level Qty</label>
+            <input type="number" id="prod-stock" required placeholder="e.g. 50" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+          </div>
+        </div>
+
+        <!-- Variants -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Color Variant</label>
+            <input type="text" id="prod-variant-color" placeholder="e.g. Black, White" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+          </div>
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Size Variant</label>
+            <input type="text" id="prod-variant-size" placeholder="e.g. Standard, XL" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Image File Upload Input & Preview -->
+        <div class="flex flex-col gap-2">
+          <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Product Main Image (Upload File or URL)</label>
+
+          <!-- File Upload Zone -->
+          <div class="relative border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-primary rounded-2xl p-4 text-center cursor-pointer transition-all bg-slate-50 dark:bg-slate-900 group" id="image-drop-zone">
+            <input type="file" id="prod-image-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleProductImageFileSelect(event)">
+            
+            <div id="image-upload-prompt" class="flex flex-col items-center gap-1.5 py-2">
+              <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+              </div>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Click or Drag & Drop to upload image file</span>
+              <span class="text-[10px] text-slate-400">PNG, JPG, WEBP, GIF up to 5MB</span>
+            </div>
+
+            <!-- Preview Image -->
+            <div id="image-preview-container" class="hidden relative w-full h-36 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800">
+              <img id="prod-image-preview" src="" class="w-full h-full object-contain bg-slate-950 p-1">
+              <button type="button" onclick="removeSelectedProductImage(event)" class="absolute top-2 right-2 bg-slate-900/80 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs hover:bg-rose-600 transition-colors z-20">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Hidden/Web URL fallback input -->
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-[10px] font-bold text-slate-400 uppercase shrink-0">OR Paste Web Link:</span>
+            <input type="text" id="prod-image" placeholder="https://example.com/photo.jpg" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Additional Product Gallery Images (Shown under main image on Product Page) -->
+        <div class="flex flex-col gap-2 pt-3 border-t border-slate-100 dark:border-slate-850">
+          <div class="flex items-center justify-between">
+            <div>
+              <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-images text-primary"></i> Additional Gallery Images (Thumbnails)
+              </label>
+              <p class="text-[9px] text-slate-400 ml-1">Extra photos displayed below main image on product details page</p>
+            </div>
+            <span class="text-[9px] font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full" id="add-gallery-count-badge">0 Photos</span>
+          </div>
+
+          <!-- Gallery Thumbnails Preview & Upload Grid -->
+          <div id="add-gallery-container" class="grid grid-cols-4 sm:grid-cols-5 gap-2.5 p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-2xl min-h-[80px]">
+            <label class="border-2 border-dashed border-slate-300 dark:border-slate-750 hover:border-primary rounded-xl h-18 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-primary/5 text-slate-400 hover:text-primary group">
+              <input type="file" id="add-gallery-file-input" multiple accept="image/*" class="hidden" onchange="handleAddGalleryFilesSelect(event)">
+              <i class="fa-solid fa-plus text-xs group-hover:scale-125 transition-transform mb-0.5"></i>
+              <span class="text-[8px] font-bold">Add Photo</span>
+            </label>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="text" id="add-gallery-url-input" placeholder="Or paste extra image URL..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+            <button type="button" onclick="addAddGalleryUrl()" class="px-3.5 py-1.5 bg-slate-200 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-700 dark:text-slate-200 text-xs font-bold rounded-xl transition-colors shrink-0 cursor-pointer">
+              <i class="fa-solid fa-plus mr-1"></i> Add
+            </button>
+          </div>
+        </div>
+        
+        <button type="submit" class="w-full bg-primary hover:bg-cherry-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md transition-colors text-xs flex items-center justify-center gap-2 cursor-pointer shrink-0">
+          <i class="fa-solid fa-circle-plus"></i> Save Product Listing
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       EDIT PRODUCT DIALOG MODAL
+       ============================================== -->
+  <div id="edit-product-modal" class="fixed inset-0 z-50 bg-slate-900/50 dark:bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="w-full max-w-xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-850 rounded-3xl shadow-2xl p-6 md:p-8 transform translate-y-4 transition-transform duration-300 flex flex-col max-h-[90vh]">
+      <div class="flex justify-between items-center pb-4 border-b border-slate-100 dark:border-slate-850 shrink-0">
+        <h3 class="text-sm font-black text-slate-850 dark:text-white uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square text-primary"></i> Edit Product Details
+        </h3>
+        <button onclick="closeEditProductModal()" class="text-slate-400 hover:text-slate-650 focus:outline-none cursor-pointer"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="edit-product-form" onsubmit="submitEditProductForm(event)" class="space-y-4 py-4 overflow-y-auto custom-scrollbar flex-grow pr-1">
+        <input type="hidden" id="edit-prod-id">
+        <input type="hidden" id="edit-prod-is-backend" value="0">
+
+        <!-- Title -->
+        <div class="flex flex-col gap-1">
+          <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Product Title</label>
+          <input type="text" id="edit-prod-title" required placeholder="e.g. Wireless Gaming Mouse" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Category -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Category</label>
+            <select id="edit-prod-category" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none cursor-pointer">
+              <option value="audio">Audio Equipment</option>
+              <option value="smartphones">Smartphones</option>
+              <option value="wearables">Wearables</option>
+              <option value="accessories">Computer Accessories</option>
+              <option value="general">General</option>
+            </select>
+          </div>
+          <!-- SKU -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">SKU / Model Number</label>
+            <input type="text" id="edit-prod-sku" placeholder="e.g. SK-M90" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Price -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Sale Price (৳)</label>
+            <input type="number" id="edit-prod-price" required placeholder="e.g. 1500" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+          </div>
+          <!-- Stock -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Stock Level Qty</label>
+            <input type="number" id="edit-prod-stock" required placeholder="e.g. 50" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none focus:border-primary transition-all">
+          </div>
+        </div>
+
+        <!-- Image File Upload Input & Preview -->
+        <div class="flex flex-col gap-2">
+          <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1">Product Main Image (Upload File or URL)</label>
+
+          <!-- File Upload Zone -->
+          <div class="relative border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-primary rounded-2xl p-4 text-center cursor-pointer transition-all bg-slate-50 dark:bg-slate-900 group">
+            <input type="file" id="edit-prod-image-file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="handleEditProductImageFileSelect(event)">
+            
+            <div id="edit-image-upload-prompt" class="flex flex-col items-center gap-1.5 py-2">
+              <div class="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+              </div>
+              <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Click or Drag & Drop new image to replace</span>
+              <span class="text-[10px] text-slate-400">PNG, JPG, WEBP up to 5MB</span>
+            </div>
+
+            <!-- Preview Image -->
+            <div id="edit-image-preview-container" class="hidden relative w-full h-36 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800">
+              <img id="edit-prod-image-preview" src="" class="w-full h-full object-contain bg-slate-950 p-1">
+              <button type="button" onclick="removeEditSelectedProductImage(event)" class="absolute top-2 right-2 bg-slate-900/80 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs hover:bg-rose-600 transition-colors z-20">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Web URL input -->
+          <div class="flex items-center gap-2 mt-1">
+            <span class="text-[10px] font-bold text-slate-400 uppercase shrink-0">OR Web Link:</span>
+            <input type="text" id="edit-prod-image" placeholder="https://example.com/photo.jpg" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Additional Product Gallery Images in Edit Modal -->
+        <div class="flex flex-col gap-2 pt-3 border-t border-slate-100 dark:border-slate-850">
+          <div class="flex items-center justify-between">
+            <div>
+              <label class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider ml-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-images text-primary"></i> Additional Gallery Images (Thumbnails)
+              </label>
+              <p class="text-[9px] text-slate-400 ml-1">Extra photos displayed below main image on product details page</p>
+            </div>
+            <span class="text-[9px] font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full" id="edit-gallery-count-badge">0 Photos</span>
+          </div>
+
+          <!-- Gallery Thumbnails Preview & Upload Grid -->
+          <div id="edit-gallery-container" class="grid grid-cols-4 sm:grid-cols-5 gap-2.5 p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-2xl min-h-[80px]">
+            <label class="border-2 border-dashed border-slate-300 dark:border-slate-750 hover:border-primary rounded-xl h-18 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-primary/5 text-slate-400 hover:text-primary group">
+              <input type="file" id="edit-gallery-file-input" multiple accept="image/*" class="hidden" onchange="handleEditGalleryFilesSelect(event)">
+              <i class="fa-solid fa-plus text-xs group-hover:scale-125 transition-transform mb-0.5"></i>
+              <span class="text-[8px] font-bold">Add Photo</span>
+            </label>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="text" id="edit-gallery-url-input" placeholder="Or paste extra image URL..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-slate-200 font-semibold focus:outline-none">
+            <button type="button" onclick="addEditGalleryUrl()" class="px-3.5 py-1.5 bg-slate-200 dark:bg-slate-850 hover:bg-primary hover:text-white text-slate-700 dark:text-slate-200 text-xs font-bold rounded-xl transition-colors shrink-0 cursor-pointer">
+              <i class="fa-solid fa-plus mr-1"></i> Add
+            </button>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-3 pt-2 shrink-0">
+          <button type="button" onclick="closeEditProductModal()" class="w-1/3 py-3 px-4 bg-slate-100 dark:bg-slate-850 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold rounded-2xl transition-colors text-xs cursor-pointer">
+            Cancel
+          </button>
+          <button type="submit" id="btn-save-edit-product" class="w-2/3 bg-primary hover:bg-cherry-700 text-white font-bold py-3 px-6 rounded-2xl shadow-md transition-colors text-xs flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-floppy-disk"></i> Update Product Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       CORE JS LOGIC
+       ============================================== -->
+  <script>
+    // State management & Persistence
+    let sellerProducts = [];
+    let sellerOrders = [];
+    let sellerWithdrawals = [];
+    let sellerReviews = [];
+    let sellerReturns = [];
+    let activeClientChat = 'tahmid';
+    let chatHistories = {};
+
+    // DOM Initializers
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1. Theme Configuration
+      const themeToggleBtn = document.getElementById('theme-toggle-btn');
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+
+      // 2. Identity Load
+      const shopName = localStorage.getItem('seller_shop_name') || 'Fahim Store';
+      const sellerName = localStorage.getItem('seller_name') || 'Fahim Rahman';
+      document.getElementById('store-title').textContent = shopName;
+      document.getElementById('welcome-sub-name').textContent = `Your store "${shopName}" is now active and ready to sell products on ABREXA.`;
+
+      // Inititals letters
+      if (sellerName) {
+        const parts = sellerName.trim().split(/\s+/);
+        let initials = parts[0] ? parts[0][0] : '';
+        if (parts.length > 1 && parts[1]) initials += parts[1][0];
+        document.getElementById('avatar-letters').textContent = initials.toUpperCase() || 'S';
+      }
+
+      document.getElementById('prof-company').value = shopName;
+
+      document.getElementById('prof-warehouse').value = localStorage.getItem('seller_warehouse') || 'Block D, Sector 6, Uttara, Dhaka';
+      document.getElementById('prof-return').value = localStorage.getItem('seller_return') || 'Block D, Sector 6, Uttara, Dhaka';
+      
+      const membership = localStorage.getItem('seller_membership') || 'Free';
+      document.getElementById('prof-membership-tier').textContent = membership;
+      document.getElementById('seller-membership-badge').textContent = membership + " Plan";
+
+      // 3. Database Seed / Loading
+      loadDatabases();
+
+      // Render
+      renderAll();
+      renderSalesGraph('daily');
+    });
+
+    function loadDatabases() {
+      // Products & Orders are loaded dynamically from Django Backend REST API
+      sellerProducts = [];
+      sellerOrders = [];
+
+      // Withdraws
+      const initialWithdrawals = [
+        { id: 'W-90234', method: 'bKash', account: '01712039845', amount: '1200', status: 'Completed' }
+      ];
+      sellerWithdrawals = JSON.parse(localStorage.getItem('seller_withdrawals')) || initialWithdrawals;
+
+      // Reviews
+      sellerReviews = JSON.parse(localStorage.getItem('seller_reviews')) || [];
+      sellerReturns = JSON.parse(localStorage.getItem('seller_returns')) || [];
+      chatHistories = JSON.parse(localStorage.getItem('seller_chat_histories')) || {};
+    }
+
+    function renderAll() {
+      if (typeof loadBackendAnalytics === 'function') {
+        loadBackendSellerProfile();
+        loadBackendAnalytics();
+        loadBackendProducts();
+        loadBackendOrders();
+      }
+      renderInventoryList();
+      renderShippingLabelOrders();
+      renderWalletUI();
+      renderChatUI();
+      renderReviewsUI();
+      renderReturnsUI();
+      renderFinanceUI();
+      renderNotificationsUI();
+    }
+
+    function logoutSeller() {
+      localStorage.removeItem('seller_shop_name');
+      localStorage.removeItem('seller_username');
+      localStorage.removeItem('seller_name');
+      localStorage.removeItem('seller_email');
+      localStorage.removeItem('seller_phone');
+      window.location.href = 'index.html';
+    }
+
+    // SPA Routing Tab Changer
+    function switchTab(tabName) {
+      const panes = document.querySelectorAll('.tab-section');
+      panes.forEach(p => p.classList.add('hidden'));
+
+      const sidebarBtns = document.querySelectorAll('.sidebar-btn');
+      sidebarBtns.forEach(btn => {
+        btn.className = 'flex items-center gap-3 py-2.5 px-4 rounded-xl hover:bg-slate-800/40 hover:text-white dark:hover:text-white font-semibold text-xs transition-all w-full text-left focus:outline-none sidebar-btn';
+      });
+
+      // Display active pane
+      const targetPane = document.getElementById(`section-${tabName}`);
+      if (targetPane) targetPane.classList.remove('hidden');
+
+      // Style active button
+      const targetBtn = document.getElementById(`tab-${tabName}`);
+      if (targetBtn) {
+        targetBtn.className = 'flex items-center gap-3 py-2.5 px-4 rounded-xl bg-primary/10 text-primary font-bold text-xs transition-all w-full text-left focus:outline-none sidebar-btn border-l-2 border-primary';
+      }
+
+      // Reset scroll position of main content container to top
+      const scrollCont = document.getElementById('main-scroll-content');
+      if (scrollCont) scrollCont.scrollTop = 0;
+    }
+
+    // Default tab trigger
+    switchTab('overview');
+
+    // ==============================================
+    // CORE RENDERING: MODULES IMPLEMENTATION
+    // ==============================================
+
+    // MODULE 1: Overview Dashboard
+    function renderOverviewStats() {
+      let salesTotal = 0;
+      let salesToday = 0;
+      let completedCount = 0;
+      let pendingCount = 0;
+      let cancelledCount = 0;
+
+      sellerOrders.forEach(o => {
+        const pr = parseFloat(o.price);
+        if (o.status === 'Delivered') {
+          salesTotal += pr;
+          completedCount++;
+          if (o.date === 'Today') salesToday += pr;
+        } else if (o.status === 'Pending' || o.status === 'Processing' || o.status === 'Ready to Ship') {
+          pendingCount++;
+        } else if (o.status === 'Cancelled') {
+          cancelledCount++;
+        }
+      });
+
+      // Invoiced Commission summary (5% rate)
+      const commissionTotal = salesTotal * 0.05;
+
+      document.getElementById('stats-total-sales').textContent = `৳${salesTotal.toLocaleString()}`;
+      document.getElementById('stats-today-sales').textContent = `৳${salesToday.toLocaleString()}`;
+      document.getElementById('stats-orders-pending').textContent = pendingCount;
+      document.getElementById('stats-orders-completed').textContent = completedCount;
+      document.getElementById('stats-orders-cancelled').textContent = cancelledCount;
+
+      // Update Wallet
+      const withdrawTotal = sellerWithdrawals.filter(w => w.status === 'Completed').reduce((sum, w) => sum + parseFloat(w.amount), 0);
+      const walletBalance = salesTotal - commissionTotal - withdrawTotal;
+      document.getElementById('stats-wallet-balance').textContent = `৳${walletBalance.toLocaleString()}`;
+      localStorage.setItem('seller_balance', walletBalance);
+    }
+
+    // MODULE 2: Product Management
+    function renderProductsList() {
+      const tbody = document.getElementById('products-table-body');
+      tbody.innerHTML = '';
+
+      if (sellerProducts.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="py-12 text-center text-slate-400">
+              <i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-200 block"></i>
+              No products found. Add one above!
+            </td>
+          </tr>
+        `;
+        document.getElementById('stats-product-count').textContent = '0';
+        document.getElementById('inventory-count-text').textContent = '0 items listed';
+        return;
+      }
+
+      sellerProducts.forEach((p, index) => {
+        const fallbackImg = `https://placehold.co/400x400/db2777/white?text=${encodeURIComponent(p.title)}`;
+        const img = p.image || fallbackImg;
+        const stockStatus = parseInt(p.stock) <= 3 
+          ? `<span class="bg-rose-50 dark:bg-rose-950/20 text-rose-500 font-bold px-2 py-0.5 rounded border border-rose-100 dark:border-rose-900/30 text-[9px]">Low Stock (${p.stock})</span>` 
+          : `<span class="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-900/30 text-[9px]">In Stock (${p.stock})</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors";
+        tr.innerHTML = `
+          <td class="py-3 px-4 flex items-center gap-3">
+            <img src="${img}" alt="${p.title}" class="w-8 h-8 rounded-lg object-cover border border-slate-100 dark:border-slate-850 shrink-0">
+            <div class="flex flex-col min-w-0">
+              <span class="font-bold text-slate-800 dark:text-slate-100 truncate max-w-[150px] md:max-w-[240px]">${p.title}</span>
+              <span class="text-[9px] text-slate-400 font-semibold tracking-wider uppercase">${p.sku}</span>
+            </div>
+          </td>
+          <td class="py-3 px-4 font-semibold text-slate-500 capitalize hidden sm:table-cell">${p.category}</td>
+          <td class="py-3 px-4 font-extrabold text-slate-800 dark:text-slate-200">৳${p.price}</td>
+          <td class="py-3 px-4 hidden sm:table-cell">${stockStatus}</td>
+          <td class="py-3 px-4 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <button onclick="openEditProductModal(${index})" class="text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary font-bold text-xs p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center gap-1" title="Edit Product">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+              </button>
+              <button onclick="deleteProduct(${index})" class="text-rose-500 hover:text-rose-700 font-bold text-xs p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer flex items-center gap-1" title="Delete Product">
+                <i class="fa-solid fa-trash"></i> Delete
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('stats-product-count').textContent = sellerProducts.length;
+      document.getElementById('inventory-count-text').textContent = `${sellerProducts.length} items listed`;
+    }
+    // ==============================================
+    // IMAGE COMPRESSION UTILITY
+    // ==============================================
+    function compressImageFile(file, maxWidth = 1000, maxHeight = 1000, quality = 0.85) {
+      return new Promise((resolve) => {
+        if (!file || !file.type || !file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.readAsDataURL(file);
+          return;
+        }
+        const img = new Image();
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          img.src = e.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth || h > maxHeight) {
+              if (w > h) {
+                h = Math.round((h * maxWidth) / w);
+                w = maxWidth;
+              } else {
+                w = Math.round((w * maxHeight) / h);
+                h = maxHeight;
+              }
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', quality);
+            resolve(dataUrl);
+          };
+          img.onerror = () => resolve(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ==============================================
+    // GALLERY IMAGES STATE & HANDLERS (Add & Edit)
+    // ==============================================
+    let currentAddGalleryImages = [];
+    let currentEditGalleryImages = [];
+
+    function renderAddGalleryUI() {
+      const container = document.getElementById('add-gallery-container');
+      const countBadge = document.getElementById('add-gallery-count-badge');
+      if (countBadge) countBadge.textContent = `${currentAddGalleryImages.length} Photos`;
+      if (!container) return;
+
+      container.innerHTML = `
+        <label class="border-2 border-dashed border-slate-300 dark:border-slate-750 hover:border-primary rounded-xl h-20 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-primary/5 text-slate-400 hover:text-primary group">
+          <input type="file" id="add-gallery-file-input" multiple accept="image/*" class="hidden" onchange="handleAddGalleryFilesSelect(event)">
+          <i class="fa-solid fa-plus text-xs group-hover:scale-125 transition-transform mb-0.5"></i>
+          <span class="text-[8px] font-bold">Add Photo</span>
+        </label>
+      ` + currentAddGalleryImages.map((src, idx) => `
+        <div class="relative rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 group h-20 bg-slate-950 flex items-center justify-center shadow-sm">
+          <img src="${src}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=150&q=80'">
+          <button type="button" onclick="removeAddGalleryImage(${idx})" class="absolute top-1 right-1 bg-slate-900/80 hover:bg-rose-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] transition-colors shadow-md z-10">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function renderEditGalleryUI() {
+      const container = document.getElementById('edit-gallery-container');
+      const countBadge = document.getElementById('edit-gallery-count-badge');
+      if (countBadge) countBadge.textContent = `${currentEditGalleryImages.length} Photos`;
+      if (!container) return;
+
+      container.innerHTML = `
+        <label class="border-2 border-dashed border-slate-300 dark:border-slate-750 hover:border-primary rounded-xl h-20 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-primary/5 text-slate-400 hover:text-primary group">
+          <input type="file" id="edit-gallery-file-input" multiple accept="image/*" class="hidden" onchange="handleEditGalleryFilesSelect(event)">
+          <i class="fa-solid fa-plus text-xs group-hover:scale-125 transition-transform mb-0.5"></i>
+          <span class="text-[8px] font-bold">Add Photo</span>
+        </label>
+      ` + currentEditGalleryImages.map((src, idx) => `
+        <div class="relative rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 group h-20 bg-slate-950 flex items-center justify-center shadow-sm">
+          <img src="${src}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=150&q=80'">
+          <button type="button" onclick="removeEditGalleryImage(${idx})" class="absolute top-1 right-1 bg-slate-900/80 hover:bg-rose-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] transition-colors shadow-md z-10">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    async function handleAddGalleryFilesSelect(event) {
+      const files = Array.from(event.target.files);
+      if (!files.length) return;
+
+      for (let file of files) {
+        const compressed = await compressImageFile(file);
+        currentAddGalleryImages.push(compressed);
+        renderAddGalleryUI();
+      }
+      event.target.value = '';
+    }
+
+    async function handleEditGalleryFilesSelect(event) {
+      const files = Array.from(event.target.files);
+      if (!files.length) return;
+
+      for (let file of files) {
+        const compressed = await compressImageFile(file);
+        currentEditGalleryImages.push(compressed);
+        renderEditGalleryUI();
+      }
+      event.target.value = '';
+    }
+
+    function addAddGalleryUrl() {
+      const input = document.getElementById('add-gallery-url-input');
+      const val = input ? input.value.trim() : '';
+      if (!val) return;
+      currentAddGalleryImages.push(val);
+      renderAddGalleryUI();
+      input.value = '';
+    }
+
+    function addEditGalleryUrl() {
+      const input = document.getElementById('edit-gallery-url-input');
+      const val = input ? input.value.trim() : '';
+      if (!val) return;
+      currentEditGalleryImages.push(val);
+      renderEditGalleryUI();
+      input.value = '';
+    }
+
+    function removeAddGalleryImage(idx) {
+      currentAddGalleryImages.splice(idx, 1);
+      renderAddGalleryUI();
+    }
+
+    function removeEditGalleryImage(idx) {
+      currentEditGalleryImages.splice(idx, 1);
+      renderEditGalleryUI();
+    }
+
+    // Modal forms & Image File Upload
+    const addProductModal = document.getElementById('add-product-modal');
+    function openAddProductModal() {
+      currentAddGalleryImages = [];
+      renderAddGalleryUI();
+      addProductModal.classList.remove('opacity-0', 'pointer-events-none');
+      addProductModal.firstElementChild.classList.remove('translate-y-4');
+    }
+    function closeAddProductModal() {
+      addProductModal.classList.add('opacity-0', 'pointer-events-none');
+      addProductModal.firstElementChild.classList.add('translate-y-4');
+      document.getElementById('add-product-form').reset();
+      currentAddGalleryImages = [];
+      renderAddGalleryUI();
+      removeSelectedProductImage();
+    }
+
+    // EDIT PRODUCT MODAL HANDLERS
+    const editProductModal = document.getElementById('edit-product-modal');
+    function openEditProductModal(idOrIndex) {
+      let product = null;
+      let isBackend = false;
+
+      if (window.currentSellerProducts && Array.isArray(window.currentSellerProducts)) {
+        product = window.currentSellerProducts.find(p => p.id == idOrIndex);
+        if (product) isBackend = true;
+      }
+      if (!product && typeof sellerProducts !== 'undefined' && sellerProducts[idOrIndex]) {
+        product = sellerProducts[idOrIndex];
+        product.id = idOrIndex;
+      }
+
+      if (!product) {
+        if (typeof showSellerToast === 'function') {
+          showSellerToast('Product not found for editing', 'error', 'Error');
+        }
+        return;
+      }
+
+      document.getElementById('edit-prod-id').value = product.id;
+      document.getElementById('edit-prod-is-backend').value = isBackend ? '1' : '0';
+      document.getElementById('edit-prod-title').value = product.title || '';
+      document.getElementById('edit-prod-sku').value = product.sku || '';
+      document.getElementById('edit-prod-price').value = product.price || '';
+      document.getElementById('edit-prod-stock').value = product.stock || '';
+      
+      const catVal = (product.category || product.category_name || 'accessories').toLowerCase();
+      const catSelect = document.getElementById('edit-prod-category');
+      if (catSelect) {
+        let found = false;
+        for (let opt of catSelect.options) {
+          if (opt.value === catVal) { catSelect.value = opt.value; found = true; break; }
+        }
+        if (!found) catSelect.value = 'accessories';
+      }
+
+      const imageUrl = product.image_url || product.image || '';
+      document.getElementById('edit-prod-image').value = imageUrl;
+
+      const previewImg = document.getElementById('edit-prod-image-preview');
+      const previewContainer = document.getElementById('edit-image-preview-container');
+      const prompt = document.getElementById('edit-image-upload-prompt');
+      
+      if (imageUrl && previewImg && previewContainer && prompt) {
+        previewImg.src = imageUrl;
+        previewContainer.classList.remove('hidden');
+        prompt.classList.add('hidden');
+      } else if (previewContainer && prompt) {
+        previewContainer.classList.add('hidden');
+        prompt.classList.remove('hidden');
+      }
+
+      // Populate Gallery Images for Edit from cached product
+      currentEditGalleryImages = [];
+      if (Array.isArray(product.images) && product.images.length > 0) {
+        currentEditGalleryImages = product.images.map(img => typeof img === 'string' ? img : (img.image_url || img.image)).filter(Boolean);
+      } else if (Array.isArray(product.gallery_images) && product.gallery_images.length > 0) {
+        currentEditGalleryImages = [...product.gallery_images];
+      }
+      renderEditGalleryUI();
+
+      // Async fetch fresh details from API to ensure all gallery images are up to date
+      if (isBackend && typeof API_BASE_URL !== 'undefined') {
+        fetch(`${API_BASE_URL}/products/${product.id}/`)
+          .then(r => r.ok ? r.json() : null)
+          .then(data => {
+            if (data && Array.isArray(data.images)) {
+              currentEditGalleryImages = data.images.map(img => typeof img === 'string' ? img : (img.image_url || img.image)).filter(Boolean);
+              renderEditGalleryUI();
+            }
+          })
+          .catch(err => console.warn('Could not refresh product details:', err));
+      }
+
+      if (editProductModal) {
+        editProductModal.classList.remove('opacity-0', 'pointer-events-none');
+        editProductModal.firstElementChild.classList.remove('translate-y-4');
+      }
+    }
+
+    function closeEditProductModal() {
+      if (editProductModal) {
+        editProductModal.classList.add('opacity-0', 'pointer-events-none');
+        editProductModal.firstElementChild.classList.add('translate-y-4');
+        document.getElementById('edit-product-form').reset();
+        currentEditGalleryImages = [];
+        renderEditGalleryUI();
+      }
+    }
+
+    async function handleEditProductImageFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const dataUrl = await compressImageFile(file);
+      document.getElementById('edit-prod-image').value = dataUrl;
+      
+      const previewContainer = document.getElementById('edit-image-preview-container');
+      const prompt = document.getElementById('edit-image-upload-prompt');
+      const previewImg = document.getElementById('edit-prod-image-preview');
+
+      if (previewContainer && prompt && previewImg) {
+        previewImg.src = dataUrl;
+        previewContainer.classList.remove('hidden');
+        prompt.classList.add('hidden');
+      }
+    }
+
+    function removeEditSelectedProductImage(event) {
+      if (event) event.stopPropagation();
+      const fileInput = document.getElementById('edit-prod-image-file');
+      const urlInput = document.getElementById('edit-prod-image');
+      const previewContainer = document.getElementById('edit-image-preview-container');
+      const prompt = document.getElementById('edit-image-upload-prompt');
+      
+      if (fileInput) fileInput.value = '';
+      if (urlInput) urlInput.value = '';
+      if (previewContainer) previewContainer.classList.add('hidden');
+      if (prompt) prompt.classList.remove('hidden');
+    }
+
+    async function submitEditProductForm(event) {
+      event.preventDefault();
+      const id = document.getElementById('edit-prod-id').value;
+      const isBackend = document.getElementById('edit-prod-is-backend').value === '1';
+      const title = document.getElementById('edit-prod-title').value.trim();
+      const sku = document.getElementById('edit-prod-sku').value.trim().toUpperCase();
+      const price = parseFloat(document.getElementById('edit-prod-price').value);
+      const stock = parseInt(document.getElementById('edit-prod-stock').value, 10);
+      const category = document.getElementById('edit-prod-category').value;
+      const image = document.getElementById('edit-prod-image').value.trim();
+
+      if (!title || isNaN(price) || isNaN(stock)) {
+        if (typeof showSellerToast === 'function') {
+          showSellerToast('Please fill out all required fields!', 'warning', 'Missing Details');
+        } else {
+          alert('Please fill out all required fields!');
+        }
+        return;
+      }
+
+      const saveBtn = document.getElementById('btn-save-edit-product');
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-1"></i> Updating...`;
+      }
+
+      if (isBackend && typeof updateBackendProduct === 'function') {
+        const success = await updateBackendProduct(id, {
+          title: title,
+          sku: sku,
+          price: price,
+          stock: stock,
+          image_url: image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80',
+          gallery_images: currentEditGalleryImages,
+          description: `Product ${title} updated by merchant.`
+        });
+        if (success) {
+          closeEditProductModal();
+        }
+      } else {
+        if (typeof sellerProducts !== 'undefined' && sellerProducts[id]) {
+          sellerProducts[id].title = title;
+          sellerProducts[id].sku = sku;
+          sellerProducts[id].price = price;
+          sellerProducts[id].stock = stock;
+          sellerProducts[id].category = category;
+          if (image) sellerProducts[id].image = image;
+          sellerProducts[id].images = currentEditGalleryImages.length ? [sellerProducts[id].image, ...currentEditGalleryImages] : [sellerProducts[id].image];
+          localStorage.setItem('seller_products', JSON.stringify(sellerProducts));
+          renderProductsList();
+          renderInventoryList();
+          if (typeof showSellerToast === 'function') {
+            showSellerToast('Product changes saved to catalog!', 'success', 'Product Updated');
+          } else {
+            alert('Product updated successfully!');
+          }
+          closeEditProductModal();
+        }
+      }
+
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Update Product Changes`;
+      }
+    }
+
+    async function submitAddProductForm(event) {
+      event.preventDefault();
+      const title = document.getElementById('prod-title').value.trim();
+      const category = document.getElementById('prod-category').value;
+      const sku = document.getElementById('prod-sku').value.trim().toUpperCase();
+      const price = document.getElementById('prod-price').value;
+      const stock = document.getElementById('prod-stock').value;
+      const image = document.getElementById('prod-image').value.trim();
+
+      if (!title || !price || !stock) {
+        if (typeof showSellerToast === 'function') {
+          showSellerToast('Please fill out all required fields!', 'warning', 'Missing Details');
+        } else {
+          alert('Please fill out all required fields!');
+        }
+        return;
+      }
+      
+      const imageUrl = image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80';
+      
+      const productPayload = {
+        title: title,
+        category: null,
+        sku: sku,
+        price: parseFloat(price),
+        stock: parseInt(stock, 10),
+        image_url: imageUrl,
+        gallery_images: currentAddGalleryImages,
+        description: `Product ${title} listed by seller.`
+      };
+
+      if (typeof createBackendProduct === 'function') {
+        await createBackendProduct(productPayload);
+      }
+      
+      closeAddProductModal();
+    }
+
+    async function handleProductImageFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const dataUrl = await compressImageFile(file);
+      document.getElementById('prod-image').value = dataUrl;
+      
+      const previewContainer = document.getElementById('image-preview-container');
+      const prompt = document.getElementById('image-upload-prompt');
+      const previewImg = document.getElementById('prod-image-preview');
+
+      if (previewContainer && prompt && previewImg) {
+        previewImg.src = dataUrl;
+        previewContainer.classList.remove('hidden');
+        prompt.classList.add('hidden');
+      }
+    }
+
+    function removeSelectedProductImage(event) {
+      if (event) event.stopPropagation();
+      const fileInput = document.getElementById('prod-image-file');
+      const urlInput = document.getElementById('prod-image');
+      const previewContainer = document.getElementById('image-preview-container');
+      const prompt = document.getElementById('image-upload-prompt');
+      
+      if (fileInput) fileInput.value = '';
+      if (urlInput) urlInput.value = '';
+      if (previewContainer) previewContainer.classList.add('hidden');
+      if (prompt) prompt.classList.remove('hidden');
+    }
+
+    function deleteProduct(index) {
+      if (confirm('Delete this product from your shop listing?')) {
+        sellerProducts.splice(index, 1);
+        localStorage.setItem('seller_products', JSON.stringify(sellerProducts));
+        renderProductsList();
+        renderInventoryList();
+      }
+    }
+
+    function triggerBulkUpload() {
+      alert('Opening bulk spreadsheet uploader. Select CSV/Excel files matching catalog guidelines.');
+    }
+
+    // MODULE 3: Order Management
+    let orderActiveFilter = 'All';
+
+    function renderOrdersList() {
+      const tbody = document.getElementById('orders-table-body');
+      tbody.innerHTML = '';
+
+      const filtered = orderActiveFilter === 'All' 
+        ? sellerOrders 
+        : sellerOrders.filter(o => o.status === orderActiveFilter);
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-12 text-center text-slate-400">
+              No orders found matching: ${orderActiveFilter}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach((order, index) => {
+        // Find index in global database to update properly
+        const globalIdx = sellerOrders.findIndex(o => o.id === order.id);
+
+        let badgeClass = '';
+        if (order.status === 'Pending') badgeClass = 'bg-amber-50 dark:bg-amber-950/20 text-amber-500 border-amber-100 dark:border-amber-900/30';
+        else if (order.status === 'Processing') badgeClass = 'bg-indigo-50 dark:bg-indigo-950/20 text-indigo-500 border-indigo-100 dark:border-indigo-900/30';
+        else if (order.status === 'Ready to Ship') badgeClass = 'bg-blue-50 dark:bg-blue-950/20 text-blue-500 border-blue-100 dark:border-blue-900/30';
+        else if (order.status === 'Delivered') badgeClass = 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-500 border-emerald-100 dark:border-emerald-900/30';
+        else if (order.status === 'Cancelled') badgeClass = 'bg-rose-50 dark:bg-rose-950/20 text-rose-500 border-rose-100 dark:border-rose-900/30';
+        else if (order.status === 'Returned') badgeClass = 'bg-slate-100 dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700';
+        else if (order.status === 'Refund Request') badgeClass = 'bg-purple-50 dark:bg-purple-950/20 text-purple-500 border-purple-100 dark:border-purple-900/30';
+
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors";
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-extrabold text-slate-800 dark:text-slate-100">${order.id}</td>
+          <td class="py-3 px-4 font-bold text-slate-650 dark:text-slate-300">${order.customer}</td>
+          <td class="py-3 px-4 text-slate-500 font-semibold truncate max-w-[150px]">${order.product}</td>
+          <td class="py-3 px-4 font-extrabold text-slate-800 dark:text-slate-100">৳${order.price}</td>
+          <td class="py-3 px-4">
+            <span class="${badgeClass} px-2.5 py-0.5 rounded-full text-[9px] font-bold border">${order.status}</span>
+          </td>
+          <td class="py-3 px-4 text-right">
+            <select onchange="updateOrderStatus(${globalIdx}, this.value)" class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-lg py-1 px-2 text-[10px] font-bold text-slate-750 dark:text-slate-350 focus:outline-none cursor-pointer">
+              <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
+              <option value="Ready to Ship" ${order.status === 'Ready to Ship' ? 'selected' : ''}>Ready to Ship</option>
+              <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+              <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+              <option value="Returned" ${order.status === 'Returned' ? 'selected' : ''}>Returned</option>
+              <option value="Refund Request" ${order.status === 'Refund Request' ? 'selected' : ''}>Refund Request</option>
+            </select>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Also render recent orders summary in dashboard
+      const summaryList = document.getElementById('recent-orders-list-summary');
+      summaryList.innerHTML = '';
+      sellerOrders.slice(0, 3).forEach(o => {
+        let badgeClass = '';
+        if (o.status === 'Pending') badgeClass = 'bg-amber-50 dark:bg-amber-950/20 text-amber-500 border-amber-100 dark:border-amber-900/30';
+        else if (o.status === 'Delivered') badgeClass = 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-500 border-emerald-100 dark:border-emerald-900/30';
+        else badgeClass = 'bg-blue-50 dark:bg-blue-950/20 text-blue-500 border-blue-100 dark:border-blue-900/30';
+
+        const div = document.createElement('div');
+        div.className = "flex justify-between items-center border border-slate-200/50 dark:border-slate-850 rounded-2xl p-3 shadow-sm bg-slate-50/20 dark:bg-slate-900/20";
+        div.innerHTML = `
+          <div class="flex flex-col min-w-0">
+            <span class="font-extrabold text-slate-800 dark:text-slate-200 text-[10.5px]">${o.id} • ${o.customer}</span>
+            <span class="text-[9px] text-slate-400 truncate max-w-[160px] mt-0.5 font-medium">${o.product}</span>
+          </div>
+          <div class="text-right shrink-0">
+            <span class="font-bold text-slate-850 dark:text-white text-[11px] block">৳${o.price}</span>
+            <span class="${badgeClass} px-1.5 py-0.5 rounded-full text-[8px] font-extrabold border mt-1 inline-block">${o.status}</span>
+          </div>
+        `;
+        summaryList.appendChild(div);
+      });
+    }
+
+    function filterOrdersTab(status) {
+      orderActiveFilter = status;
+      
+      const btns = document.querySelectorAll('.inner-order-tab-btn');
+      btns.forEach(btn => {
+        if (btn.textContent.trim().toLowerCase() === status.replace('Request', 's').toLowerCase() || (status === 'All' && btn.textContent.trim() === 'All')) {
+          btn.className = "flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl bg-primary text-white shadow-sm focus:outline-none inner-order-tab-btn";
+        } else {
+          btn.className = "flex-grow text-center py-2 px-3 text-[10px] font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-900 text-slate-500 hover:text-primary focus:outline-none inner-order-tab-btn";
+        }
+      });
+      renderOrdersList();
+    }
+
+    function updateOrderStatus(index, newStatus) {
+      sellerOrders[index].status = newStatus;
+      localStorage.setItem('seller_orders', JSON.stringify(sellerOrders));
+      renderOrdersList();
+      renderOverviewStats();
+      renderShippingLabelOrders();
+    }
+
+    // MODULE 4: Inventory Control
+    function renderInventoryList() {
+      const tbody = document.getElementById('inventory-table-body');
+      tbody.innerHTML = '';
+
+      if (sellerProducts.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">Inventory empty. Add products.</td></tr>`;
+        return;
+      }
+
+      sellerProducts.forEach(p => {
+        const qty = parseInt(p.stock);
+        const reserved = qty > 5 ? 2 : 0;
+        const lowAlert = qty <= 3 
+          ? `<span class="bg-rose-50 dark:bg-rose-950/20 text-rose-500 font-bold px-2 py-0.5 rounded border border-rose-100 dark:border-rose-900/30 text-[9px]">Restock Required</span>`
+          : `<span class="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 font-bold px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-900/30 text-[9px]">Normal</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors";
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-100">${p.title}</td>
+          <td class="py-3 px-4 font-semibold text-slate-500">${p.sku} / <span class="text-[10px] text-slate-400">${p.barcode}</span></td>
+          <td class="py-3 px-4 font-extrabold text-slate-800 dark:text-slate-100">${qty}</td>
+          <td class="py-3 px-4 text-slate-500 font-semibold">${reserved}</td>
+          <td class="py-3 px-4 text-slate-650 dark:text-slate-400 font-medium">Dhaka Central Hub</td>
+          <td class="py-3 px-4">${lowAlert}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // MODULE 5: Shipping & Delivery
+    function saveShippingConfig() {
+      const mode = document.querySelector('input[name="ship-provider"]:checked').value;
+      localStorage.setItem('seller_shipping_mode', mode);
+      alert(`Shipping configuration saved! Current provider: ${mode}`);
+    }
+
+    function renderShippingLabelOrders() {
+      const select = document.getElementById('ship-label-order-id');
+      select.innerHTML = '';
+      
+      const pendingOrders = sellerOrders.filter(o => o.status === 'Pending' || o.status === 'Processing');
+      if (pendingOrders.length === 0) {
+        select.innerHTML = `<option value="">No pending orders</option>`;
+        return;
+      }
+      
+      pendingOrders.forEach(o => {
+        const op = document.createElement('option');
+        op.value = o.id;
+        op.textContent = `${o.id} - ${o.customer} (${o.product})`;
+        select.appendChild(op);
+      });
+    }
+
+    function handleShippingLabelSubmit(event) {
+      event.preventDefault();
+      const orderId = document.getElementById('ship-label-order-id').value;
+      const courier = document.getElementById('ship-label-courier').value;
+      const tracking = document.getElementById('ship-label-tracking').value;
+
+      if (!orderId) {
+        alert('No pending orders available to ship.');
+        return;
+      }
+
+      // Automatically advance status of order to "Ready to Ship"
+      const oIdx = sellerOrders.findIndex(o => o.id === orderId);
+      if (oIdx !== -1) {
+        sellerOrders[oIdx].status = 'Ready to Ship';
+        localStorage.setItem('seller_orders', JSON.stringify(sellerOrders));
+        renderAll();
+        
+        alert(`Fulfillment AWB Label generated successfully!\nOrder: ${orderId}\nCourier: ${courier}\nTracking: ${tracking}\nStatus advanced to 'Ready to Ship'.`);
+        document.getElementById('ship-label-tracking').value = '';
+      }
+    }
+
+    // MODULE 6: Wallet Payouts
+    function renderWalletUI() {
+      const balance = parseFloat(localStorage.getItem('seller_balance') || '0');
+      document.getElementById('wallet-balance-main').textContent = `৳${balance.toLocaleString()}`;
+      
+      // Calculate pending balances
+      const pendingBal = sellerOrders.filter(o => o.status === 'Pending' || o.status === 'Processing' || o.status === 'Ready to Ship').reduce((sum, o) => sum + parseFloat(o.price), 0);
+      document.getElementById('wallet-balance-pending').textContent = `৳${pendingBal.toLocaleString()}`;
+
+      // Render History Log
+      const tbody = document.getElementById('wallet-history-table-body');
+      tbody.innerHTML = '';
+      
+      if (sellerWithdrawals.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">No withdrawal history available.</td></tr>`;
+        return;
+      }
+
+      sellerWithdrawals.forEach(w => {
+        let badge = w.status === 'Pending'
+          ? `<span class="bg-amber-50 dark:bg-amber-950/20 text-amber-500 border border-amber-100 dark:border-amber-900/30 px-2 py-0.5 rounded-full text-[8.5px] font-bold">Pending Review</span>`
+          : `<span class="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 border border-emerald-100 dark:border-emerald-900/30 px-2 py-0.5 rounded-full text-[8.5px] font-bold">Disbursed</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors";
+        tr.innerHTML = `
+          <td class="py-2.5 px-2 font-extrabold text-slate-800 dark:text-slate-100">${w.id}</td>
+          <td class="py-2.5 px-2 font-bold text-slate-650 dark:text-slate-300">${w.method}</td>
+          <td class="py-2.5 px-2 font-semibold text-slate-400">${w.account}</td>
+          <td class="py-2.5 px-2 font-black text-slate-800 dark:text-slate-200">৳${w.amount}</td>
+          <td class="py-2.5 px-2">${badge}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function toggleWalletPayoutDetails(val) {
+      const container = document.getElementById('payout-account-row');
+      if (val === 'Bank') {
+        container.classList.add('hidden');
+      } else {
+        container.classList.remove('hidden');
+      }
+    }
+
+    function handlePayoutRequest(event) {
+      event.preventDefault();
+      const amount = parseFloat(document.getElementById('payout-amount').value);
+      const method = document.getElementById('payout-method').value;
+      const accountNum = document.getElementById('payout-account-num').value.trim();
+      const balance = parseFloat(localStorage.getItem('seller_balance') || '0');
+
+      if (amount > balance) {
+        alert('Insufficient wallet balance!');
+        return;
+      }
+
+      if (amount < 500) {
+        alert('Minimum payout limit is ৳500.');
+        return;
+      }
+
+      const withdrawId = 'W-' + Math.floor(10000 + Math.random() * 90000);
+      const account = method === 'Bank' ? 'City Bank Ltd Saved Account' : `${accountNum} (${method})`;
+      
+      const newWithdrawal = { id: withdrawId, method, account, amount: amount.toString(), status: 'Pending' };
+      sellerWithdrawals.unshift(newWithdrawal);
+      localStorage.setItem('seller_withdrawals', JSON.stringify(sellerWithdrawals));
+
+      // Subtract from local state balance
+      localStorage.setItem('seller_balance', (balance - amount).toString());
+      
+      // Reset
+      document.getElementById('payout-amount').value = '';
+      document.getElementById('payout-account-num').value = '';
+
+      renderWalletUI();
+      renderOverviewStats();
+      alert(`Withdrawal request ${withdrawId} submitted! Processing will complete within 24 hours.`);
+    }
+
+    // MODULE 7: Analytics graph helper
+    let chartSalesMode = 'daily';
+
+    function renderSalesGraph(mode) {
+      chartSalesMode = mode;
+      
+      // Toggle button active designs
+      const btns = document.querySelectorAll('.nav-chart-btn');
+      btns.forEach(btn => {
+        if (btn.textContent.trim().toLowerCase() === mode) {
+          btn.className = "text-[10px] font-bold px-3 py-1 rounded-md bg-white dark:bg-slate-800 text-primary shadow-sm focus:outline-none nav-chart-btn";
+        } else {
+          btn.className = "text-[10px] font-bold px-3 py-1 rounded-md text-slate-500 dark:text-slate-400 hover:text-primary focus:outline-none nav-chart-btn";
+        }
+      });
+
+      const svgPath = document.getElementById('chart-line-path');
+      const svgArea = document.getElementById('chart-area-path');
+      const xLabelsDiv = document.getElementById('chart-x-labels');
+      
+      let points = [];
+      let labels = [];
+      
+      if (mode === 'daily') {
+        points = [30, 45, 25, 90, 60, 110, 140];
+        labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      } else if (mode === 'weekly') {
+        points = [70, 95, 120, 100, 160];
+        labels = ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5'];
+      } else if (mode === 'monthly') {
+        points = [50, 40, 85, 120, 150, 175];
+        labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+      }
+      
+      // Convert points to SVG Coordinate commands (scale factor)
+      // Viewbox width is 500, height is 200. Left margin 50, right margin 480, height baseline 170.
+      const startX = 50;
+      const endX = 470;
+      const baselineY = 170;
+      const maxY = 20; // top ceiling limit
+      
+      const widthRange = endX - startX;
+      const maxVal = 180; // dummy max scale
+      
+      let pathD = "";
+      let areaD = `M ${startX} ${baselineY}`;
+      
+      points.forEach((p, idx) => {
+        const x = startX + (idx / (points.length - 1)) * widthRange;
+        // Inverse coordinate for height in SVG
+        const y = baselineY - (p / maxVal) * (baselineY - maxY);
+        if (idx === 0) {
+          pathD += `M ${x} ${y}`;
+        } else {
+          pathD += ` L ${x} ${y}`;
+        }
+        areaD += ` L ${x} ${y}`;
+      });
+      
+      areaD += ` L ${startX + widthRange} ${baselineY} Z`;
+      
+      svgPath.setAttribute('d', pathD);
+      svgArea.setAttribute('d', areaD);
+      
+      // X Labels
+      xLabelsDiv.innerHTML = labels.map(lbl => `<span>${lbl}</span>`).join('');
+
+      // Update Top rated list under Analytics page
+      const rates = document.getElementById('top-rated-list-analytics');
+      rates.innerHTML = '';
+      sellerProducts.slice(0, 3).forEach(p => {
+        const li = document.createElement('li');
+        li.className = "flex justify-between items-center py-1.5 border-b border-slate-100 dark:border-slate-850 last:border-b-0";
+        li.innerHTML = `
+          <span class="truncate max-w-[130px] font-bold text-slate-800 dark:text-slate-200">${p.title}</span>
+          <span class="text-amber-500 font-extrabold flex items-center gap-1">4.8 <i class="fa-solid fa-star text-[10px]"></i></span>
+        `;
+        rates.appendChild(li);
+      });
+    }
+
+    // MODULE 8: Customer Live Chat with Live Real-time Sync
+    function getAllSellerChatClients() {
+      const liveChats = JSON.parse(localStorage.getItem('seller_live_chats') || '[]');
+      
+      const defaultClients = [
+        { 
+          key: 'tahmid', 
+          name: 'Tahmid Chowdhury', 
+          lastMsg: 'Compatible with Mac?', 
+          badge: 0,
+          messages: [
+            { sender: 'customer', text: 'Hi, is this product compatible with Mac M1/M2?' },
+            { sender: 'seller', text: 'Yes, fully plug and play compatible!' }
+          ]
+        },
+        { 
+          key: 'sadia', 
+          name: 'Sadia Islam', 
+          lastMsg: 'What about return policies?', 
+          badge: 1,
+          messages: [
+            { sender: 'customer', text: 'What about return policies if the size does not match?' },
+            { sender: 'customer', text: 'Can I exchange within 7 days?' }
+          ]
+        }
+      ];
+
+      // Merge simulated and real customer chats
+      const merged = [...liveChats];
+      defaultClients.forEach(dc => {
+        if (!merged.some(m => m.key === dc.key)) {
+          if (!chatHistories[dc.key]) {
+            chatHistories[dc.key] = dc.messages;
+          }
+          merged.push({
+            key: dc.key,
+            name: dc.name,
+            lastMsg: (chatHistories[dc.key] && chatHistories[dc.key].length > 0) ? chatHistories[dc.key][chatHistories[dc.key].length - 1].text : dc.lastMsg,
+            badge: dc.badge,
+            product: 'General Inquiry',
+            messages: chatHistories[dc.key] || dc.messages
+          });
+        }
+      });
+
+      return merged;
+    }
+
+    function renderChatUI() {
+      const roster = document.getElementById('chat-roster-list');
+      if (!roster) return;
+      roster.innerHTML = '';
+      
+      const clients = getAllSellerChatClients();
+      if (clients.length === 0) {
+        roster.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-semibold">No active customer conversations yet.</div>';
+        return;
+      }
+
+      if (!activeClientChat || !clients.some(c => c.key === activeClientChat)) {
+        activeClientChat = clients[0].key;
+      }
+
+      let totalUnread = 0;
+
+      clients.forEach(c => {
+        const isActive = c.key === activeClientChat;
+        const activeClass = isActive ? 'bg-primary/10 border-l-4 border-primary text-slate-800 dark:text-white' : 'hover:bg-slate-50 dark:hover:bg-slate-900/50';
+        const badgeSpan = (c.badge && c.badge > 0) ? `<span class="bg-primary text-white text-[8px] font-black rounded-full h-4.5 w-4.5 flex items-center justify-center shrink-0 ml-auto animate-pulse">${c.badge}</span>` : '';
+        if (c.badge) totalUnread += c.badge;
+
+        const subInfo = c.product ? `<span class="text-[9px] text-primary font-bold block truncate">${c.product}</span>` : '';
+        
+        const div = document.createElement('div');
+        div.className = `p-3.5 border-b border-slate-100 dark:border-slate-850 flex items-center gap-3 cursor-pointer transition-all ${activeClass}`;
+        div.onclick = () => selectActiveChat(c.key);
+        div.innerHTML = `
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-cherry-800 text-white font-black text-xs flex items-center justify-center select-none uppercase shrink-0 shadow-sm">
+            ${c.name.charAt(0)}
+          </div>
+          <div class="leading-tight min-w-0 flex-grow pr-1">
+            <h4 class="text-xs font-extrabold truncate text-slate-800 dark:text-slate-100">${c.name}</h4>
+            ${subInfo}
+            <p class="text-[10px] text-slate-400 truncate mt-0.5">${c.lastMsg || 'New conversation'}</p>
+          </div>
+          ${badgeSpan}
+        `;
+        roster.appendChild(div);
+      });
+
+      const unreadCountEl = document.getElementById('unread-chat-count');
+      if (unreadCountEl) unreadCountEl.textContent = totalUnread > 0 ? String(totalUnread) : '0';
+
+      // 2. Active chat name & avatar info
+      const activeObj = clients.find(c => c.key === activeClientChat) || clients[0];
+      const activeName = activeObj.name;
+      document.getElementById('chat-active-name').textContent = activeName;
+      document.getElementById('chat-active-avatar').textContent = activeName.charAt(0).toUpperCase();
+
+      // 3. Render message bubbles
+      const container = document.getElementById('chat-messages-container');
+      container.innerHTML = '';
+
+      let msgs = [];
+      if (activeObj.messages && activeObj.messages.length > 0) {
+        msgs = activeObj.messages;
+      } else if (chatHistories[activeClientChat]) {
+        msgs = chatHistories[activeClientChat];
+      }
+
+      if (msgs.length === 0) {
+        container.innerHTML = `<div class="text-center py-12 text-slate-400 text-xs font-semibold">Start conversation with ${activeName}</div>`;
+      } else {
+        msgs.forEach(m => {
+          const isMe = m.sender === 'seller';
+          const bubble = isMe 
+            ? 'bg-primary text-white ml-auto rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl shadow-sm'
+            : 'bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-850 rounded-tl-2xl rounded-tr-2xl rounded-br-2xl shadow-sm';
+          
+          const div = document.createElement('div');
+          div.className = `flex max-w-[80%] ${isMe ? 'ml-auto' : 'mr-auto'}`;
+          div.innerHTML = `
+            <div class="p-3 text-xs font-medium leading-relaxed ${bubble}">
+              ${m.text}
+              ${m.time ? `<div class="text-[8px] opacity-75 mt-1 text-right">${m.time}</div>` : ''}
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      }
+
+      // Scroll bottom
+      container.scrollTop = container.scrollHeight;
+
+      // 4. Injected AI suggested Reply / templates based on client state
+      const suggestionsDiv = document.getElementById('ai-replies-triggers');
+      suggestionsDiv.innerHTML = '';
+      
+      let templates = [
+        "Hello! Thanks for reaching out. Yes, this product is in stock and ready to ship.",
+        "We deliver inside Dhaka within 24 hours via express courier.",
+        "Yes, 100% authentic with 7-day easy replacement guarantee!",
+        "Special discount is active today! Would you like to place an order now?"
+      ];
+
+      templates.forEach(t => {
+        const btn = document.createElement('button');
+        btn.className = "bg-primary/5 hover:bg-primary/20 text-primary border border-primary/20 hover:border-primary/50 text-[9.5px] font-bold px-3 py-1.5 rounded-full transition-all focus:outline-none text-left cursor-pointer";
+        btn.onclick = () => {
+          document.getElementById('chat-reply-input').value = t;
+          document.getElementById('chat-reply-input').focus();
+        };
+        btn.textContent = t;
+        suggestionsDiv.appendChild(btn);
+      });
+    }
+
+    function selectActiveChat(key) {
+      activeClientChat = key;
+      // Mark read in live chats
+      let liveChats = JSON.parse(localStorage.getItem('seller_live_chats') || '[]');
+      const target = liveChats.find(c => c.key === key);
+      if (target) {
+        target.badge = 0;
+        localStorage.setItem('seller_live_chats', JSON.stringify(liveChats));
+      }
+      renderChatUI();
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chat-reply-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // 1. Check if active chat is in live chats
+      let liveChats = JSON.parse(localStorage.getItem('seller_live_chats') || '[]');
+      const liveTarget = liveChats.find(c => c.key === activeClientChat);
+
+      if (liveTarget) {
+        if (!liveTarget.messages) liveTarget.messages = [];
+        liveTarget.messages.push({ sender: 'seller', text, time: timeStr });
+        liveTarget.lastMsg = text;
+        liveTarget.time = timeStr;
+        localStorage.setItem('seller_live_chats', JSON.stringify(liveChats));
+
+        // Sync directly back to customer abrexa_chat_histories
+        try {
+          let abrexaChats = JSON.parse(localStorage.getItem('abrexa_chat_histories') || '{}');
+          const channelKey = liveTarget.channelKey || 'seller_store';
+          if (!abrexaChats[channelKey]) abrexaChats[channelKey] = [];
+          abrexaChats[channelKey].push({ text, isUser: false });
+          localStorage.setItem('abrexa_chat_histories', JSON.stringify(abrexaChats));
+        } catch(e) {}
+
+      } else {
+        if (!chatHistories[activeClientChat]) chatHistories[activeClientChat] = [];
+        chatHistories[activeClientChat].push({ sender: 'seller', text, time: timeStr });
+        localStorage.setItem('seller_chat_histories', JSON.stringify(chatHistories));
+      }
+
+      input.value = '';
+      renderChatUI();
+
+      if (typeof showSellerToast === 'function') {
+        showSellerToast('Reply sent to customer live chat!', 'success', 'Message Sent');
+      }
+    }
+
+    // Live storage sync for incoming customer messages
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'seller_live_chats' || e.key === 'abrexa_chat_histories') {
+        renderChatUI();
+      }
+    });
+
+    function simulatePhotoAttachment() {
+      alert("Simulating photo attachment selection. File: 'invoice_receipt.jpg' uploaded to chat.");
+      chatHistories[activeClientChat] = chatHistories[activeClientChat] || [];
+      chatHistories[activeClientChat].push({ sender: 'seller', text: "📸 Attached Image: [invoice_receipt.jpg]" });
+      localStorage.setItem('seller_chat_histories', JSON.stringify(chatHistories));
+      renderChatUI();
+    }
+
+    function simulateVoiceAttachment() {
+      alert("Voice recorder simulation started. Attached 5s audio note to conversation.");
+      chatHistories[activeClientChat] = chatHistories[activeClientChat] || [];
+      chatHistories[activeClientChat].push({ sender: 'seller', text: "🎵 Audio note attached (0:05)" });
+      localStorage.setItem('seller_chat_histories', JSON.stringify(chatHistories));
+      renderChatUI();
+    }
+
+    // MODULE 9: Notifications Log
+    function renderNotificationsUI() {
+      const container = document.getElementById('notif-log-container');
+      container.innerHTML = '';
+
+      const logs = [
+        { type: 'order', text: 'New Pending Order (#ABX-9012) received from Sadia Islam.', time: 'Today' },
+        { type: 'payment', text: 'Disbursement of ৳3,500 completed for Payout ID: W-90235.', time: 'Yesterday' },
+        { type: 'return', text: 'Product Return Claim initiated by customer Imran Khan for order #ABX-9016.', time: '3 days ago' },
+        { type: 'stock', text: 'Low Stock warning: Classic Smartwatch has only 2 items remaining.', time: '4 days ago' },
+        { type: 'system', text: 'System Update: AI description generator now supports Bengali copywriting.', time: '5 days ago' }
+      ];
+
+      logs.forEach(l => {
+        let icon = '';
+        if (l.type === 'order') icon = '<i class="fa-solid fa-receipt text-primary text-sm"></i>';
+        else if (l.type === 'payment') icon = '<i class="fa-solid fa-credit-card text-emerald-500 text-sm"></i>';
+        else if (l.type === 'return') icon = '<i class="fa-solid fa-rotate-left text-purple-500 text-sm"></i>';
+        else if (l.type === 'stock') icon = '<i class="fa-solid fa-triangle-exclamation text-amber-500 text-sm"></i>';
+        else icon = '<i class="fa-solid fa-gears text-blue-500 text-sm"></i>';
+
+        const div = document.createElement('div');
+        div.className = "flex items-start gap-3 border border-slate-200/50 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 rounded-2xl p-4 transition-all";
+        div.innerHTML = `
+          <div class="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-900 flex items-center justify-center border border-slate-200/60 dark:border-slate-800 shrink-0">
+            ${icon}
+          </div>
+          <div class="leading-tight flex-grow pr-1 text-xs">
+            <h4 class="font-bold text-slate-800 dark:text-slate-200">${l.text}</h4>
+            <p class="text-[9px] text-slate-400 mt-1 font-semibold">${l.time}</p>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // ==============================================
+    // MODERN SELLER TOAST NOTIFICATION SYSTEM
+    // ==============================================
+    function showSellerToast(message, type = 'success', title = '') {
+      const container = document.getElementById('sellerToastContainer');
+      if (!container) return;
+
+      const toastId = 'toast-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4);
+
+      let iconClass = 'fa-solid fa-check text-white';
+      let badgeGradient = 'from-emerald-500 to-teal-500 shadow-emerald-500/25';
+      let borderColor = 'border-emerald-500/20';
+      let barColor = 'bg-gradient-to-r from-emerald-500 to-teal-400';
+      let defaultTitle = 'Success';
+
+      if (type === 'error' || type === 'danger') {
+        iconClass = 'fa-solid fa-triangle-exclamation text-white';
+        badgeGradient = 'from-rose-500 to-red-600 shadow-rose-500/25';
+        borderColor = 'border-rose-500/20';
+        barColor = 'bg-gradient-to-r from-rose-500 to-red-600';
+        defaultTitle = 'Action Failed';
+      } else if (type === 'info' || type === 'notice') {
+        iconClass = 'fa-solid fa-bell text-white';
+        badgeGradient = 'from-sky-500 to-blue-600 shadow-blue-500/25';
+        borderColor = 'border-sky-500/20';
+        barColor = 'bg-gradient-to-r from-sky-500 to-blue-600';
+        defaultTitle = 'Notification';
+      } else if (type === 'warning') {
+        iconClass = 'fa-solid fa-circle-exclamation text-white';
+        badgeGradient = 'from-amber-500 to-orange-500 shadow-amber-500/25';
+        borderColor = 'border-amber-500/20';
+        barColor = 'bg-gradient-to-r from-amber-500 to-orange-500';
+        defaultTitle = 'Warning';
+      }
+
+      const finalTitle = title || defaultTitle;
+
+      const toast = document.createElement('div');
+      toast.id = toastId;
+      toast.className = `seller-toast-item pointer-events-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border ${borderColor} rounded-2xl p-4 shadow-xl shadow-slate-900/10 dark:shadow-none flex flex-col gap-2.5 overflow-hidden transition-all duration-300 relative`;
+      
+      toast.innerHTML = `
+        <div class="flex items-start gap-3.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr ${badgeGradient} flex items-center justify-center shrink-0 shadow-md">
+            <i class="${iconClass} text-xs"></i>
+          </div>
+          <div class="flex-grow pt-0.5 min-w-0">
+            <h4 class="text-xs font-black text-slate-800 dark:text-slate-100 tracking-tight leading-tight">${finalTitle}</h4>
+            <p class="text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-relaxed mt-0.5 break-words">${message}</p>
+          </div>
+          <button onclick="dismissSellerToast('${toastId}')" class="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors p-1 cursor-pointer shrink-0 -mt-1 -mr-1">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+        <div class="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+          <div class="h-full ${barColor} rounded-full" style="animation: toastProgressAnim 3.5s linear forwards;"></div>
+        </div>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        dismissSellerToast(toastId);
+      }, 3500);
+    }
+
+    function dismissSellerToast(id) {
+      const toast = document.getElementById(id);
+      if (!toast) return;
+      toast.classList.add('toast-hiding');
+      setTimeout(() => {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 300);
+    }
+
+    // Safely redirect any unexpected alert calls to custom toast
+    window.alert = function(msg) {
+      showSellerToast(msg, 'info', 'ABREXA Seller Hub');
+    };
+
+    // MODULE 10: Profile save
+    function saveProfileDetails(event) {
+      event.preventDefault();
+      const shopName = document.getElementById('prof-company').value.trim();
+      const warehouse = document.getElementById('prof-warehouse').value.trim();
+      const returns = document.getElementById('prof-return').value.trim();
+      const saveBtn = document.getElementById('btn-save-profile') || (event.target ? event.target.querySelector('button[type="submit"]') : null);
+
+      if (shopName) {
+        localStorage.setItem('seller_shop_name', shopName);
+        localStorage.setItem('seller_name', shopName);
+
+        // Update all UI elements immediately
+        const storeTitle = document.getElementById('store-title');
+        if (storeTitle) storeTitle.textContent = shopName;
+
+        const avatarLetters = document.getElementById('avatar-letters');
+        if (avatarLetters) avatarLetters.textContent = shopName.charAt(0).toUpperCase();
+
+        const welcomeSub = document.getElementById('welcome-sub-name');
+        if (welcomeSub) welcomeSub.textContent = `Your store "${shopName}" is live on ABREXA.`;
+
+        // Sync with Django Backend API
+        if (typeof updateBackendSellerProfile === 'function') {
+          updateBackendSellerProfile({ store_name: shopName });
+        }
+      }
+
+      if (warehouse) localStorage.setItem('seller_warehouse', warehouse);
+      if (returns) localStorage.setItem('seller_return', returns);
+
+      // Visual button feedback
+      if (saveBtn) {
+        const originalText = saveBtn.innerHTML;
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = `<i class="fa-solid fa-check mr-1.5 animate-bounce"></i> Saved Successfully!`;
+        saveBtn.classList.add('!bg-emerald-600', '!hover:bg-emerald-700', 'shadow-emerald-600/30');
+        setTimeout(() => {
+          saveBtn.disabled = false;
+          saveBtn.innerHTML = originalText;
+          saveBtn.classList.remove('!bg-emerald-600', '!hover:bg-emerald-700', 'shadow-emerald-600/30');
+        }, 2200);
+      }
+
+      // Trigger beautiful custom toast
+      showSellerToast('Merchant profile settings and store name updated successfully!', 'success', 'Profile Updated');
+    }
+
+
+
+    // MODULE 12: Customer Reviews with Live Sync from All Product Pages
+    function syncSellerReviewsFromAllSources() {
+      sellerReviews = JSON.parse(localStorage.getItem('seller_reviews')) || [];
+      
+      const allProds = (window.currentSellerProducts && Array.isArray(window.currentSellerProducts)) 
+        ? window.currentSellerProducts 
+        : (typeof sellerProducts !== 'undefined' ? sellerProducts : []);
+
+      // Scan localStorage for all ABREXA_REVIEWS_* keys
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('ABREXA_REVIEWS_')) {
+          const rawId = key.replace('ABREXA_REVIEWS_', '').replace('db_', '');
+          try {
+            const list = JSON.parse(localStorage.getItem(key));
+            if (Array.isArray(list)) {
+              const matchedProd = allProds.find(p => p.id == rawId || p.sku == rawId);
+              const prodTitle = matchedProd ? matchedProd.title : `Product #${rawId}`;
+              const prodImg = matchedProd ? (matchedProd.image_url || matchedProd.image) : '';
+
+              list.forEach(r => {
+                const rId = r.id || `${rawId}_${r.name}_${r.date}`;
+                let existing = sellerReviews.find(sr => sr.id === rId || (sr.productId == rawId && sr.name === r.name && sr.comment === r.comment));
+                if (existing) {
+                  existing.rating = parseFloat(r.rating) || existing.rating || 5;
+                  existing.comment = r.comment || existing.comment;
+                  existing.title = r.title || existing.title;
+                  if (existing.reply && !r.reply) {
+                    r.reply = existing.reply;
+                  } else if (r.reply && !existing.reply) {
+                    existing.reply = r.reply;
+                  }
+                } else {
+                  sellerReviews.unshift({
+                    id: rId,
+                    productId: rawId,
+                    productTitle: prodTitle,
+                    productImg: prodImg,
+                    name: r.name || 'Customer',
+                    rating: parseFloat(r.rating) || 5,
+                    title: r.title || '',
+                    comment: r.comment || '',
+                    date: r.date || new Date().toISOString().split('T')[0],
+                    reply: r.reply || null
+                  });
+                }
+              });
+              localStorage.setItem(key, JSON.stringify(list));
+            }
+          } catch(e) {}
+        }
+      }
+
+      localStorage.setItem('seller_reviews', JSON.stringify(sellerReviews));
+    }
+
+    function renderReviewsUI() {
+      syncSellerReviewsFromAllSources();
+      const tbody = document.getElementById('reviews-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      if (sellerReviews.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-12 text-center text-slate-400 font-semibold">No customer reviews yet. Reviews submitted by buyers on your product pages will appear here live.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = sellerReviews.map((r, idx) => {
+        const numRating = parseFloat(r.rating) || 5;
+        const fullStars = Math.floor(numRating);
+        const hasHalf = (numRating % 1) >= 0.3;
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+          if (i <= fullStars) {
+            starsHtml += `<i class="fa-solid fa-star text-amber-400"></i>`;
+          } else if (i === fullStars + 1 && hasHalf) {
+            starsHtml += `<i class="fa-solid fa-star-half-stroke text-amber-400"></i>`;
+          } else {
+            starsHtml += `<i class="fa-solid fa-star text-slate-200 dark:text-slate-800"></i>`;
+          }
+        }
+
+        const badgeColor = numRating >= 4 ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : (numRating >= 3 ? 'bg-amber-50 text-amber-600 border-amber-200' : 'bg-rose-50 text-rose-600 border-rose-200');
+
+        const replyArea = r.reply 
+          ? `
+            <div class="bg-primary/5 dark:bg-primary/10 border border-primary/20 rounded-xl p-2.5 mt-1 max-w-md">
+              <div class="flex items-center justify-between text-[10px] font-bold text-primary mb-1">
+                <span><i class="fa-solid fa-store mr-1"></i> Your Reply:</span>
+                <button onclick="editReviewReply(${idx})" class="text-slate-400 hover:text-primary transition-colors text-[9px] cursor-pointer">Edit</button>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 text-xs italic font-medium leading-relaxed">"${r.reply}"</p>
+            </div>
+          `
+          : `
+            <div class="flex gap-2 items-center mt-1 max-w-md">
+              <input type="text" id="review-reply-input-${idx}" placeholder="Write response to customer..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200 focus:outline-none focus:border-primary transition-colors">
+              <button onclick="submitReviewReply(${idx})" class="bg-primary hover:bg-cherry-700 text-white font-bold text-xs py-1.5 px-4 rounded-xl transition-all cursor-pointer shrink-0 shadow-sm flex items-center gap-1">
+                <i class="fa-solid fa-paper-plane text-[10px]"></i> Reply
+              </button>
+            </div>
+          `;
+
+        return `
+          <tr class="border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors">
+            <td class="py-3.5 px-4">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-600 text-slate-700 dark:text-slate-200 font-black flex items-center justify-center text-xs uppercase shadow-inner shrink-0">
+                  ${(r.name || 'U').charAt(0)}
+                </div>
+                <div>
+                  <div class="font-extrabold text-slate-800 dark:text-slate-100 text-xs flex items-center gap-2">
+                    ${r.name}
+                    <span class="px-1.5 py-0.2 rounded-full text-[9px] font-black border ${badgeColor}">${numRating.toFixed(1)} ★</span>
+                  </div>
+                  <div class="text-[10px] text-primary font-bold mt-0.5">${r.productTitle || 'Product Review'}</div>
+                  <div class="flex items-center gap-2 text-[10px] text-slate-400 mt-1">
+                    <div class="flex text-[9px] gap-0.5">${starsHtml}</div>
+                    <span>•</span>
+                    <span>${r.date || 'Recent'}</span>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="py-3.5 px-4 max-w-[280px]">
+              ${r.title ? `<div class="font-bold text-slate-800 dark:text-slate-200 text-xs mb-0.5">${r.title}</div>` : ''}
+              <div class="text-slate-650 dark:text-slate-400 text-xs leading-relaxed">${r.comment}</div>
+            </td>
+            <td class="py-3.5 px-4">${replyArea}</td>
+            <td class="py-3.5 px-4 text-right">
+              <div class="flex items-center justify-end gap-1.5">
+                <button onclick="deleteSellerReview(${idx})" class="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors cursor-pointer text-xs" title="Delete Review">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+                <button onclick="reportFakeReview(${idx})" class="bg-slate-100 hover:bg-rose-500/10 text-slate-450 hover:text-rose-500 border border-slate-200 dark:border-slate-800 text-[9px] font-bold py-1 px-2.5 rounded-lg transition-all focus:outline-none cursor-pointer">
+                  Report
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function submitReviewReply(index) {
+      const input = document.getElementById(`review-reply-input-${index}`);
+      const text = input ? input.value.trim() : '';
+      if (!text) return;
+
+      sellerReviews[index].reply = text;
+      localStorage.setItem('seller_reviews', JSON.stringify(sellerReviews));
+
+      // Also update corresponding product review key if present
+      const r = sellerReviews[index];
+      if (r.productId) {
+        const prodKey = `ABREXA_REVIEWS_${r.productId}`;
+        try {
+          let list = JSON.parse(localStorage.getItem(prodKey)) || [];
+          let target = list.find(item => item.id === r.id || (item.name === r.name && item.comment === r.comment));
+          if (target) {
+            target.reply = text;
+            localStorage.setItem(prodKey, JSON.stringify(list));
+            localStorage.setItem(`ABREXA_REVIEWS_db_${r.productId}`, JSON.stringify(list));
+          }
+        } catch(e) {}
+      }
+
+      renderReviewsUI();
+      if (typeof showSellerToast === 'function') {
+        showSellerToast('Reply posted to customer review!', 'success', 'Reply Sent');
+      } else {
+        alert('Review reply posted successfully!');
+      }
+    }
+
+    function editReviewReply(index) {
+      sellerReviews[index].reply = null;
+      renderReviewsUI();
+    }
+
+    function deleteSellerReview(index) {
+      if (!confirm('Are you sure you want to remove this review from dashboard?')) return;
+      const r = sellerReviews[index];
+      sellerReviews.splice(index, 1);
+      localStorage.setItem('seller_reviews', JSON.stringify(sellerReviews));
+
+      if (r && r.productId) {
+        const prodKey = `ABREXA_REVIEWS_${r.productId}`;
+        try {
+          let list = JSON.parse(localStorage.getItem(prodKey)) || [];
+          list = list.filter(item => item.id !== r.id && !(item.name === r.name && item.comment === r.comment));
+          localStorage.setItem(prodKey, JSON.stringify(list));
+          localStorage.setItem(`ABREXA_REVIEWS_db_${r.productId}`, JSON.stringify(list));
+        } catch(e) {}
+      }
+
+      renderReviewsUI();
+      if (typeof showSellerToast === 'function') {
+        showSellerToast('Review removed from catalog', 'info', 'Review Deleted');
+      }
+    }
+
+    function reportFakeReview(index) {
+      alert(`Report submitted! Admin team will review rating ID: REV-${sellerReviews[index].id} for fraud or inappropriate language.`);
+    }
+
+    // MODULE 13: Return Center
+    function renderReturnsUI() {
+      const tbody = document.getElementById('returns-table-body');
+      tbody.innerHTML = '';
+
+      if (sellerReturns.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">No return requests.</td></tr>`;
+        return;
+      }
+
+      sellerReturns.forEach((r, idx) => {
+        let badge = r.status === 'Completed'
+          ? `<span class="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 border border-emerald-100 dark:border-emerald-900/30 px-2 py-0.5 rounded-full text-[9px] font-bold">Approved / Refunded</span>`
+          : `<span class="bg-amber-50 dark:bg-amber-950/20 text-amber-500 border border-amber-100 dark:border-amber-900/30 px-2 py-0.5 rounded-full text-[9px] font-bold">Pending Review</span>`;
+
+        const actions = r.status === 'Pending Review'
+          ? `
+            <div class="flex gap-2 justify-end">
+              <button onclick="processReturn(${idx}, 'approve')" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-[9.5px] py-1.5 px-3 rounded-lg transition-colors cursor-pointer shadow-sm">Accept</button>
+              <button onclick="processReturn(${idx}, 'reject')" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-[9.5px] py-1.5 px-3 rounded-lg transition-colors cursor-pointer shadow-sm">Reject</button>
+            </div>
+          `
+          : `<span class="text-slate-400 text-[10px] font-bold italic">Resolved</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors";
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-100">
+            ${r.id}
+            <div class="text-[9px] text-slate-400 font-semibold mt-0.5">${r.product}</div>
+          </td>
+          <td class="py-3 px-4 text-slate-500 font-semibold leading-relaxed max-w-[150px]">${r.reason}</td>
+          <td class="py-3 px-4 text-slate-650 dark:text-slate-400"><a href="#" onclick="alert('Viewing attachment evidence: ' + '${r.evidence}')" class="text-primary hover:underline font-bold flex items-center gap-1.5"><i class="fa-solid fa-paperclip text-[10px]"></i> ${r.evidence}</a></td>
+          <td class="py-3 px-4">${badge}</td>
+          <td class="py-3 px-4 text-right">${actions}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function processReturn(index, action) {
+      if (action === 'approve') {
+        sellerReturns[index].status = 'Completed';
+        localStorage.setItem('seller_returns', JSON.stringify(sellerReturns));
+        alert('Return request approved. Refund issued to the customer wallet.');
+      } else {
+        alert('Return request rejected. You must upload defense evidence files.');
+        const file = prompt('Enter evidence file name to submit (e.g. proof_delivery.jpg):');
+        if (file) {
+          sellerReturns[index].evidence += ` & Merchant defense: [${file}]`;
+          sellerReturns[index].status = 'Completed';
+          localStorage.setItem('seller_returns', JSON.stringify(sellerReturns));
+          alert('Defense documents uploaded. Return rejected successfully.');
+        }
+      }
+      renderReturnsUI();
+    }
+
+    // MODULE 14: Finance & Invoices
+    function renderFinanceUI() {
+      const tbody = document.getElementById('finance-table-body');
+      tbody.innerHTML = '';
+
+      const invoices = [
+        { id: 'INV-2026-001', period: 'July 1 - July 7', sales: '3700', commission: '185', vat: '9.25', payout: '3505.75' },
+        { id: 'INV-2026-002', period: 'July 8 - July 15', sales: '2200', commission: '110', vat: '5.5', payout: '2084.5' }
+      ];
+
+      invoices.forEach(inv => {
+        const tr = document.createElement('tr');
+        tr.className = "border-b border-slate-100 dark:border-slate-850 hover:bg-slate-50/50 dark:hover:bg-slate-900/30 transition-colors";
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-extrabold text-slate-800 dark:text-slate-100"><a href="#" onclick="alert('Opening Invoice details')" class="text-primary hover:underline">${inv.id}</a></td>
+          <td class="py-3 px-4 text-slate-550 dark:text-slate-400 font-semibold">${inv.period}</td>
+          <td class="py-3 px-4 font-bold text-slate-800 dark:text-slate-200">৳${parseFloat(inv.sales).toLocaleString()}</td>
+          <td class="py-3 px-4 text-slate-500 font-bold">৳${inv.commission}</td>
+          <td class="py-3 px-4 text-slate-500 font-bold">৳${inv.vat}</td>
+          <td class="py-3 px-4 font-black text-emerald-500 dark:text-emerald-400">৳${parseFloat(inv.payout).toLocaleString()}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      // Update Analytics Total Commission
+      const salesTotal = sellerOrders.filter(o => o.status === 'Delivered').reduce((sum, o) => sum + parseFloat(o.price), 0);
+      const commissionTotal = salesTotal * 0.05;
+      document.getElementById('analytics-total-commission').textContent = `৳${commissionTotal.toLocaleString()}`;
+    }
+
+    function downloadReport(format) {
+      alert(`Exporting tax, sales, and commission report logs in ${format} format. Check your local downloads folder.`);
+    }
+
+    // MODULE 15: AI Assistant selling Tool
+    let currentAiTask = 'description';
+
+    function runAiAssistant(task) {
+      currentAiTask = task;
+      const label = document.getElementById('ai-task-label');
+      const input = document.getElementById('ai-prompt-param');
+
+      if (task === 'description') {
+        label.textContent = "AI Marketing Description Writer";
+        input.placeholder = "e.g. Ergonomic Bluetooth Keyboard";
+      } else if (task === 'seo') {
+        label.textContent = "AI SEO tag Generator";
+        input.placeholder = "e.g. Noise-Cancelling Bluetooth Earbuds";
+      } else if (task === 'price') {
+        label.textContent = "AI Price Optimization Suggestion";
+        input.placeholder = "e.g. 5G Smartwatch, competitor price: ৳2500";
+      } else if (task === 'sales') {
+        label.textContent = "AI Sales Performance Analyst";
+        input.placeholder = "e.g. July Sales, 3 cancellations";
+      } else if (task === 'stock') {
+        label.textContent = "AI Restock & inventory suggestion";
+        input.placeholder = "e.g. 3 items remaining in smartwatch";
+      }
+    }
+
+    function executeAiTask() {
+      const param = document.getElementById('ai-prompt-param').value.trim();
+      const viewport = document.getElementById('ai-response-viewport');
+
+      if (!param) {
+        alert('Please provide a context parameter first!');
+        return;
+      }
+
+      viewport.innerHTML = `<div class="flex items-center gap-2 text-primary font-bold italic"><i class="fa-solid fa-spinner animate-spin"></i> Writing AI response suggestions...</div>`;
+      
+      setTimeout(() => {
+        let resp = '';
+        if (currentAiTask === 'description') {
+          resp = `<strong>Suggested Marketing Description:</strong><br><br>Introducing the premium <strong>${param}</strong>. Engineered with cutting-edge materials and a sleek minimalist layout. Perfect for modern lifestyles. Key benefits:<br>- Extreme durability with light composite material.<br>- Advanced ergonomics reducing strain by up to 20%.<br>- Seamless wireless connectivity and long battery life.`;
+        } else if (currentAiTask === 'seo') {
+          resp = `<strong>Generated SEO tags:</strong><br><br>#${param.replace(/\s+/g, '')} #Best${param.replace(/\s+/g, '')} #AbrexaBD #ShopBangladesh #PremiumEcom #DealsBangladesh #ModernGadget`;
+        } else if (currentAiTask === 'price') {
+          resp = `<strong>Optimal Price Strategy:</strong><br><br>Based on search volume for <strong>${param}</strong>:<br>- Minimum Cost Price: ৳1,100<br>- Suggested Sale Price: <strong>৳1,750</strong> (Allows 37% net margin)<br>- Recommendation: Bundle with a low-cost accessory and offer a ৳100 voucher to drive bulk volumes.`;
+        } else if (currentAiTask === 'sales') {
+          resp = `<strong>Sales Analysis Report:</strong><br><br>Performance metrics evaluation for <strong>${param}</strong>:<br>- Month-over-Month conversion rate rose by 1.2%.<br>- Action: 2 cancellations were due to delivery delays. Recommend switching to <strong>ABREXA Fulfillment</strong> for express Dhaka shipping.`;
+        } else if (currentAiTask === 'stock') {
+          resp = `<strong>Inventory Recommendation:</strong><br><br>Based on stock metrics for <strong>${param}</strong>:<br>- Safety stock levels should be raised from 3 to 10 items due to increased campaign traffic.<br>- Suggested Reorder Date: Within 3 business days to prevent stockouts.`;
+        }
+        
+        viewport.innerHTML = `<div class="leading-relaxed leading-normal">${resp}</div>`;
+      }, 1500);
+    }
+
+    // SPONSORED ADS SYSTEM
+    function subscribeAdPlan(plan, price) {
+      const confirmSub = confirm(`Confirm purchase of '${plan}' Sponsored Ads plan for ৳${price}?`);
+      if (confirmSub) {
+        const balance = parseFloat(localStorage.getItem('seller_balance') || '0');
+        if (price > balance) {
+          alert('Insufficient wallet balance to buy this campaign! Please withdraw/earn funds.');
+          return;
+        }
+
+        localStorage.setItem('seller_balance', (balance - price).toString());
+        localStorage.setItem('seller_membership', plan);
+        
+        // Update Stats
+        renderWalletUI();
+        renderOverviewStats();
+        
+        document.getElementById('seller-membership-badge').textContent = plan + " Plan";
+        document.getElementById('prof-membership-tier').textContent = plan;
+        alert(`Congratulations! Your store is now promoted under the '${plan}' plan. Campaign active!`);
+      }
+    }
+  </script>
+  <!-- Django REST API Integration -->
+  <script src="js/backend_api.js"></script>
+</body>
+</html>

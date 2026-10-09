@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ABREXA E-Commerce • Home</title>
+  <!-- Tailwind CSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              light: '#fb7185',
+              DEFAULT: '#e11d48',
+              dark: '#be123c'
+            },
+            orange: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#e11d48',
+              600: '#be123c',
+              700: '#9f1239',
+              800: '#881337',
+              900: '#4c0519',
+              950: '#27000b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom.css">
+  <!-- Favicon / Site Icon -->
+  <link rel="icon" type="image/png" href="images/logo.png">
+</head>
+<body class="bg-[#f4f6fa] min-h-screen flex flex-col">
+
+  <!-- ==============================================
+       ABREXA ANIMATED LOGO PRELOADER
+       ============================================== -->
+  <div id="sitePreloader" class="abrexa-preloader">
+    <div class="abrexa-loader-glow"></div>
+    <div class="abrexa-logo-badge">
+      <div class="abrexa-speed-lines">
+        <div class="abrexa-speed-line"></div>
+        <div class="abrexa-speed-line"></div>
+        <div class="abrexa-speed-line"></div>
+      </div>
+      <img src="images/logo.png" alt="ABREXA Logo">
+    </div>
+
+    <div class="abrexa-animated-brand">
+      <span class="abrexa-char" style="--char-i: 0">A</span>
+      <span class="abrexa-char" style="--char-i: 1">B</span>
+      <span class="abrexa-char" style="--char-i: 2">R</span>
+      <span class="abrexa-char" style="--char-i: 3">E</span>
+      <span class="abrexa-char abrexa-char-accent" style="--char-i: 4">X</span>
+      <span class="abrexa-char" style="--char-i: 5">A</span>
+      <span class="abrexa-char abrexa-char-accent" style="--char-i: 6">.</span>
+    </div>
+
+    <div class="abrexa-loader-progress-box">
+      <div class="abrexa-loader-bar-track">
+        <div class="abrexa-loader-bar-fill"></div>
+      </div>
+      <div class="abrexa-loader-status">
+        <span>LOADING</span>
+        <div class="flex gap-1">
+          <span class="abrexa-dot-pulse"></span>
+          <span class="abrexa-dot-pulse"></span>
+          <span class="abrexa-dot-pulse"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('load', () => {
+      const preloader = document.getElementById('sitePreloader');
+      if (preloader) {
+        setTimeout(() => {
+          preloader.classList.add('fade-out');
+          setTimeout(() => preloader.remove(), 550);
+        }, 350);
+      }
+    });
+  </script>
+
+  <!-- ==============================================
+       DESKTOP HEADER & TOP NAVIGATION
+       ============================================== -->
+  <header class="hidden lg:block bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shrink-0 sticky top-0 z-40 shadow-sm">
+        <!-- Top Tiny Bar -->
+    <div class="bg-[#f8fafc] dark:bg-slate-950 border-b border-slate-200/60 dark:border-slate-850 text-slate-500 dark:text-slate-400 text-[10.5px] py-2 font-medium tracking-wide">
+      <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="save_app">
+            <i class="fa-solid fa-mobile-screen-button text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            Save more on App
+          </a>
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="sell_abrexa">
+            <i class="fa-solid fa-store text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="sell_abrexa">Sell on ABREXA</span>
+          </a>
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="customer_care">
+            <i class="fa-solid fa-headset text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            Customer Care
+          </a>
+        </div>
+        <div class="flex gap-6 items-center">
+          <a href="account.html" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink">
+            <i class="fa-solid fa-truck-fast text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="track_order">Track Order</span>
+          </a>
+          <a href="account.html" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink font-semibold text-slate-600 dark:text-slate-300 hover:dark:text-orange-400">
+            <i class="fa-solid fa-circle-user text-[11px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="sign_in_up">Sign In / Sign Up</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header Row -->
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-8">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
+        <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-sm overflow-hidden border border-slate-100 group-hover:border-orange-200 transition-colors">
+          <img src="images/logo.png" alt="ABREXA Logo" class="w-8 h-8 object-contain">
+        </div>
+        <span class="text-xl font-black text-slate-800 tracking-tight group-hover:text-orange-500 transition-colors logo-font">ABRE<span class="text-orange-500">X</span>A<span class="text-orange-500">.</span></span>
+      </a>
+
+      <!-- Large Center Search Bar -->
+      <div class="flex-grow max-w-2xl bg-slate-100 dark:bg-slate-800 rounded-full flex items-center px-4 py-2 border border-slate-200 dark:border-slate-700 shadow-inner">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm mr-3"></i>
+        <input id="desktop-search-input" type="text" placeholder="Search in ABREXA (e.g. watch, phone, television...)" class="bg-transparent border-none text-xs focus:outline-none w-full text-slate-700 dark:text-slate-200">
+        <button class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-5 py-1.5 rounded-full transition-colors ml-2 shadow-sm">
+          Search
+        </button>
+      </div>
+
+      <!-- Action items: Account & Cart -->
+      <div class="flex items-center gap-6 shrink-0">
+        <a href="account.html" class="flex items-center gap-2.5 text-slate-700 hover:text-orange-500 transition-colors group">
+          <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-orange-950/30 text-slate-500 dark:text-slate-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all">
+            <i class="fa-solid fa-user text-sm"></i>
+          </div>
+          <div class="text-left leading-tight">
+            <div class="text-[10px] text-slate-400"><span data-translate-key="welcome">Welcome</span></div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 dark:group-hover:text-orange-400">Fahim Rahman</div>
+          </div>
+        </a>
+
+        <a href="cart.html" class="relative flex items-center gap-2.5 text-slate-700 hover:text-orange-500 transition-colors group">
+          <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-orange-950/30 text-slate-500 dark:text-slate-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all relative">
+            <i class="fa-solid fa-cart-shopping text-sm cart-nav-icon"></i>
+            <span class="cart-badge absolute -top-1 -right-1.5 bg-orange-500 text-white text-[9px] font-extrabold rounded-full h-4.5 w-4.5 flex items-center justify-center border border-white hidden">0</span>
+          </div>
+          <span class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 dark:group-hover:text-orange-400" data-translate-key="cart" data-translate-key="cart">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation/Category Sub-header -->
+    <div class="bg-orange-500 text-white py-2">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-semibold">
+        <div class="flex items-center gap-6">
+          <a href="categories.html" class="bg-orange-600 hover:bg-orange-700 px-4 py-1.5 rounded flex items-center gap-2 shadow-inner transition-colors">
+            <i class="fa-solid fa-bars"></i> <span data-translate-key="all_categories">All Categories</span>
+          </a>
+          <a href="index.html" class="text-orange-100 hover:text-white transition-colors" data-translate-key="home_page">Home Page</a>
+          <a href="categories.html" class="hover:text-orange-100 transition-colors" data-translate-key="abrexa_mall">ABREXAMall</a>
+          <a href="categories.html" class="hover:text-orange-100 transition-colors font-bold text-yellow-300" data-translate-key="flash_sale">Flash Sale Offers</a>
+          <a href="#" onclick="alert('Contacting ABREXA Support')" class="hover:text-orange-100 transition-colors" data-translate-key="help_support">Help & Support</a>
+        </div>
+        <div class="flex items-center gap-2 text-yellow-300">
+          <i class="fa-solid fa-fire-flame-curved text-sm animate-pulse"></i>
+          <span><span data-translate-key="save_promo">Save up to 60% today!</span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ==============================================
+       MOBILE HEADER (Visible only on mobile viewports)
+       ============================================== -->
+  <header class="block lg:hidden bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shrink-0 sticky top-0 z-40">
+    <!-- Tiny app download banner (can be closed) -->
+    <div id="top-app-promo" class="bg-white border-b border-slate-100 p-2 flex items-center justify-between shrink-0 z-30 transition-all duration-300">
+      <div class="flex items-center gap-2">
+        <button onclick="document.getElementById('top-app-promo').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 px-1">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+        <div class="w-7 h-7 rounded-lg bg-white flex items-center justify-center shadow-md border border-slate-100 overflow-hidden">
+          <img src="images/logo.png" alt="ABREXA Logo" class="w-6 h-6 object-contain">
+        </div>
+        <div>
+          <h1 class="text-[10px] font-bold text-slate-800 leading-tight">ABREXA App</h1>
+          <p class="text-[8px] text-slate-500 leading-none">Shop easier, save more on app!</p>
+        </div>
+      </div>
+      <a href="#" onclick="alert('Downloading ABREXA E-Commerce App...')" class="bg-orange-500 hover:bg-orange-600 text-white text-[9px] font-bold px-2.5 py-1 rounded-full shadow-sm transition-colors uppercase tracking-wider">
+        Open
+      </a>
+    </div>
+
+    <!-- Mobile Search Row -->
+    <div class="gradient-orange p-3 flex items-center gap-3 shadow-md">
+      <div class="flex-grow bg-white dark:bg-slate-800 rounded-full flex items-center px-3 py-1.5 shadow-inner">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs mr-2"></i>
+        <input id="header-search-input" type="text" placeholder="Search brands, products..." class="bg-transparent border-none text-[11px] focus:outline-none w-full text-slate-700 dark:text-slate-200">
+      </div>
+      <a href="cart.html" class="relative text-white hover:text-orange-100 transition-colors">
+        <i class="fa-solid fa-cart-shopping text-base cart-nav-icon"></i>
+        <span class="cart-badge absolute -top-1.5 -right-2 bg-yellow-400 text-slate-900 text-[8px] font-extrabold rounded-full h-4 w-4 flex items-center justify-center border border-orange-500 shadow hidden">0</span>
+      </a>
+    </div>
+  </header>
+
+
+  <!-- ==============================================
+       MAIN RESPONSIVE CONTENT AREA
+       ============================================== -->
+  <main class="flex-grow w-full max-w-7xl mx-auto px-4 py-6 pb-24 lg:pb-12">
+    
+    <!-- Micro toast alert for cart additions -->
+    <div id="app-toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-slate-800/95 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 transform translate-y-[-10px] border border-white/10 flex items-center gap-1.5">
+      Item added to cart!
+    </div>
+
+    <!-- Home Tab Content Only -->
+    <div id="tab-home">
+      
+      <!-- Responsive Carousel & Desktop Side Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+        <!-- Main Carousel -->
+        <div class="col-span-1 lg:col-span-3 relative h-40 md:h-64 lg:h-96 rounded-2xl overflow-hidden shadow-lg bg-slate-200">
+          <!-- Slide 1 -->
+          <div class="hero-slide w-full h-full relative">
+            <img id="hero-banner-1-img" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80" alt="Headphones Deals" class="object-cover w-full h-full filter brightness-75">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent p-6 md:p-12 flex flex-col justify-center text-white">
+              <span id="hero-banner-1-tag" class="text-[10px] md:text-xs uppercase tracking-widest font-extrabold text-amber-400">Technology Deals</span>
+              <h2 id="hero-banner-1-title" class="text-base md:text-3xl font-extrabold mt-1 md:mt-2 leading-tight max-w-md">SMART GADGETS DISCOUNTS</h2>
+              <p id="hero-banner-1-desc" class="text-xs md:text-sm mt-1 opacity-90">Latest gear from Lenovo, JBL, Xiaomi on sale right now.</p>
+              <a id="hero-banner-1-btn" href="categories.html" class="mt-4 md:mt-6 bg-orange-500 hover:bg-orange-600 text-white text-[10px] md:text-xs font-bold px-5 py-2.5 rounded-full shadow-md w-fit transition-colors uppercase tracking-wider block text-center">EXPLORE</a>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="hero-slide w-full h-full relative hidden">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80" alt="Sneakers Sale" class="object-cover w-full h-full filter brightness-75">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent p-6 md:p-12 flex flex-col justify-center text-white">
+              <span class="text-[10px] md:text-xs uppercase tracking-widest font-extrabold text-orange-400">Summer Carnival</span>
+              <h2 class="text-base md:text-3xl font-extrabold mt-1 md:mt-2 leading-tight max-w-md">UNILEVER EXCLUSIVE BRANDS SALE</h2>
+              <p class="text-xs md:text-sm mt-1 opacity-90">Up to 50% discount on summer essentials + Free Shipping!</p>
+              <a href="categories.html" class="mt-4 md:mt-6 bg-orange-500 hover:bg-orange-600 text-white text-[10px] md:text-xs font-bold px-5 py-2.5 rounded-full shadow-md w-fit transition-colors uppercase tracking-wider block text-center">Shop Now</a>
+            </div>
+          </div>
+
+          <!-- Carousel Indicators -->
+          <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+            <span class="hero-indicator h-2 w-5 rounded-full bg-orange-500 transition-all duration-300"></span>
+            <span class="hero-indicator h-2 w-2 rounded-full bg-white/40 transition-all duration-300"></span>
+          </div>
+        </div>
+
+        <!-- Desktop Right Promo Banner Cards -->
+        <div class="hidden lg:flex flex-col gap-4">
+          <!-- Card 1: Elite Membership -->
+          <div class="relative rounded-2xl overflow-hidden shadow-md flex flex-col justify-between flex-grow group border border-indigo-800/40 min-h-[175px]">
+            <!-- Background Image with Zoom on Hover -->
+            <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80" alt="Elite Membership" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700">
+            <!-- Gradient Overlay for Sharp Text Contrast -->
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-950/95 via-indigo-900/85 to-indigo-900/30"></div>
+            
+            <!-- Content -->
+            <div class="relative z-10 p-5 flex flex-col justify-between h-full text-white">
+              <div>
+                <span class="text-[9px] uppercase tracking-wider bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full font-extrabold flex items-center gap-1 w-fit text-amber-300 border border-white/20 shadow-xs">
+                  <i class="fa-solid fa-crown text-[8px]"></i> VIP Offer
+                </span>
+                <h3 class="text-base font-extrabold mt-2 leading-tight drop-shadow-sm">Elite Membership</h3>
+                <p class="text-[11px] text-indigo-100/90 mt-1 line-clamp-2 max-w-[210px] leading-snug">Get ৳200 voucher upon registration on user panel.</p>
+              </div>
+              <a href="account.html" class="mt-3 text-[10px] bg-white hover:bg-indigo-50 text-indigo-950 font-black py-2 px-4 rounded-full transition-all w-fit shadow-md block text-center uppercase tracking-wider active:scale-95 group-hover:shadow-lg">
+                CLAIM VOUCHER
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 2: Unilever Summer Sale -->
+          <div class="relative rounded-2xl overflow-hidden shadow-md flex flex-col justify-between flex-grow group border border-rose-800/40 min-h-[175px]">
+            <!-- Background Image with Zoom on Hover -->
+            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80" alt="Unilever Summer Sale" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700">
+            <!-- Gradient Overlay for Sharp Text Contrast -->
+            <div class="absolute inset-0 bg-gradient-to-r from-rose-950/95 via-red-900/85 to-orange-800/30"></div>
+            
+            <!-- Content -->
+            <div class="relative z-10 p-5 flex flex-col justify-between h-full text-white">
+              <div>
+                <span class="text-[9px] uppercase tracking-wider bg-white/20 backdrop-blur-sm px-2.5 py-0.5 rounded-full font-extrabold flex items-center gap-1 w-fit text-yellow-300 border border-white/20 shadow-xs">
+                  <i class="fa-solid fa-fire text-[8px] animate-pulse"></i> Super Brand Day
+                </span>
+                <h3 class="text-base font-extrabold mt-2 leading-tight drop-shadow-sm">Unilever Summer Sale</h3>
+                <p class="text-[11px] text-rose-100/90 mt-1 line-clamp-2 max-w-[210px] leading-snug">Huge discounts on daily essentials & beauty kits.</p>
+              </div>
+              <a href="categories.html" class="mt-3 text-[10px] bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-black py-2 px-4 rounded-full transition-all w-fit shadow-md block text-center uppercase tracking-wider active:scale-95 group-hover:shadow-lg">
+                SHOP 50% OFF
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           TOP PRODUCT FLAGSHIP SHOWCASE SECTION (Inspired by Logitech/Apple Flagship Showcase)
+           ============================================== -->
+      <section id="top-product-showcase-section" class="mb-8 relative">
+        <!-- Ambient Background Glow Effect -->
+        <div class="absolute -top-10 -left-10 w-72 h-72 bg-rose-500/10 dark:bg-rose-500/20 rounded-full blur-3xl pointer-events-none -z-10 animate-aura-glow"></div>
+        <div class="absolute -bottom-10 -right-10 w-80 h-80 bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl pointer-events-none -z-10 animate-aura-glow" style="animation-delay: -3s;"></div>
+
+        <!-- Section Top Title Bar with Navigation & Filter Pills -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200/60 dark:border-rose-800/60">
+                <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
+                Top Flagship Products
+              </span>
+              <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500">| Curated 2026 Collection</span>
+            </div>
+            <h2 class="text-xl md:text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight flex items-center gap-2">
+              Featured Flagship Showcase
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/60 hidden sm:inline-flex items-center gap-1">
+                <i class="fa-solid fa-crown text-[10px]"></i> VIP Choice
+              </span>
+            </h2>
+          </div>
+
+          <!-- Product Switcher Pills & Carousel Arrows -->
+          <div class="flex items-center justify-between sm:justify-end gap-3 flex-wrap">
+            <!-- Category Pills -->
+            <div id="top-product-pills" class="flex items-center gap-1.5 bg-slate-200/70 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700/80 text-xs overflow-x-auto no-scrollbar">
+              <!-- Dynamically populated via JS -->
+            </div>
+
+            <!-- Carousel Prev/Next Buttons -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span id="top-product-counter" class="text-xs font-black text-slate-500 dark:text-slate-400 mr-1 tabular-nums">01 / 04</span>
+              <button id="top-product-prev" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-300 dark:hover:border-rose-700 flex items-center justify-center transition-all shadow-sm active:scale-95">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <button id="top-product-next" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-300 dark:hover:border-rose-700 flex items-center justify-center transition-all shadow-sm active:scale-95">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Flagship Showcase Interactive Card -->
+        <div id="top-product-card" class="top-product-card rounded-3xl p-6 md:p-8 border border-slate-200/80 dark:border-slate-700/80 relative overflow-hidden transition-all duration-500">
+          
+          <!-- Mode Tabs Switcher Header (01. Overview | 02. Tech Specs | 03. Box Package) -->
+          <div class="flex items-center justify-between border-b border-slate-200/70 dark:border-slate-700/70 pb-4 mb-6">
+            <div class="flex items-center gap-2 md:gap-3 overflow-x-auto no-scrollbar">
+              <button id="tp-mode-btn-overview" onclick="window.switchTopProductMode('overview')" class="tp-mode-tab flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition-all duration-200 bg-rose-500 text-white shadow-sm">
+                <i class="fa-solid fa-sparkles text-[11px]"></i>
+                <span>01. Overview</span>
+              </button>
+              <button id="tp-mode-btn-specs" onclick="window.switchTopProductMode('specs')" class="tp-mode-tab flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <i class="fa-solid fa-microchip text-[11px]"></i>
+                <span>02. Tech Specs</span>
+              </button>
+              <button id="tp-mode-btn-box" onclick="window.switchTopProductMode('box')" class="tp-mode-tab flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-200 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <i class="fa-solid fa-box-open text-[11px]"></i>
+                <span>03. Set Includes & Buy</span>
+              </button>
+            </div>
+
+            <!-- Official Seal / Fast Guarantee -->
+            <div class="hidden md:flex items-center gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400 bg-white/70 dark:bg-slate-800/70 px-3 py-1 rounded-full border border-slate-200/60 dark:border-slate-700/60">
+              <i class="fa-solid fa-certificate text-rose-500"></i>
+              <span>Official ABREXA Warranty & Fast Dispatch</span>
+            </div>
+          </div>
+
+          <!-- Showcase Grid: Left (Interactive Content Panes) & Right (3D Product Hero Visual) -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- LEFT COLUMN (7 Cols): Dynamic Tab Views -->
+            <div class="lg:col-span-7 flex flex-col justify-center order-2 lg:order-1">
+              
+              <!-- PANE 1: OVERVIEW -->
+              <div id="tp-pane-overview" class="tp-pane transition-all duration-300">
+                <!-- Subtitle & Brand Tag -->
+                <div class="flex items-center gap-2 mb-2">
+                  <span id="tp-brand-tag" class="text-[10px] md:text-xs font-black uppercase tracking-widest text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-0.5 rounded-md border border-rose-200/50 dark:border-rose-800/50">
+                    LOGITECH • SIGNATURE SERIES
+                  </span>
+                  <div class="flex items-center gap-1 text-amber-400 text-xs">
+                    <i class="fa-solid fa-star"></i>
+                    <span id="tp-rating-text" class="text-slate-800 dark:text-slate-200 font-extrabold text-xs">4.9</span>
+                    <span id="tp-reviews-count" class="text-slate-400 text-[10px]">(1,420+ reviews)</span>
+                  </div>
+                </div>
+
+                <!-- Product Title -->
+                <h3 id="tp-title" class="text-xl md:text-3xl font-black text-slate-900 dark:text-white leading-tight mb-3">
+                  EvoBuds M5® Pro Active Studio ANC Earbuds
+                </h3>
+
+                <!-- Description -->
+                <p id="tp-description" class="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-5 max-w-xl">
+                  Engineered with 11mm Bio-Cellulose titanium drivers, -45dB Hybrid Active Noise Cancellation, and lossless spatial audio with 50-hour smart charging endurance.
+                </p>
+
+                <!-- Key Feature Pill Chips -->
+                <div id="tp-feature-chips" class="flex flex-wrap gap-2 mb-6">
+                  <!-- Injected via JS -->
+                </div>
+
+                <!-- Color Swatches & Price / Actions Bar -->
+                <div class="bg-white/80 dark:bg-slate-800/80 p-4 md:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 backdrop-blur-sm shadow-sm">
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    
+                    <!-- Color Swatch Selector -->
+                    <div>
+                      <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-palette text-rose-500"></i>
+                        <span>Select Edition Color: <strong id="tp-selected-color-name" class="text-slate-800 dark:text-slate-200">Obsidian Black</strong></span>
+                      </div>
+                      <div id="tp-color-swatches" class="flex items-center gap-2">
+                        <!-- Swatches injected via JS -->
+                      </div>
+                    </div>
+
+                    <!-- Price Block -->
+                    <div class="text-left sm:text-right">
+                      <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex sm:justify-end items-center gap-1">
+                        <i class="fa-solid fa-bolt text-[9px]"></i> Limited Flash Offer
+                      </div>
+                      <div class="flex items-baseline sm:justify-end gap-2">
+                        <span id="tp-sale-price" class="text-2xl font-black text-rose-600 dark:text-rose-400">৳4,850</span>
+                        <span id="tp-orig-price" class="text-xs text-slate-400 line-through">৳8,500</span>
+                        <span id="tp-discount-badge" class="text-[10px] font-black px-1.5 py-0.5 rounded bg-rose-500 text-white">-43%</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- CTAs -->
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-4 pt-4 border-t border-slate-200/60 dark:border-slate-700/60">
+                    <button id="tp-add-cart-btn" onclick="window.handleTopProductAddToCart()" class="sm:col-span-1 py-3 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-extrabold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-98">
+                      <i class="fa-solid fa-cart-plus text-sm text-rose-400"></i>
+                      <span>Add to Cart</span>
+                    </button>
+                    <button id="tp-buy-now-btn" onclick="window.handleTopProductBuyNow()" class="sm:col-span-1 py-3 px-4 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white text-xs font-extrabold rounded-xl shadow-lg shadow-rose-500/20 transition-all flex items-center justify-center gap-2 active:scale-98">
+                      <i class="fa-solid fa-bolt-lightning text-sm"></i>
+                      <span>Instant Buy Now</span>
+                    </button>
+                    <a id="tp-view-details-btn" href="product-details.html?id=top-1" class="sm:col-span-1 py-3 px-4 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl border border-slate-300 dark:border-slate-650 shadow-sm transition-all flex items-center justify-center gap-1.5">
+                      <span>Full Specs</span>
+                      <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PANE 2: TECH SPECS (Grid of 4 Spec Cards) -->
+              <div id="tp-pane-specs" class="tp-pane hidden transition-all duration-300">
+                <div class="mb-4">
+                  <span class="text-[10px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded-md border border-indigo-200/50">
+                    LABORATORY BENCHMARK & SPECIFICATIONS
+                  </span>
+                  <h4 id="tp-specs-heading" class="text-lg md:text-xl font-black text-slate-900 dark:text-white mt-1">
+                    Precision Engineered Hardware Architecture
+                  </h4>
+                </div>
+
+                <!-- 4 Spec Metric Cards -->
+                <div id="tp-specs-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                  <!-- Injected via JS -->
+                </div>
+
+                <div class="flex items-center justify-between bg-indigo-50/50 dark:bg-slate-800/50 p-3.5 rounded-xl border border-indigo-100 dark:border-slate-700/60">
+                  <div class="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-300">
+                    <i class="fa-solid fa-microchip-ai text-indigo-500 text-sm"></i>
+                    <span>Tuned & certified for lowest distortion & lossless clarity.</span>
+                  </div>
+                  <button onclick="window.switchTopProductMode('overview')" class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1">
+                    Back to Overview <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- PANE 3: WHAT'S IN THE BOX & BUY -->
+              <div id="tp-pane-box" class="tp-pane hidden transition-all duration-300">
+                <div class="mb-4">
+                  <span class="text-[10px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-md border border-emerald-200/50">
+                    COMPLETE PACKAGE UNBOXING & ACCESSORIES
+                  </span>
+                  <h4 id="tp-box-heading" class="text-lg md:text-xl font-black text-slate-900 dark:text-white mt-1">
+                    Everything Included In The Box
+                  </h4>
+                </div>
+
+                <!-- Checklist -->
+                <div id="tp-box-checklist" class="space-y-2 mb-6">
+                  <!-- Injected via JS -->
+                </div>
+
+                <!-- Fast Buy Bar -->
+                <div class="bg-gradient-to-r from-emerald-500/10 via-rose-500/10 to-transparent p-4 rounded-2xl border border-emerald-200 dark:border-emerald-800/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div>
+                    <div class="text-xs font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                      <i class="fa-solid fa-truck-fast text-emerald-600"></i>
+                      <span>Free Express Courier Delivery Included</span>
+                    </div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      100% Genuine Sealed Packaging • 7-Day Easy Returns
+                    </div>
+                  </div>
+                  <button onclick="window.handleTopProductBuyNow()" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white text-xs font-extrabold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 shrink-0">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span>Order Complete Set</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN (5 Cols): 3D Hero Product Visual Showcase with Floating Shadow & 3D Tilt -->
+            <div class="lg:col-span-5 flex flex-col items-center justify-center relative order-1 lg:order-2">
+              
+              <!-- Floating Card Stage -->
+              <div id="tp-3d-stage" class="w-full max-w-sm relative aspect-square flex flex-col items-center justify-center p-6 cursor-pointer group select-none">
+                
+                <!-- Ambient Dynamic Glow Halo Behind Image -->
+                <div id="tp-ambient-halo" class="absolute inset-4 rounded-full bg-gradient-to-tr from-rose-500/20 via-orange-400/20 to-indigo-500/20 blur-2xl transition-all duration-700 animate-aura-glow"></div>
+
+                <!-- Acoustic Soundwave Pulse Rings (For Audio / Flagship) -->
+                <div id="tp-soundwave-container" class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                  <div class="soundwave-pulse w-44 h-44"></div>
+                  <div class="soundwave-pulse w-44 h-44"></div>
+                  <div class="soundwave-pulse w-44 h-44"></div>
+                </div>
+
+                <!-- Floating Top Badges -->
+                <div class="absolute top-2 left-2 z-20 flex flex-col gap-1.5 items-start">
+                  <span id="tp-badge-left" class="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500 text-white shadow-md flex items-center gap-1">
+                    <i class="fa-solid fa-trophy text-[8px]"></i> #1 BESTSELLER
+                  </span>
+                  <span id="tp-stock-tag" class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200/70 dark:border-slate-700 shadow-sm flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    In Stock (5 left)
+                  </span>
+                </div>
+
+                <!-- Top Right Floating Action: Wishlist / Cycle Color / Exploded View -->
+                <div class="absolute top-2 right-2 z-20 flex flex-col gap-1.5 items-end">
+                  <div class="flex items-center gap-1.5">
+                    <button onclick="window.toggleTopProductWishlist(event)" class="w-8 h-8 rounded-full bg-white/90 dark:bg-slate-800/90 hover:bg-rose-50 text-slate-600 dark:text-slate-300 hover:text-rose-500 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center shadow-sm transition-all">
+                      <i class="fa-regular fa-heart text-xs" id="tp-wishlist-icon"></i>
+                    </button>
+                    <button onclick="window.switchTopProductColorNext(event)" title="Cycle Color Variant" class="w-8 h-8 rounded-full bg-white/90 dark:bg-slate-800/90 hover:bg-slate-100 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center shadow-sm transition-all">
+                      <i class="fa-solid fa-rotate text-xs"></i>
+                    </button>
+                  </div>
+
+                  <!-- 3D Exploded View Toggle Switch -->
+                  <button id="tp-exploded-toggle-btn" onclick="window.toggleExplodedView(event)" class="mt-1 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider bg-slate-900/90 hover:bg-slate-900 dark:bg-white/15 dark:hover:bg-white/25 text-white backdrop-blur-md border border-white/20 shadow-md transition-all flex items-center gap-1.5 active:scale-95 group/xray">
+                    <i class="fa-solid fa-cubes text-rose-400 group-hover/xray:rotate-180 transition-transform duration-500"></i>
+                    <span id="tp-exploded-btn-text">3D Exploded View</span>
+                  </button>
+                </div>
+
+                <!-- 3D Multi-Layer Spatial Container -->
+                <div id="tp-layer-wrapper" class="w-full h-full flex items-center justify-center relative z-10 perspective-[1000px]">
+                  
+                  <!-- Main Center Hero Product -->
+                  <img id="tp-hero-image" src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=700&q=80" alt="Top Flagship Product" class="max-h-[250px] md:max-h-[280px] w-auto object-contain drop-shadow-2xl transition-all duration-700 animate-showcase-float group-hover:scale-105 z-10 pointer-events-none">
+
+                  <!-- Exploded Satellite Layer: Left Component -->
+                  <img id="tp-layer-left" src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=350&q=80" alt="Left Unit" class="exploded-layer layer-left-part absolute max-h-[90px] w-auto object-contain drop-shadow-xl opacity-0 pointer-events-none z-20">
+
+                  <!-- Exploded Satellite Layer: Right Component -->
+                  <img id="tp-layer-right" src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=350&q=80" alt="Right Unit" class="exploded-layer layer-right-part absolute max-h-[90px] w-auto object-contain drop-shadow-xl opacity-0 pointer-events-none z-20">
+
+                  <!-- Exploded Satellite Layer: Smart Base / Case -->
+                  <div id="tp-layer-case" class="exploded-layer layer-case-base absolute bottom-8 opacity-0 pointer-events-none z-15 flex flex-col items-center">
+                    <div class="px-2.5 py-0.5 rounded-full text-[9px] font-black bg-slate-900/90 text-rose-400 border border-rose-500/40 shadow-md">
+                      Smart LCD Dock: 100% Charged
+                    </div>
+                  </div>
+
+                  <!-- Exploded Interactive Callouts with Animated Dashed Lines -->
+                  <div id="tp-callout-1" class="exploded-callout absolute -top-1 left-2 opacity-0 pointer-events-none z-30 transition-all duration-500">
+                    <div class="flex items-center gap-1.5 bg-slate-950/90 text-white text-[9px] font-black px-2.5 py-1 rounded-lg border border-rose-500/50 shadow-xl backdrop-blur-md">
+                      <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
+                      <span id="tp-callout-1-text">11mm Titanium Driver Core</span>
+                    </div>
+                    <div class="w-8 h-px bg-gradient-to-r from-rose-500 to-transparent ml-4"></div>
+                  </div>
+
+                  <div id="tp-callout-2" class="exploded-callout absolute top-1/2 -right-4 -translate-y-1/2 opacity-0 pointer-events-none z-30 transition-all duration-500">
+                    <div class="flex items-center gap-1.5 bg-slate-950/90 text-white text-[9px] font-black px-2.5 py-1 rounded-lg border border-indigo-500/50 shadow-xl backdrop-blur-md">
+                      <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-ping"></span>
+                      <span id="tp-callout-2-text">-45dB Hybrid ANC DSP</span>
+                    </div>
+                    <div class="w-8 h-px bg-gradient-to-l from-indigo-500 to-transparent mr-4"></div>
+                  </div>
+
+                  <div id="tp-callout-3" class="exploded-callout absolute bottom-4 left-6 opacity-0 pointer-events-none z-30 transition-all duration-500">
+                    <div class="flex items-center gap-1.5 bg-slate-950/90 text-white text-[9px] font-black px-2.5 py-1 rounded-lg border border-emerald-500/50 shadow-xl backdrop-blur-md">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                      <span id="tp-callout-3-text">Qi Wireless Rapid Dock</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Realistic Floor Dynamic Shadow -->
+                <div class="w-48 h-5 rounded-full bg-black/25 dark:bg-black/60 blur-md transition-all duration-500 animate-showcase-shadow -mt-3"></div>
+
+                <!-- Bottom Floating Interactive Label -->
+                <div class="absolute bottom-2 inset-x-0 flex justify-center z-20">
+                  <span class="text-[9px] font-bold text-slate-400 dark:text-slate-500 bg-white/85 dark:bg-slate-900/85 px-3 py-1 rounded-full border border-slate-200/60 dark:border-slate-800 backdrop-blur-sm shadow-sm flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <i class="fa-solid fa-arrows-up-down-left-right text-[8px] text-rose-500 animate-pulse"></i> 3D Motion Canvas • Hover to Parallax
+                  </span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Quick Category Links Grid -->
+      <div class="bg-white rounded-2xl p-4 md:p-6 mb-6 border border-slate-100 shadow-sm">
+        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Quick Shop Filters</h3>
+        <div class="grid grid-cols-4 md:grid-cols-8 gap-4 text-center">
+          
+          <a href="javascript:void(0)" id="free-gift-btn" class="free-gift-trigger flex flex-col items-center group relative cursor-pointer">
+            <div class="w-11 h-11 rounded-full bg-gradient-to-br from-amber-400/20 to-orange-500/20 flex items-center justify-center text-amber-500 mb-1.5 group-hover:scale-110 transition-transform shadow-sm relative border border-amber-400/30">
+              <i class="fa-solid fa-gift text-base animate-pulse"></i>
+              <span class="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase tracking-tighter shadow-sm animate-bounce">SPIN</span>
+            </div>
+            <span class="text-[9px] md:text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight group-hover:text-amber-500 transition-colors">Free Gifts</span>
+          </a>
+
+          <a href="#" data-category="groceries" class="home-quick-link flex flex-col items-center group">
+            <div class="w-11 h-11 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 mb-1.5 group-hover:scale-110 transition-transform shadow-sm">
+              <i class="fa-solid fa-percent text-sm"></i>
+            </div>
+            <span class="text-[9px] md:text-xs font-semibold text-slate-700 leading-tight">Low Prices</span>
+          </a>
+
+          <a href="#" data-category="electronic" class="home-quick-link flex flex-col items-center group">
+            <div class="w-11 h-11 rounded-full bg-indigo-500/10 flex items-center justify-center text-indigo-500 mb-1.5 group-hover:scale-110 transition-transform shadow-sm">
+              <i class="fa-solid fa-mobile-screen-button text-sm"></i>
+            </div>
+            <span class="text-[9px] md:text-xs font-semibold text-slate-700 leading-tight">Mobiles</span>
+          </a>
+
+          <a href="#" data-category="fashion" class="home-quick-link flex flex-col items-center group">
+            <div class="w-11 h-11 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-500 mb-1.5 group-hover:scale-110 transition-transform shadow-sm">
+              <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+            </div>
+            <span class="text-[9px] md:text-xs font-semibold text-slate-700 leading-tight">Beauty</span>
+          </a>
+
+          <a href="#" data-category="fashion" class="home-quick-link flex flex-col items-center group">
+            <div class="w-11 h-11 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 mb-1.5 group-hover:scale-110 transition-transform shadow-sm">
+              <i class="fa-solid fa-glasses text-sm"></i>
+            </div>
+            <span class="text-[9px] md:text-xs font-semibold text-slate-700 leading-tight">LookBook</span>
+          </a>
+
+          <a href="#" data-category="tv" class="home-quick-link flex flex-col items-center group">
+            <div class="w-11 h-11 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-1.5 group-hover:scale-110 transition-transform shadow-sm">
+              <i class="fa-solid fa-truck-fast text-sm"></i>
+            </div>
+            <span class="text-[9px] md:text-xs font-semibold text-slate-700 leading-tight">Free Delivery</span>
+          </a>
+
+          <a href="#" data-category="groceries" class="home-quick-link flex flex-col items-center group">
+            <div class="w-11 h-11 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-500 mb-1.5 group-hover:scale-110 transition-transform shadow-sm">
+              <i class="fa-solid fa-fire text-sm"></i>
+            </div>
+            <span class="text-[9px] md:text-xs font-semibold text-slate-700 leading-tight">New Arrivals</span>
+          </a>
+
+          <a href="#" data-category="tv" class="home-quick-link flex flex-col items-center group">
+            <div class="w-11 h-11 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-500 mb-1.5 group-hover:scale-110 transition-transform shadow-sm">
+              <i class="fa-solid fa-cart-flatbed-suitcases text-sm"></i>
+            </div>
+            <span class="text-[9px] md:text-xs font-semibold text-slate-700 leading-tight">Mega Deals</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Flash Sale Section -->
+      <div class="bg-white rounded-2xl border border-slate-100 p-5 mb-6 shadow-sm">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <i class="fa-solid fa-bolt text-red-500 text-lg animate-bounce"></i>
+              <h3 class="text-base font-extrabold text-slate-800">Flash Sale</h3>
+            </div>
+            <div id="flash-sale-countdown" class="bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-md tracking-wider">
+              00 : 00 : 00
+            </div>
+          </div>
+          <a href="categories.html" class="text-orange-500 text-xs font-bold hover:underline flex items-center gap-1">
+            Shop More Deals <i class="fa-solid fa-chevron-right text-[10px]"></i>
+          </a>
+        </div>
+
+        <!-- Horizontal scrolling items -->
+        <div id="flash-sale-items" class="flex gap-4 overflow-x-auto no-scrollbar py-2">
+          <!-- Rendered via app.js -->
+        </div>
+      </div>
+
+      <!-- Popular Categories / Just For You -->
+      <div>
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-extrabold text-slate-800">Just For You Recommendations</h3>
+          <span class="text-slate-400 text-xs hidden sm:inline">Showing custom curated items</span>
+        </div>
+        
+        <!-- Products Grid -->
+        <div id="just-for-you-products" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          <!-- Rendered via app.js -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- ==============================================
+       BOTTOM NAVIGATION BAR (Visible ONLY on mobile devices)
+       ============================================== -->
+  <div class="block lg:hidden fixed bottom-0 inset-x-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 h-14 flex items-center justify-around z-40 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+    
+    <a id="nav-home" href="index.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-house text-base text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-orange-500 font-semibold mt-0.5 leading-none transition-colors" data-translate-key="home_page">Home</span>
+    </a>
+
+    <a id="nav-categories" href="categories.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-list-ul text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="categories">Categories</span>
+    </a>
+
+    <a id="nav-chat" href="#" onclick="toggleChatWindow(event)" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-comments text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="chat">Chat</span>
+    </a>
+
+    <a id="nav-cart" href="cart.html" class="flex flex-col items-center justify-center flex-1 py-1 group relative">
+      <div class="relative">
+        <i class="fa-solid fa-cart-shopping text-base text-slate-400 group-hover:text-orange-500 transition-colors cart-nav-icon"></i>
+        <span class="cart-badge absolute -top-2 -right-2.5 bg-orange-500 text-white text-[8px] font-extrabold rounded-full h-4 w-4 flex items-center justify-center border border-white hidden">0</span>
+      </div>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="cart" data-translate-key="cart">Cart</span>
+    </a>
+
+    <a id="nav-account" href="account.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-user text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="account">Account</span>
+    </a>
+
+  </div>
+
+
+
+
+
+  <!-- ==============================================
+       DESKTOP FOOTER
+       ============================================== -->
+  <footer class="hidden lg:block bg-slate-950 text-slate-400 text-xs py-10 mt-auto shrink-0">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-4 gap-8">
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="customer_care">Customer Care</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline"><span data-translate-key="help_center">Help Center</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="how_to_buy">How to Buy</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="returns_refunds">Returns & Refunds</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="contact_us">Contact Us</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="about_abrexa">ABREXA</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline"><span data-translate-key="about_abrexa">About ABREXA</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="careers">Careers</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="privacy_policy">Privacy Policy</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="terms_conditions">Terms & Conditions</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="make_money">Make Money With Us</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline" data-translate-key="sell_abrexa"><span data-translate-key="sell_abrexa">Sell on ABREXA</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="join_affiliate">Join Affiliate Program</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="advertise_products">Advertise Your Products</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="flex items-center gap-2.5 mb-3">
+          <div class="w-9 h-9 rounded-lg bg-white flex items-center justify-center overflow-hidden border border-slate-800 shadow-inner">
+            <img src="images/logo.png" alt="ABREXA Logo" class="w-7 h-7 object-contain">
+          </div>
+          <span class="text-white font-extrabold text-sm tracking-tight"><span data-translate-key="abrexa_shopping">ABREXA Shopping</span>
+        </div>
+        <p class="leading-relaxed text-[11px]"><span data-translate-key="download_app">Download our App now to get exclusive discounts, daily flash sales, and free shipping vouchers.</span></p>
+        <div class="flex gap-2 mt-4">
+          <span class="bg-slate-900 border border-slate-800 text-white font-bold py-1.5 px-3.5 rounded text-[10px] cursor-pointer hover:bg-slate-800 transition-colors"><span data-translate-key="google_play">Google Play</span>
+          <span class="bg-slate-900 border border-slate-800 text-white font-bold py-1.5 px-3.5 rounded text-[10px] cursor-pointer hover:bg-slate-800 transition-colors"><span data-translate-key="app_store">App Store</span>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 border-t border-slate-900 mt-8 pt-6 text-center text-[10px]">
+      <span data-translate-key="all_rights_reserved">© 2026 ABREXA E-Commerce Ltd. All Rights Reserved. Styled like Amazon & Daraz.</span>
+    </div>
+  </footer>
+
+  <!-- Include App Logic -->
+  <script src="js/app.js"></script>
+</body>
+</html>

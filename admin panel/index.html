@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABREXA • Master Admin Control Panel</title>
+  <!-- Tailwind CSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Admin Styles -->
+  <link rel="stylesheet" href="css/custom.css">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../user panel/images/logo.png">
+</head>
+<body class="bg-[#0b0f17] text-slate-200 min-h-screen flex flex-col lg:flex-row antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- Toast Notification Container -->
+  <div id="admin-toast" class="fixed top-5 right-5 z-[200] opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300"></div>
+
+  <!-- Mobile Backdrop Overlay -->
+  <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+  <!-- ==============================================
+       MASTER ADMIN SIDEBAR NAVIGATION
+       ============================================== -->
+  <aside id="admin-sidebar" class="fixed inset-y-0 left-0 lg:static w-72 sidebar-glass border-r border-slate-800/80 flex flex-col shrink-0 min-h-screen z-50 shadow-2xl transition-transform duration-300 transform -translate-x-full lg:translate-x-0">
+    
+    <!-- Top Glowing Gradient Bar -->
+    <div class="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-rose-500"></div>
+
+    <!-- Sidebar Header / Logo -->
+    <div class="p-5 border-b border-slate-800/70 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3.5 group">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-orange-600 via-amber-500 to-rose-500 p-0.5 shadow-xl shadow-orange-500/25 group-hover:scale-105 transition-all">
+          <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
+            <i class="fa-solid fa-shield-halved text-orange-400 text-lg group-hover:rotate-12 transition-transform"></i>
+          </div>
+        </div>
+        <div class="flex flex-col leading-none">
+          <div class="flex items-center gap-1">
+            <span class="text-lg font-black tracking-tight text-white">ABREXA</span>
+            <span class="text-orange-500 text-xl font-black">.</span>
+          </div>
+          <span class="text-[9px] font-black text-amber-400 uppercase tracking-widest mt-1">Master Admin</span>
+        </div>
+      </a>
+      
+      <div class="flex items-center gap-2">
+        <span class="bg-emerald-500/10 text-emerald-400 text-[9px] font-extrabold px-2.5 py-1 rounded-full border border-emerald-500/30 flex items-center gap-1.5 shadow-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Live
+        </span>
+        <!-- Close Mobile Sidebar button -->
+        <button onclick="toggleMobileSidebar()" class="lg:hidden p-1.5 text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Menu Items -->
+    <nav class="p-3.5 space-y-1.5 flex-grow text-xs font-semibold overflow-y-auto">
+      <div class="px-3 pt-2 pb-1.5 text-[9.5px] uppercase font-black text-slate-500 tracking-widest flex items-center gap-1.5">
+        <i class="fa-solid fa-layer-group text-[9px] text-orange-500/70"></i> Core Dashboard
+      </div>
+      
+      <button id="nav-dashboard" onclick="switchAdminTab('dashboard'); toggleMobileSidebar();" class="nav-tab nav-tab-active w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-300 hover:text-white transition-all text-left">
+        <div class="w-8 h-8 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20 flex items-center justify-center shrink-0 icon-box">
+          <i class="fa-solid fa-chart-pie text-xs"></i>
+        </div>
+        <span class="font-bold tracking-wide">Dashboard Overview</span>
+      </button>
+
+      <div class="px-3 pt-5 pb-1.5 text-[9.5px] uppercase font-black text-slate-500 tracking-widest flex items-center gap-1.5">
+        <i class="fa-solid fa-sliders text-[9px] text-amber-500/70"></i> Platform Control
+      </div>
+
+      <button id="nav-sellers" onclick="switchAdminTab('sellers'); toggleMobileSidebar();" class="nav-tab w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-slate-300 hover:text-white transition-all text-left">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0 icon-box">
+            <i class="fa-solid fa-store text-xs"></i>
+          </div>
+          <span class="font-bold tracking-wide truncate">Seller Approvals</span>
+        </div>
+        <span id="header-pending-sellers-badge" class="bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 text-[9.5px] font-black px-2.5 py-0.5 rounded-full border border-amber-500/40 shadow-sm shrink-0">
+          2 Pending
+        </span>
+      </button>
+
+      <button id="nav-customers" onclick="switchAdminTab('customers'); toggleMobileSidebar();" class="nav-tab w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-300 hover:text-white transition-all text-left">
+        <div class="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center shrink-0 icon-box">
+          <i class="fa-solid fa-users text-xs"></i>
+        </div>
+        <span class="font-bold tracking-wide">Customer Control</span>
+      </button>
+
+      <button id="nav-payouts" onclick="switchAdminTab('payouts'); toggleMobileSidebar();" class="nav-tab w-full flex items-center justify-between px-3.5 py-3 rounded-2xl text-slate-300 hover:text-white transition-all text-left">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0 icon-box">
+            <i class="fa-solid fa-wallet text-xs"></i>
+          </div>
+          <span class="font-bold tracking-wide truncate">Seller Payouts</span>
+        </div>
+        <span class="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-300 text-[9.5px] font-black px-2.5 py-0.5 rounded-full border border-emerald-500/40 shadow-sm shrink-0">
+          3 Requests
+        </span>
+      </button>
+
+      <div class="px-3 pt-5 pb-1.5 text-[9.5px] uppercase font-black text-slate-500 tracking-widest flex items-center gap-1.5">
+        <i class="fa-solid fa-globe text-[9px] text-rose-500/70"></i> Portals & System
+      </div>
+
+      <a href="http://localhost:8080/" target="_blank" class="nav-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-slate-400 hover:text-white transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center shrink-0 icon-box">
+            <i class="fa-solid fa-bag-shopping text-xs"></i>
+          </div>
+          <span class="font-medium text-slate-300 group-hover:text-white">User Panel Site</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500 group-hover:text-rose-400 transition-colors"></i>
+      </a>
+
+      <a href="http://localhost:8081/" target="_blank" class="nav-tab w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-slate-400 hover:text-white transition-all text-left group">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center shrink-0 icon-box">
+            <i class="fa-solid fa-shop text-xs"></i>
+          </div>
+          <span class="font-medium text-slate-300 group-hover:text-white">Seller Center</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500 group-hover:text-purple-400 transition-colors"></i>
+      </a>
+
+      <button id="nav-settings" onclick="switchAdminTab('settings'); toggleMobileSidebar();" class="nav-tab w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-300 hover:text-white transition-all text-left">
+        <div class="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center shrink-0 icon-box">
+          <i class="fa-solid fa-gears text-xs"></i>
+        </div>
+        <span class="font-bold tracking-wide">System Settings</span>
+      </button>
+    </nav>
+
+    <!-- Sidebar Footer Profile Card -->
+    <div class="p-3.5 border-t border-slate-800/80 bg-slate-950/70 shrink-0">
+      <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl p-3 flex items-center justify-between shadow-lg backdrop-blur-md">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-orange-500 via-amber-500 to-rose-600 text-white font-black flex items-center justify-center text-xs shadow-md uppercase border border-white/20">
+              A
+            </div>
+            <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-slate-900"></span>
+          </div>
+          <div class="flex flex-col leading-none">
+            <span class="font-extrabold text-white text-xs">Fahim Rahman</span>
+            <span class="text-[9.5px] text-orange-400 font-bold mt-1">Super Administrator</span>
+          </div>
+        </div>
+        <button onclick="alert('Admin session is active.')" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs transition-colors" title="Account Active">
+          <i class="fa-solid fa-lock text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==============================================
+       MAIN WORKSPACE CONTENT AREA
+       ============================================== -->
+  <main class="flex-grow flex flex-col min-w-0 bg-[#0b0f17]">
+    
+    <!-- Top Header Bar (Single-Line Compact Layout) -->
+    <header class="h-14 sm:h-16 bg-[#0f172a]/90 border-b border-slate-800/80 px-3 sm:px-6 flex items-center justify-between gap-2 shrink-0 backdrop-blur-md sticky top-0 z-20">
+      <!-- Mobile Sidebar Toggle + Search -->
+      <div class="flex items-center gap-2 flex-grow max-w-xs sm:max-w-md min-w-0">
+        <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-slate-700 shrink-0">
+          <i class="fa-solid fa-bars text-sm"></i>
+        </button>
+        <div class="bg-slate-900/90 border border-slate-800 rounded-xl flex items-center px-2.5 sm:px-3.5 py-1.5 sm:py-2 w-full text-xs min-w-0">
+          <i class="fa-solid fa-magnifying-glass text-slate-500 mr-2 shrink-0"></i>
+          <input type="text" placeholder="Search admin..." class="bg-transparent border-none text-slate-200 focus:outline-none w-full text-[11px] sm:text-xs min-w-0">
+        </div>
+      </div>
+
+      <!-- Single-Line Portal Buttons -->
+      <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        <a href="http://localhost:8080/" target="_blank" class="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] sm:text-xs font-bold px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-xl transition-all flex items-center gap-1 shrink-0 whitespace-nowrap">
+          <i class="fa-solid fa-globe text-[11px]"></i> <span>User <span class="hidden sm:inline">Panel</span> (8080)</span>
+        </a>
+        <a href="http://localhost:8081/" target="_blank" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] sm:text-xs font-bold px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-xl transition-all flex items-center gap-1 shrink-0 whitespace-nowrap">
+          <i class="fa-solid fa-store text-[11px]"></i> <span>Seller <span class="hidden sm:inline">Panel</span> (8081)</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Horizontal Mobile Tab Bar (1-click touch navigation for small screens) -->
+    <div class="flex lg:hidden overflow-x-auto no-scrollbar bg-slate-900/90 border-b border-slate-800/80 p-2 gap-2 text-xs font-bold shrink-0 sticky top-14 z-10">
+      <button onclick="switchAdminTab('dashboard')" class="px-3 py-1.5 rounded-xl bg-orange-500/20 text-orange-400 border border-orange-500/30 shrink-0 whitespace-nowrap flex items-center gap-1.5">
+        <i class="fa-solid fa-chart-pie text-[10px]"></i> Overview
+      </button>
+      <button onclick="switchAdminTab('sellers')" class="px-3 py-1.5 rounded-xl bg-slate-800/90 text-slate-300 border border-slate-700 shrink-0 whitespace-nowrap flex items-center gap-1.5">
+        <i class="fa-solid fa-store text-[10px] text-amber-400"></i> Sellers (2)
+      </button>
+      <button onclick="switchAdminTab('customers')" class="px-3 py-1.5 rounded-xl bg-slate-800/90 text-slate-300 border border-slate-700 shrink-0 whitespace-nowrap flex items-center gap-1.5">
+        <i class="fa-solid fa-users text-[10px] text-sky-400"></i> Customers
+      </button>
+      <button onclick="switchAdminTab('payouts')" class="px-3 py-1.5 rounded-xl bg-slate-800/90 text-slate-300 border border-slate-700 shrink-0 whitespace-nowrap flex items-center gap-1.5">
+        <i class="fa-solid fa-wallet text-[10px] text-emerald-400"></i> Payouts (3)
+      </button>
+      <button onclick="switchAdminTab('settings')" class="px-3 py-1.5 rounded-xl bg-slate-800/90 text-slate-300 border border-slate-700 shrink-0 whitespace-nowrap flex items-center gap-1.5">
+        <i class="fa-solid fa-gears text-[10px] text-indigo-400"></i> Settings
+      </button>
+    </div>
+
+    <!-- Main Dynamic Content Container -->
+    <div class="p-6 lg:p-8 flex-grow space-y-8">
+      
+      <!-- ==============================================
+           PANE 1: DASHBOARD OVERVIEW
+           ============================================== -->
+      <div id="pane-dashboard" class="tab-pane space-y-8">
+        
+        <!-- Welcome Banner -->
+        <div class="relative rounded-3xl p-6 md:p-8 bg-gradient-to-r from-orange-600 via-amber-600 to-rose-700 text-white overflow-hidden shadow-2xl border border-orange-400/20">
+          <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <div class="relative z-10 max-w-2xl">
+            <span class="bg-white/20 text-white text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-white/30">ABREXA E-Commerce Control Center</span>
+            <h1 class="text-2xl md:text-3xl font-black tracking-tight mt-3">Platform Control Dashboard</h1>
+            <p class="text-xs md:text-sm text-orange-100 font-medium mt-1 leading-relaxed">
+              Monitor overall platform GMV, approve new seller applications, manage customer accounts, and release seller withdrawal payouts.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4 Key Metrics Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Card 1: Total GMV -->
+          <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">Total Platform Sales (GMV)</span>
+              <div class="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-sack-dollar"></i>
+              </div>
+            </div>
+            <div class="mt-4">
+              <div id="stat-total-revenue" class="text-2xl font-black text-white tracking-tight">৳0.00</div>
+              <div class="text-[10.5px] text-emerald-400 font-semibold mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-arrow-trend-up"></i> +18.4% from last month
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Platform Commission (5%) -->
+          <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">Platform Commission Fee (5%)</span>
+              <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-percent"></i>
+              </div>
+            </div>
+            <div class="mt-4">
+              <div id="stat-platform-fee" class="text-2xl font-black text-emerald-400 tracking-tight">৳0.00</div>
+              <div class="text-[10.5px] text-slate-400 font-semibold mt-1">Direct Platform Profit</div>
+            </div>
+          </div>
+
+          <!-- Card 3: Active vs Pending Sellers -->
+          <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">Registered Sellers</span>
+              <div class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-store"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-baseline justify-between">
+              <div>
+                <span id="stat-active-sellers" class="text-2xl font-black text-white">0</span>
+                <span class="text-xs text-slate-400 font-medium ml-1">Verified</span>
+              </div>
+              <span class="bg-amber-500/20 text-amber-300 text-xs font-extrabold px-2.5 py-1 rounded-full border border-amber-500/30">
+                <span id="stat-pending-sellers">0</span> Pending
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 4: Customers & Payouts -->
+          <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">Total Customers</span>
+              <div class="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-users"></i>
+              </div>
+            </div>
+            <div class="mt-4 flex items-baseline justify-between">
+              <div id="stat-total-customers" class="text-2xl font-black text-white">0</div>
+              <span class="text-xs text-emerald-400 font-bold flex items-center gap-1">
+                <i class="fa-solid fa-circle-check"></i> <span id="stat-pending-payouts">0</span> Pending Payouts
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Seller Applications Table -->
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800/80 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+                <i class="fa-solid fa-user-check text-amber-400"></i> Seller Registration Applications
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">Review seller trade licenses, NIDs, and approve store access.</p>
+            </div>
+            <button onclick="switchAdminTab('sellers')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold px-4 py-2 rounded-xl transition-colors border border-slate-700">
+              View All Sellers
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left admin-table">
+              <thead>
+                <tr>
+                  <th>Store & Owner</th>
+                  <th>Contact Info</th>
+                  <th>NID / Document</th>
+                  <th>Status</th>
+                  <th>Store Balance</th>
+                  <th>Sales Count</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="sellers-table-body">
+                <!-- Populated via admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ==============================================
+           PANE 2: FULL SELLER CONTROL & APPROVALS
+           ============================================== -->
+      <div id="pane-sellers" class="tab-pane hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-black text-white">Seller Panel Management & Verification</h2>
+            <p class="text-xs text-slate-400 mt-1">Approve pending seller registrations, audit seller balances, or suspend non-compliant stores.</p>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800/80">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left admin-table">
+              <thead>
+                <tr>
+                  <th>Store & Owner</th>
+                  <th>Contact Info</th>
+                  <th>NID / Document</th>
+                  <th>Status</th>
+                  <th>Store Balance</th>
+                  <th>Sales Count</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="sellers-table-body-full">
+                <!-- Shared rendering -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           PANE 3: CUSTOMER MANAGEMENT
+           ============================================== -->
+      <div id="pane-customers" class="tab-pane hidden space-y-6">
+        <div>
+          <h2 class="text-xl font-black text-white">Customer Account Control</h2>
+          <p class="text-xs text-slate-400 mt-1">Manage user access, review ordering behavior, and ban suspicious accounts.</p>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800/80">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left admin-table">
+              <thead>
+                <tr>
+                  <th>Customer Name & Email</th>
+                  <th>Phone Number</th>
+                  <th>Joined Date</th>
+                  <th>Total Orders</th>
+                  <th>Total Spent</th>
+                  <th>Account Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="customers-table-body">
+                <!-- Populated via admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           PANE 4: PAYOUTS & WITHDRAWALS
+           ============================================== -->
+      <div id="pane-payouts" class="tab-pane hidden space-y-6">
+        <div>
+          <h2 class="text-xl font-black text-white">Seller Payouts & Balance Withdrawals</h2>
+          <p class="text-xs text-slate-400 mt-1">Review seller withdrawal requests via bKash, Nagad, and Bank transfer.</p>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-6 border border-slate-800/80">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left admin-table">
+              <thead>
+                <tr>
+                  <th>Seller Store</th>
+                  <th>Amount</th>
+                  <th>Method & Account</th>
+                  <th>Requested Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="payouts-table-body">
+                <!-- Populated via admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==============================================
+           PANE 5: SYSTEM SETTINGS
+           ============================================== -->
+      <div id="pane-settings" class="tab-pane hidden space-y-6">
+        <div>
+          <h2 class="text-xl font-black text-white">Platform System Settings</h2>
+          <p class="text-xs text-slate-400 mt-1">Configure global announcement banners, platform fee percentages, and system maintenance.</p>
+        </div>
+
+        <!-- Homepage Hero Banner Manager -->
+        <div class="glass-panel rounded-3xl p-6 lg:p-8 border border-slate-800/80 max-w-3xl space-y-6">
+          <div class="border-b border-slate-800/80 pb-4">
+            <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+              <i class="fa-solid fa-image text-orange-400"></i> Homepage Hero Banner Controls (User Panel)
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Customize the main hero banner title, tagline, description, button label, and image displayed on the User Panel homepage.</p>
+          </div>
+
+          <form onsubmit="saveHeroBannerSettings(event)" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Banner Tag / Category Badge</label>
+                <input type="text" id="setting-hero-tag" value="TECHNOLOGY DEALS" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500 font-semibold">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-1">Button Text Label</label>
+                <input type="text" id="setting-hero-btn" value="EXPLORE" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500 font-semibold">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Main Banner Title / Headline</label>
+              <input type="text" id="setting-hero-title" value="SMART GADGETS DISCOUNTS" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500 font-black tracking-wide">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Subtitle / Offer Details</label>
+              <textarea id="setting-hero-desc" rows="2" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-orange-500 leading-relaxed">Latest gear from Lenovo, JBL, Xiaomi on sale right now.</textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1">Banner Image URL</label>
+              <input type="text" id="setting-hero-img" value="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500 font-mono">
+            </div>
+
+            <!-- Quick Image Presets -->
+            <div>
+              <span class="block text-[10.5px] font-bold text-slate-400 mb-2">Quick Image Presets:</span>
+              <div class="flex flex-wrap gap-2 text-xs">
+                <button type="button" onclick="setBannerPresetImage('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-semibold border border-slate-700">
+                  🎧 Headphones
+                </button>
+                <button type="button" onclick="setBannerPresetImage('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-semibold border border-slate-700">
+                  👟 Shoes / Fashion
+                </button>
+                <button type="button" onclick="setBannerPresetImage('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1200&q=80')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-semibold border border-slate-700">
+                  📱 Mobile / Gadgets
+                </button>
+                <button type="button" onclick="setBannerPresetImage('https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-semibold border border-slate-700">
+                  💻 Laptop & Tech
+                </button>
+              </div>
+            </div>
+
+            <div class="pt-3 flex justify-end">
+              <button type="submit" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs font-bold px-6 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2">
+                <i class="fa-solid fa-paper-plane"></i> Save & Publish Hero Banner
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="glass-panel rounded-3xl p-6 lg:p-8 border border-slate-800/80 max-w-3xl">
+          <form onsubmit="saveSystemSettings(event)" class="space-y-6">
+            
+            <!-- Maintenance Mode -->
+            <div class="flex items-center justify-between p-4 bg-slate-900/80 rounded-2xl border border-slate-800">
+              <div>
+                <h4 class="text-sm font-bold text-white">System Maintenance Mode</h4>
+                <p class="text-xs text-slate-400">Temporarily pause checkout on User & Seller panels.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="setting-maintenance" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
+              </label>
+            </div>
+
+            <!-- Platform Fee Percentage -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Platform Commission Fee (%)</label>
+              <div class="flex items-center gap-3">
+                <input type="number" step="0.5" id="setting-commission" value="5.0" class="w-32 bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500 font-bold">
+                <span class="text-xs text-slate-400">% deducted automatically from seller sales</span>
+              </div>
+            </div>
+
+            <!-- Global Announcement Banner -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Global Announcement Banner (User & Seller Panels)</label>
+              <textarea id="setting-banner" rows="3" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-orange-500 leading-relaxed"></textarea>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 flex justify-end">
+              <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-6 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2">
+                <i class="fa-solid fa-floppy-disk"></i> Save System Settings
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Admin JavaScript Logic -->
+  <script src="js/admin.js"></script>
+
+  <!-- Script to sync dual table rendering -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const fullBody = document.getElementById('sellers-table-body-full');
+      const mainBody = document.getElementById('sellers-table-body');
+      if (fullBody && mainBody) {
+        const observer = new MutationObserver(() => {
+          fullBody.innerHTML = mainBody.innerHTML;
+        });
+        observer.observe(mainBody, { childList: true, subtree: true });
+        fullBody.innerHTML = mainBody.innerHTML;
+      }
+    });
+  </script>
+</body>
+</html>

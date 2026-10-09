@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ABREXA • Store Profile</title>
+  <!-- Tailwind CSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              light: '#fb7185',
+              DEFAULT: '#e11d48',
+              dark: '#be123c'
+            },
+            orange: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#e11d48',
+              600: '#be123c',
+              700: '#9f1239',
+              800: '#881337',
+              900: '#4c0519',
+              950: '#27000b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom.css">
+</head>
+<body class="bg-[#f4f6fa] dark:bg-slate-900 min-h-screen flex flex-col">
+
+  <!-- ==============================================
+       DESKTOP HEADER & TOP NAVIGATION
+       ============================================== -->
+  <header class="hidden lg:block bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shrink-0 sticky top-0 z-40 shadow-sm">
+    <!-- Top Tiny Bar -->
+    <div class="bg-[#f8fafc] dark:bg-slate-950 border-b border-slate-200/60 dark:border-slate-850 text-slate-500 dark:text-slate-400 text-[10.5px] py-2 font-medium tracking-wide">
+      <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="save_app">
+            <i class="fa-solid fa-mobile-screen-button text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            Save more on App
+          </a>
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="sell_abrexa">
+            <i class="fa-solid fa-store text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="sell_abrexa">Sell on ABREXA</span>
+          </a>
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="customer_care">
+            <i class="fa-solid fa-headset text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            Customer Care
+          </a>
+        </div>
+        <div class="flex gap-6 items-center">
+          <a href="account.html" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink">
+            <i class="fa-solid fa-truck-fast text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="track_order">Track Order</span>
+          </a>
+          <a href="account.html" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink font-semibold text-slate-600 dark:text-slate-300 hover:dark:text-orange-400">
+            <i class="fa-solid fa-circle-user text-[11px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="sign_in_up">Sign In / Sign Up</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header Row -->
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-8">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
+        <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-sm overflow-hidden border border-slate-100 group-hover:border-orange-200 transition-colors">
+          <img src="images/logo.png" alt="ABREXA Logo" class="w-8 h-8 object-contain">
+        </div>
+        <span class="text-xl font-black text-slate-800 tracking-tight group-hover:text-orange-500 transition-colors logo-font">ABRE<span class="text-orange-500">X</span>A<span class="text-orange-500">.</span></span>
+      </a>
+
+      <!-- Large Center Search Bar -->
+      <div class="flex-grow max-w-2xl bg-slate-100 dark:bg-slate-800 rounded-full flex items-center px-4 py-2 border border-slate-200 dark:border-slate-700 shadow-inner">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm mr-3"></i>
+        <input id="desktop-search-input" type="text" placeholder="Search in ABREXA (e.g. watch, phone, television...)" class="bg-transparent border-none text-xs focus:outline-none w-full text-slate-700 dark:text-slate-200">
+        <button class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-5 py-1.5 rounded-full transition-colors ml-2 shadow-sm">
+          Search
+        </button>
+      </div>
+
+      <!-- Action items: Account & Cart -->
+      <div class="flex items-center gap-6 shrink-0">
+        <a href="account.html" class="flex items-center gap-2.5 text-slate-700 hover:text-orange-500 transition-colors group">
+          <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-orange-950/30 text-slate-500 dark:text-slate-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all">
+            <i class="fa-solid fa-user text-sm"></i>
+          </div>
+          <div class="text-left leading-tight">
+            <div class="text-[10px] text-slate-400"><span data-translate-key="welcome">Welcome</span></div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 dark:group-hover:text-orange-400">Fahim Rahman</div>
+          </div>
+        </a>
+
+        <a href="cart.html" class="relative flex items-center gap-2.5 text-slate-700 hover:text-orange-500 transition-colors group">
+          <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-orange-950/30 text-slate-500 dark:text-slate-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all relative">
+            <i class="fa-solid fa-cart-shopping text-sm cart-nav-icon"></i>
+            <span class="cart-badge absolute -top-1 -right-1.5 bg-orange-500 text-white text-[9px] font-extrabold rounded-full h-4.5 w-4.5 flex items-center justify-center border border-white hidden">0</span>
+          </div>
+          <span class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 dark:group-hover:text-orange-400" data-translate-key="cart">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation/Category Sub-header -->
+    <div class="bg-orange-500 text-white py-2">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-semibold">
+        <div class="flex items-center gap-6">
+          <a href="categories.html" class="bg-orange-600 hover:bg-orange-700 px-4 py-1.5 rounded flex items-center gap-2 shadow-inner transition-colors">
+            <i class="fa-solid fa-bars"></i> <span data-translate-key="all_categories">All Categories</span>
+          </a>
+          <a href="index.html" class="text-orange-100 hover:text-white transition-colors" data-translate-key="home_page">Home Page</a>
+          <a href="categories.html" class="hover:text-orange-100 transition-colors" data-translate-key="abrexa_mall">ABREXAMall</a>
+          <a href="categories.html" class="hover:text-orange-100 transition-colors font-bold text-yellow-300" data-translate-key="flash_sale">Flash Sale Offers</a>
+          <a href="#" onclick="alert('Contacting ABREXA Support')" class="hover:text-orange-100 transition-colors" data-translate-key="help_support">Help & Support</a>
+        </div>
+        <div class="flex items-center gap-2 text-yellow-300">
+          <i class="fa-solid fa-fire-flame-curved text-sm animate-pulse"></i>
+          <span><span data-translate-key="save_promo">Save up to 60% today!</span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==============================================
+       MOBILE HEADER
+       ============================================== -->
+  <header class="block lg:hidden bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shrink-0 sticky top-0 z-40">
+    <div class="gradient-orange p-3 flex items-center gap-3 shadow-md">
+      <a href="index.html" class="text-white hover:text-orange-100 px-1">
+        <i class="fa-solid fa-chevron-left text-lg"></i>
+      </a>
+      <div class="flex-grow bg-white dark:bg-slate-800 rounded-full flex items-center px-3 py-1.5 shadow-inner">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs mr-2"></i>
+        <input id="header-search-input" type="text" placeholder="Search in this store..." class="bg-transparent border-none text-[11px] focus:outline-none w-full text-slate-700 dark:text-slate-200">
+      </div>
+      <a href="cart.html" class="relative text-white hover:text-orange-100 transition-colors">
+        <i class="fa-solid fa-cart-shopping text-base cart-nav-icon"></i>
+        <span class="cart-badge absolute -top-2 -right-2 bg-yellow-400 text-slate-900 text-[8px] font-extrabold rounded-full h-4 w-4 flex items-center justify-center border border-orange-500 hidden">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ==============================================
+       STORE HERO BANNER SECTION
+       ============================================== -->
+  <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white py-8 md:py-12 shrink-0 relative overflow-hidden shadow-md">
+    <!-- Abstract visual light leaks -->
+    <div class="absolute w-72 h-72 bg-orange-500/10 rounded-full -top-12 -left-12 blur-3xl pointer-events-none"></div>
+    <div class="absolute w-96 h-96 bg-indigo-500/10 rounded-full -bottom-24 -right-12 blur-3xl pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative z-10">
+      <!-- Store Identity -->
+      <div class="flex items-center gap-4">
+        <!-- Store Circular Profile Logo -->
+        <div id="store-logo" class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white text-slate-900 text-2xl md:text-3xl font-black tracking-tighter flex items-center justify-center uppercase border-2 border-white/20 shadow-lg select-none shrink-0 overflow-hidden">
+          A
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <h1 id="store-title-text" class="text-xl md:text-2xl font-black tracking-tight uppercase">ABREXA Official Store</h1>
+            <span class="bg-orange-500 text-white text-[9px] font-extrabold py-0.5 px-2 rounded-full flex items-center gap-1 shadow-sm shrink-0">
+              <i class="fa-solid fa-circle-check"></i> Verified
+            </span>
+          </div>
+          <p id="store-tagline" class="text-xs text-slate-300 font-medium mt-1">Quality Products • Guaranteed Fast Shipping • 24/7 Service</p>
+          <div class="flex items-center gap-3 mt-2 text-xs text-slate-400">
+            <span class="flex items-center gap-1"><i class="fa-solid fa-star text-amber-400"></i> <strong class="text-white font-semibold">4.8</strong> (1.2k Ratings)</span>
+            <span class="text-white/20">|</span>
+            <span class="flex items-center gap-1"><i class="fa-solid fa-thumbs-up text-emerald-400"></i> <strong class="text-white font-semibold">97%</strong> Positive Feedback</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Panel & Stats -->
+      <div class="flex flex-wrap items-center gap-3 md:gap-4 shrink-0">
+        <!-- Stats -->
+        <div class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 flex gap-6 text-center shadow-inner backdrop-blur-md">
+          <div>
+            <div id="follower-count-display" class="text-sm md:text-base font-black text-orange-400">12.5k</div>
+            <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Followers</div>
+          </div>
+          <div class="w-[1px] bg-white/10 my-0.5"></div>
+          <div>
+            <div class="text-sm md:text-base font-black text-white">24</div>
+            <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Products</div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+          <button id="store-chat-btn" onclick="openStoreLiveChat()" class="flex-grow sm:flex-grow-0 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-rose-500/30 cursor-pointer">
+            <i class="fa-solid fa-comment-dots text-sm animate-pulse"></i> <span>Chat with Seller</span>
+          </button>
+          <button id="store-follow-btn" class="flex-grow sm:flex-grow-0 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-orange-500/20 cursor-pointer">
+            <i class="fa-solid fa-plus"></i> <span>Follow</span>
+          </button>
+          <button onclick="navigator.clipboard.writeText(window.location.href); alert('Store link copied to clipboard!')" class="bg-white/10 hover:bg-white/20 border border-white/10 text-white hover:text-orange-400 text-xs font-bold py-2.5 px-3.5 rounded-xl shadow-sm transition-all flex items-center justify-center cursor-pointer" title="Share Store">
+            <i class="fa-solid fa-share-nodes"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MAIN LAYOUT CONTAINER
+       ============================================== -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full flex flex-col lg:flex-row gap-6">
+    <!-- Left Sidebar: Info & Categories Filter -->
+    <aside class="w-full lg:w-64 shrink-0 flex flex-col gap-6">
+      <!-- Categories Card -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+        <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-3 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-list-ul text-orange-500"></i> Categories
+        </h3>
+        <ul id="categories-list" class="space-y-1.5 text-xs text-slate-600 dark:text-slate-300 font-medium">
+          <li>
+            <button onclick="filterCategory('all', this)" class="w-full text-left py-2 px-3 rounded-lg bg-orange-50 dark:bg-orange-950/20 text-orange-600 dark:text-orange-400 font-bold transition-all flex justify-between items-center category-filter-btn">
+              <span>All Products</span>
+              <span class="text-[9px] bg-orange-500/10 text-orange-500 py-0.5 px-1.5 rounded-full" id="count-all">6</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="filterCategory('audio', this)" class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-orange-500 transition-all flex justify-between items-center category-filter-btn">
+              <span>Audio Equipment</span>
+              <span class="text-[9px] bg-slate-100 dark:bg-slate-800 py-0.5 px-1.5 rounded-full" id="count-audio">2</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="filterCategory('smartphones', this)" class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-orange-500 transition-all flex justify-between items-center category-filter-btn">
+              <span>Smartphones</span>
+              <span class="text-[9px] bg-slate-100 dark:bg-slate-800 py-0.5 px-1.5 rounded-full" id="count-smartphones">1</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="filterCategory('wearables', this)" class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-orange-500 transition-all flex justify-between items-center category-filter-btn">
+              <span>Wearables</span>
+              <span class="text-[9px] bg-slate-100 dark:bg-slate-800 py-0.5 px-1.5 rounded-full" id="count-wearables">1</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="filterCategory('accessories', this)" class="w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-orange-500 transition-all flex justify-between items-center category-filter-btn">
+              <span>Computer Accessories</span>
+              <span class="text-[9px] bg-slate-100 dark:bg-slate-800 py-0.5 px-1.5 rounded-full" id="count-accessories">2</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Seller Details Card -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+        <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 pb-3 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-orange-500"></i> Store Info
+        </h3>
+        <div class="space-y-3.5 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+          <div class="flex justify-between">
+            <span class="font-medium text-slate-400">Joined Abrexa</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200">July 2024</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium text-slate-400">Chat Response Rate</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200">99%</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium text-slate-400">Average Response Time</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200">Within hours</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="font-medium text-slate-400">Shipped on time</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200">98%</span>
+          </div>
+          
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800">
+            <button onclick="openStoreLiveChat()" class="w-full bg-gradient-to-r from-rose-500 to-orange-500 hover:from-rose-600 hover:to-orange-600 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-comments text-sm"></i> Live Chat with Seller
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Main Panel: Tabs and Content -->
+    <section class="flex-grow flex flex-col gap-6">
+      <!-- Tabs Header -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-2.5 flex items-center gap-2 shadow-sm">
+        <button onclick="switchTab('products', this)" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-center bg-orange-500 text-white shadow-sm transition-all duration-200 flex items-center justify-center gap-2 tab-btn">
+          <i class="fa-solid fa-bag-shopping"></i> Products (<span id="products-count-label">6</span>)
+        </button>
+        <button onclick="switchTab('reviews', this)" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-center hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500 text-slate-600 dark:text-slate-400 transition-all duration-200 flex items-center justify-center gap-2 tab-btn">
+          <i class="fa-solid fa-comment-dots"></i> Customer Reviews (<span id="reviews-count-label">3</span>)
+        </button>
+      </div>
+
+      <!-- Tab 1: Products Grid Content -->
+      <div id="tab-content-products" class="tab-pane block">
+        <!-- Products Grid -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Dynamically populated via JS -->
+        </div>
+        
+        <!-- Empty State -->
+        <div id="products-empty-state" class="hidden text-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+          <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 mb-3">
+            <i class="fa-solid fa-box-open text-2xl"></i>
+          </div>
+          <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">No products found</h3>
+          <p class="text-xs text-slate-400 mt-1">This store doesn't have any products in this category.</p>
+        </div>
+      </div>
+
+      <!-- Tab 2: Reviews Content -->
+      <div id="tab-content-reviews" class="tab-pane hidden flex flex-col gap-6">
+        <!-- Review Breakdown Stats -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row items-center gap-8">
+          <div class="text-center shrink-0">
+            <div class="text-4xl font-black text-slate-800 dark:text-slate-100" id="rating-avg-display">4.8</div>
+            <div class="flex text-amber-400 gap-0.5 justify-center mt-1 text-sm">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <p class="text-[10px] text-slate-400 font-semibold mt-1.5" id="rating-count-display">Based on 3 reviews</p>
+          </div>
+          
+          <!-- Rating Bars -->
+          <div class="flex-grow w-full space-y-2 text-xs">
+            <div class="flex items-center gap-3">
+              <span class="w-12 text-slate-400 text-right font-medium">5 Star</span>
+              <div class="flex-grow h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-amber-400 rounded-full" id="bar-5star" style="width: 80%;"></div>
+              </div>
+              <span class="w-8 text-slate-400 font-medium" id="lbl-5star">80%</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-12 text-slate-400 text-right font-medium">4 Star</span>
+              <div class="flex-grow h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-amber-400 rounded-full" id="bar-4star" style="width: 20%;"></div>
+              </div>
+              <span class="w-8 text-slate-400 font-medium" id="lbl-4star">20%</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-12 text-slate-400 text-right font-medium">3 Star</span>
+              <div class="flex-grow h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-amber-400 rounded-full" style="width: 0%;"></div>
+              </div>
+              <span class="w-8 text-slate-400 font-medium">0%</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-12 text-slate-400 text-right font-medium">2 Star</span>
+              <div class="flex-grow h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-amber-400 rounded-full" style="width: 0%;"></div>
+              </div>
+              <span class="w-8 text-slate-400 font-medium">0%</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-12 text-slate-400 text-right font-medium">1 Star</span>
+              <div class="flex-grow h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-amber-400 rounded-full" style="width: 0%;"></div>
+              </div>
+              <span class="w-8 text-slate-400 font-medium">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Write a Review Form -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
+          <h4 class="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider mb-4 pb-2 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-orange-500"></i> Write a Customer Review
+          </h4>
+          <form id="submit-review-form" onsubmit="handleReviewSubmit(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1.5">Your Rating</label>
+              <div class="flex gap-2 text-xl text-slate-300">
+                <!-- Stars clickable -->
+                <button type="button" onclick="selectStar(1)" class="review-star-btn hover:scale-115 transition-transform text-amber-400"><i class="fa-solid fa-star"></i></button>
+                <button type="button" onclick="selectStar(2)" class="review-star-btn hover:scale-115 transition-transform text-amber-400"><i class="fa-solid fa-star"></i></button>
+                <button type="button" onclick="selectStar(3)" class="review-star-btn hover:scale-115 transition-transform text-amber-400"><i class="fa-solid fa-star"></i></button>
+                <button type="button" onclick="selectStar(4)" class="review-star-btn hover:scale-115 transition-transform text-amber-400"><i class="fa-solid fa-star"></i></button>
+                <button type="button" onclick="selectStar(5)" class="review-star-btn hover:scale-115 transition-transform text-amber-400"><i class="fa-solid fa-star"></i></button>
+              </div>
+              <input type="hidden" id="review-rating-val" value="5">
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="review-author" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Your Name</label>
+                <input type="text" id="review-author" required value="Fahim Rahman" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 transition-all focus:outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label for="review-comment" class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Your Feedback / Review Comments</label>
+              <textarea id="review-comment" required placeholder="Share your experience buying from this store. What did you like or dislike?" rows="4" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-xl px-4 py-2.5 text-xs text-slate-700 dark:text-slate-200 transition-all focus:outline-none resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 px-6 rounded-xl shadow-md transition-colors text-xs flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-paper-plane"></i> Submit Review
+            </button>
+          </form>
+        </div>
+
+        <!-- Reviews List -->
+        <div id="reviews-list-container" class="space-y-4">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==============================================
+       DESKTOP FOOTER
+       ============================================== -->
+  <footer class="hidden lg:block bg-slate-950 text-slate-400 text-xs py-10 mt-auto shrink-0 border-t border-slate-900">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-4 gap-8">
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="customer_care">Customer Care</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline"><span data-translate-key="help_center">Help Center</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="how_to_buy">How to Buy</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="returns_refunds">Returns & Refunds</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="contact_us">Contact Us</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="about_abrexa">ABREXA</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline"><span data-translate-key="about_abrexa">About ABREXA</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="careers">Careers</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="privacy_policy">Privacy Policy</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="terms_conditions">Terms & Conditions</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="make_money">Make Money With Us</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline" data-translate-key="sell_abrexa"><span data-translate-key="sell_abrexa">Sell on ABREXA</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="join_affiliate">Join Affiliate Program</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="advertise_products">Advertise Your Products</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="flex items-center gap-2.5 mb-3">
+          <div class="w-9 h-9 rounded-lg bg-white flex items-center justify-center overflow-hidden border border-slate-800 shadow-inner">
+            <img src="images/logo.png" alt="ABREXA Logo" class="w-7 h-7 object-contain">
+          </div>
+          <span class="text-white font-extrabold text-sm tracking-tight"><span data-translate-key="abrexa_shopping">ABREXA Shopping</span></span>
+        </div>
+        <p class="leading-relaxed text-[11px]"><span data-translate-key="download_app">Download our App now to get exclusive discounts, daily flash sales, and free shipping vouchers.</span></p>
+        <div class="flex gap-2 mt-4">
+          <span class="bg-slate-900 border border-slate-800 text-white font-bold py-1.5 px-3.5 rounded text-[10px] cursor-pointer hover:bg-slate-800 transition-colors"><span data-translate-key="google_play">Google Play</span></span>
+          <span class="bg-slate-900 border border-slate-800 text-white font-bold py-1.5 px-3.5 rounded text-[10px] cursor-pointer hover:bg-slate-800 transition-colors"><span data-translate-key="app_store">App Store</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 border-t border-slate-900 mt-8 pt-6 text-center text-[10px]">
+      <span data-translate-key="all_rights_reserved">© 2026 ABREXA E-Commerce Ltd. All Rights Reserved. Styled like Amazon & Daraz.</span>
+    </div>
+  </footer>
+
+  <!-- ==============================================
+       JAVASCRIPT DYNAMIC PAGE CONTROLLER
+       ============================================== -->
+  <script>
+    // 1. Mock Data for Store Products
+    const storeProducts = [
+      { id: 1, name: "Premium Wireless Noise-Cancelling Headphones", category: "audio", price: 129.99, oldPrice: 199.99, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80", rating: 4.8, reviews: 145 },
+      { id: 2, name: "Classic Bluetooth Waterproof Smartwatch", category: "wearables", price: 69.99, oldPrice: 99.99, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80", rating: 4.6, reviews: 92 },
+      { id: 3, name: "RGB Backlit Wireless Mechanical Keyboard", category: "accessories", price: 89.99, oldPrice: 129.99, image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&q=80", rating: 4.7, reviews: 68 },
+      { id: 4, name: "Ultra Slim 5G Smartphone - 256GB", category: "smartphones", price: 799.99, oldPrice: 999.99, image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80", rating: 4.9, reviews: 210 },
+      { id: 5, name: "Pro Gaming Ergonomic Wireless Mouse", category: "accessories", price: 49.99, oldPrice: 79.99, image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&q=80", rating: 4.5, reviews: 54 },
+      { id: 6, name: "Active Bass Wireless Bluetooth Earbuds", category: "audio", price: 39.99, oldPrice: 59.99, image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&q=80", rating: 4.4, reviews: 37 }
+    ];
+
+    // 2. Fetch Store Details from Query String
+    const urlParams = new URLSearchParams(window.location.search);
+    const storeName = urlParams.get('store') || 'ABREXA';
+    
+    // Update Store Identity elements
+    const storeTitleText = document.getElementById('store-title-text');
+    const storeLogo = document.getElementById('store-logo');
+    
+    if (storeName.toLowerCase() === 'abrexa') {
+      storeTitleText.textContent = "ABREXA Official Store";
+      storeLogo.innerHTML = '<img src="images/logo.png" alt="ABREXA Logo" class="w-12 h-12 object-contain">';
+      storeLogo.className = "w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center border-2 border-white/20 shadow-lg select-none shrink-0 overflow-hidden p-2";
+    } else {
+      storeTitleText.textContent = storeName + " Store";
+      storeLogo.textContent = storeName.charAt(0);
+      storeLogo.className = "w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-orange-400 to-rose-600 text-white text-2xl md:text-3xl font-black tracking-tighter flex items-center justify-center uppercase border-2 border-white/20 shadow-lg select-none shrink-0 overflow-hidden";
+    }
+
+    // 3. Follow / Following logic with persistence
+    const followKey = 'store_follow_' + storeName.toLowerCase();
+    const followersKey = 'store_followers_count_' + storeName.toLowerCase();
+    
+    let isFollowing = localStorage.getItem(followKey) === 'true';
+    let baseFollowers = storeName.toLowerCase() === 'abrexa' ? 12500 : 4200;
+    let currentFollowers = parseInt(localStorage.getItem(followersKey)) || baseFollowers;
+    
+    const followBtn = document.getElementById('store-follow-btn');
+    const followerCountDisplay = document.getElementById('follower-count-display');
+    
+    function formatFollowerCount(count) {
+      if (count >= 1000) {
+        return (count / 1000).toFixed(1) + 'k';
+      }
+      return count.toString();
+    }
+    
+    function updateFollowUI() {
+      followerCountDisplay.textContent = formatFollowerCount(currentFollowers);
+      if (isFollowing) {
+        followBtn.innerHTML = '<i class="fa-solid fa-check"></i> <span>Following</span>';
+        followBtn.className = "flex-grow sm:flex-grow-0 bg-white/10 hover:bg-white/20 text-white text-xs font-bold py-2.5 px-6 rounded-xl border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer";
+      } else {
+        followBtn.innerHTML = '<i class="fa-solid fa-plus"></i> <span>Follow</span>';
+        followBtn.className = "flex-grow sm:flex-grow-0 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold py-2.5 px-6 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 border border-orange-500/20 cursor-pointer";
+      }
+    }
+    
+    followBtn.addEventListener('click', () => {
+      isFollowing = !isFollowing;
+      if (isFollowing) {
+        currentFollowers += 1;
+      } else {
+        currentFollowers -= 1;
+      }
+      localStorage.setItem(followKey, isFollowing);
+      localStorage.setItem(followersKey, currentFollowers);
+      updateFollowUI();
+    });
+    
+    updateFollowUI();
+
+    // 4. Category Counting Logic
+    document.getElementById('count-all').textContent = storeProducts.length;
+    document.getElementById('count-audio').textContent = storeProducts.filter(p => p.category === 'audio').length;
+    document.getElementById('count-smartphones').textContent = storeProducts.filter(p => p.category === 'smartphones').length;
+    document.getElementById('count-wearables').textContent = storeProducts.filter(p => p.category === 'wearables').length;
+    document.getElementById('count-accessories').textContent = storeProducts.filter(p => p.category === 'accessories').length;
+
+    // 5. Product Grid Rendering & Filtering
+    let activeCategory = 'all';
+    
+    function renderProducts() {
+      const grid = document.getElementById('products-grid');
+      const emptyState = document.getElementById('products-empty-state');
+      
+      const filtered = activeCategory === 'all' 
+        ? storeProducts 
+        : storeProducts.filter(p => p.category === activeCategory);
+      
+      document.getElementById('products-count-label').textContent = filtered.length;
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        grid.innerHTML = filtered.map(p => `
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group flex flex-col h-full">
+            <div class="relative bg-slate-50 dark:bg-slate-850 h-40 overflow-hidden flex items-center justify-center shrink-0">
+              <img src="${p.image}" alt="${p.name}" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300">
+              <span class="absolute top-2.5 left-2.5 bg-orange-500 text-white text-[8px] font-black tracking-wider uppercase py-0.5 px-2 rounded shadow-sm">
+                -${Math.round((1 - p.price/p.oldPrice)*100)}% OFF
+              </span>
+            </div>
+            
+            <div class="p-4 flex flex-col flex-grow">
+              <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 transition-colors line-clamp-2 h-8 leading-tight mb-2">
+                ${p.name}
+              </h4>
+              
+              <div class="flex items-center gap-1 mb-3 text-[10px] text-amber-400">
+                <div class="flex text-amber-400 gap-0.5">
+                  ${Array.from({length: 5}, (_, i) => `<i class="fa-solid fa-star ${i < Math.floor(p.rating) ? '' : 'text-slate-200 dark:text-slate-800'}"></i>`).join('')}
+                </div>
+                <span class="text-slate-400 ml-1 font-semibold">${p.rating} (${p.reviews})</span>
+              </div>
+              
+              <div class="flex items-baseline justify-between mt-auto">
+                <div class="flex items-baseline gap-1.5">
+                  <span class="text-sm font-black text-slate-800 dark:text-slate-100">$${p.price}</span>
+                  <span class="text-[10px] text-slate-400 line-through font-medium">$${p.oldPrice}</span>
+                </div>
+                <a href="product-details.html" class="w-8 h-8 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xs flex items-center justify-center shadow-sm transition-colors cursor-pointer" title="View details">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+    
+    function filterCategory(category, button) {
+      activeCategory = category;
+      
+      // Update UI active buttons
+      const btns = document.querySelectorAll('.category-filter-btn');
+      btns.forEach(btn => {
+        btn.className = "w-full text-left py-2 px-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-orange-500 transition-all flex justify-between items-center category-filter-btn";
+        const badge = btn.querySelector('span:last-child');
+        badge.className = "text-[9px] bg-slate-100 dark:bg-slate-800 py-0.5 px-1.5 rounded-full";
+      });
+      
+      button.className = "w-full text-left py-2 px-3 rounded-lg bg-orange-50 dark:bg-orange-950/20 text-orange-600 dark:text-orange-400 font-bold transition-all flex justify-between items-center category-filter-btn";
+      const activeBadge = button.querySelector('span:last-child');
+      activeBadge.className = "text-[9px] bg-orange-500/10 text-orange-500 py-0.5 px-1.5 rounded-full";
+      
+      renderProducts();
+    }
+    
+    renderProducts();
+
+    // 6. Tabs switching logic
+    function switchTab(tab, button) {
+      const panes = document.querySelectorAll('.tab-pane');
+      panes.forEach(pane => pane.classList.add('hidden'));
+      
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => {
+        btn.className = "flex-1 py-2 px-4 rounded-xl text-xs font-bold text-center hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500 text-slate-600 dark:text-slate-400 transition-all duration-200 flex items-center justify-center gap-2 tab-btn";
+      });
+      
+      if (tab === 'products') {
+        document.getElementById('tab-content-products').classList.remove('hidden');
+        button.className = "flex-1 py-2 px-4 rounded-xl text-xs font-bold text-center bg-orange-500 text-white shadow-sm transition-all duration-200 flex items-center justify-center gap-2 tab-btn";
+      } else if (tab === 'reviews') {
+        document.getElementById('tab-content-reviews').classList.remove('hidden');
+        button.className = "flex-1 py-2 px-4 rounded-xl text-xs font-bold text-center bg-orange-500 text-white shadow-sm transition-all duration-200 flex items-center justify-center gap-2 tab-btn";
+        renderReviews();
+      }
+    }
+
+    // 7. Store Reviews logic with local persistence
+    const reviewsKey = 'store_reviews_list_' + storeName.toLowerCase();
+    
+    const defaultReviews = [
+      { name: "Tahsin Alam", rating: 5, date: "2 days ago", comment: "The headphone is genuine and sound quality is amazing. Fast shipping!" },
+      { name: "Nabila Tabassum", rating: 4, date: "1 week ago", comment: "Smartwatch works perfectly. The battery life is about 5 days. Good seller." },
+      { name: "Afsal Hussain", rating: 5, date: "3 weeks ago", comment: "Excellent packaging and quick response in chat. Will buy again!" }
+    ];
+    
+    let storeReviews = JSON.parse(localStorage.getItem(reviewsKey)) || defaultReviews;
+
+    function renderReviews() {
+      const container = document.getElementById('reviews-list-container');
+      document.getElementById('reviews-count-label').textContent = storeReviews.length;
+      document.getElementById('rating-count-display').textContent = `Based on ${storeReviews.length} reviews`;
+      
+      // Calculate averages and bar charts
+      let sum = 0;
+      let starCounts = {1:0, 2:0, 3:0, 4:0, 5:0};
+      storeReviews.forEach(r => {
+        sum += r.rating;
+        starCounts[r.rating] = (starCounts[r.rating] || 0) + 1;
+      });
+      
+      const avg = storeReviews.length > 0 ? (sum / storeReviews.length).toFixed(1) : "0.0";
+      document.getElementById('rating-avg-display').textContent = avg;
+      
+      // Render stars in summary
+      const starsContainer = document.querySelector('#rating-avg-display + div');
+      starsContainer.innerHTML = Array.from({length: 5}, (_, i) => `
+        <i class="fa-solid fa-star ${i < Math.floor(parseFloat(avg)) ? 'text-amber-400' : 'text-slate-200 dark:text-slate-800'}"></i>
+      `).join('');
+      
+      // Update bars
+      [5, 4, 3, 2, 1].forEach(star => {
+        const count = starCounts[star] || 0;
+        const pct = storeReviews.length > 0 ? Math.round((count / storeReviews.length) * 100) : 0;
+        const bar = document.getElementById(`bar-${star}star`);
+        const lbl = document.getElementById(`lbl-${star}star`);
+        if (bar && lbl) {
+          bar.style.width = pct + '%';
+          lbl.textContent = pct + '%';
+        }
+      });
+      
+      if (storeReviews.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl shadow-sm">
+            <p class="text-xs text-slate-400">No reviews yet for this store. Be the first to write one!</p>
+          </div>
+        `;
+      } else {
+        container.innerHTML = storeReviews.map(r => `
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 rounded-2xl p-5 shadow-sm space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-orange-500/10 text-orange-500 font-bold text-xs flex items-center justify-center select-none uppercase">
+                  ${r.name.charAt(0)}
+                </div>
+                <div>
+                  <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200">${r.name}</h5>
+                  <p class="text-[9px] text-slate-400">${r.date}</p>
+                </div>
+              </div>
+              
+              <div class="flex text-amber-400 gap-0.5 text-[10px]">
+                ${Array.from({length: 5}, (_, i) => `<i class="fa-solid fa-star ${i < r.rating ? '' : 'text-slate-200 dark:text-slate-800'}"></i>`).join('')}
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-350 leading-relaxed font-medium pl-10">${r.comment}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    // 8. Review submission stars selector
+    let selectedRating = 5;
+    
+    function selectStar(rating) {
+      selectedRating = rating;
+      document.getElementById('review-rating-val').value = rating;
+      
+      const buttons = document.querySelectorAll('.review-star-btn');
+      buttons.forEach((btn, index) => {
+        const star = btn.querySelector('i');
+        if (index < rating) {
+          star.className = "fa-solid fa-star text-amber-400";
+        } else {
+          star.className = "fa-solid fa-star text-slate-200 dark:text-slate-800";
+        }
+      });
+    }
+
+    function handleReviewSubmit(event) {
+      event.preventDefault();
+      const authorInput = document.getElementById('review-author');
+      const commentInput = document.getElementById('review-comment');
+      const ratingVal = parseInt(document.getElementById('review-rating-val').value);
+      
+      const newReview = {
+        name: authorInput.value.trim(),
+        rating: ratingVal,
+        date: "Just now",
+        comment: commentInput.value.trim()
+      };
+      
+      storeReviews.unshift(newReview);
+      localStorage.setItem(reviewsKey, JSON.stringify(storeReviews));
+      
+      // Reset form and render
+      commentInput.value = '';
+      selectStar(5);
+      renderReviews();
+      
+      alert("Thank you! Your store review has been posted successfully.");
+    }
+  </script>
+
+  <!-- Include App Logic -->
+  <script src="js/app.js"></script>
+</body>
+</html>

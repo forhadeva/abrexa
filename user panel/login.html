@@ -1,0 +1,523 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ABREXA • Sign In</title>
+  <!-- Tailwind CSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              light: '#fb7185',
+              DEFAULT: '#e11d48',
+              dark: '#be123c'
+            },
+            orange: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#e11d48',
+              600: '#be123c',
+              700: '#9f1239',
+              800: '#881337',
+              900: '#4c0519',
+              950: '#27000b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/custom.css">
+  <!-- Favicon / Site Icon -->
+  <link class="favicon-icon" rel="icon" type="image/png" href="images/logo.png">
+</head>
+
+<body class="bg-[#f4f6fa] min-h-screen flex flex-col">
+
+  <!-- ==============================================
+       DESKTOP HEADER & TOP NAVIGATION
+       ============================================== -->
+  <header class="hidden lg:block bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shrink-0 sticky top-0 z-40 shadow-sm">
+        <!-- Top Tiny Bar -->
+    <div class="bg-[#f8fafc] dark:bg-slate-950 border-b border-slate-200/60 dark:border-slate-850 text-slate-500 dark:text-slate-400 text-[10.5px] py-2 font-medium tracking-wide">
+      <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+        <div class="flex gap-6">
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="save_app">
+            <i class="fa-solid fa-mobile-screen-button text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            Save more on App
+          </a>
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="sell_abrexa">
+            <i class="fa-solid fa-store text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="sell_abrexa">Sell on ABREXA</span>
+          </a>
+          <a href="#" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink" data-translate-key="customer_care">
+            <i class="fa-solid fa-headset text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            Customer Care
+          </a>
+        </div>
+        <div class="flex gap-6 items-center">
+          <a href="account.html" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink">
+            <i class="fa-solid fa-truck-fast text-[10px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="track_order">Track Order</span>
+          </a>
+          <a href="account.html" class="hover:text-orange-500 transition-all duration-200 flex items-center gap-1.5 group/toplink font-semibold text-slate-600 dark:text-slate-300 hover:dark:text-orange-400">
+            <i class="fa-solid fa-circle-user text-[11px] text-orange-500/70 group-hover/toplink:text-orange-500 group-hover/toplink:scale-110 transition-all duration-200"></i>
+            <span data-translate-key="sign_in_up">Sign In / Sign Up</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Header Row -->
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-8">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
+        <div class="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-sm overflow-hidden border border-slate-100 group-hover:border-orange-200 transition-colors">
+          <img src="images/logo.png" alt="ABREXA Logo" class="w-8 h-8 object-contain">
+        </div>
+        <span class="text-xl font-black text-slate-800 tracking-tight group-hover:text-orange-500 transition-colors logo-font">ABRE<span class="text-orange-500">X</span>A<span class="text-orange-500">.</span></span>
+      </a>
+
+      <!-- Large Center Search Bar -->
+      <div class="flex-grow max-w-2xl bg-slate-100 dark:bg-slate-800 rounded-full flex items-center px-4 py-2 border border-slate-200 dark:border-slate-700 shadow-inner">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm mr-3"></i>
+        <input id="desktop-search-input" type="text" placeholder="Search in ABREXA (e.g. watch, phone, television...)" class="bg-transparent border-none text-xs focus:outline-none w-full text-slate-700 dark:text-slate-200">
+        <button class="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-5 py-1.5 rounded-full transition-colors ml-2 shadow-sm">
+          <span data-translate-key="search_btn">Search</span>
+        </button>
+      </div>
+
+      <!-- Action items: Account & Cart -->
+      <div class="flex items-center gap-6 shrink-0">
+        <a href="account.html" class="flex items-center gap-2.5 text-slate-700 hover:text-orange-500 transition-colors group">
+          <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-orange-950/30 text-slate-500 dark:text-slate-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all">
+            <i class="fa-solid fa-user text-sm"></i>
+          </div>
+          <div class="text-left leading-tight">
+            <div class="text-[10px] text-slate-400"><span data-translate-key="welcome">Welcome</span></div>
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 dark:group-hover:text-orange-400">Fahim Rahman</div>
+          </div>
+        </a>
+
+        <a href="cart.html" class="relative flex items-center gap-2.5 text-slate-700 hover:text-orange-500 transition-colors group">
+          <div class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-orange-50 dark:group-hover:bg-orange-950/30 text-slate-500 dark:text-slate-400 group-hover:text-orange-500 dark:group-hover:text-orange-400 transition-all relative">
+            <i class="fa-solid fa-cart-shopping text-sm cart-nav-icon"></i>
+            <span class="cart-badge absolute -top-1 -right-1.5 bg-orange-500 text-white text-[9px] font-extrabold rounded-full h-4.5 w-4.5 flex items-center justify-center border border-white hidden">0</span>
+          </div>
+          <span class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 dark:group-hover:text-orange-400" data-translate-key="cart" data-translate-key="cart">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation/Category Sub-header -->
+    <div class="bg-orange-500 text-white py-2">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs font-semibold">
+        <div class="flex items-center gap-6">
+          <a href="categories.html" class="bg-orange-600 hover:bg-orange-700 px-4 py-1.5 rounded flex items-center gap-2 shadow-inner transition-colors">
+            <i class="fa-solid fa-bars"></i> <span data-translate-key="all_categories">All Categories</span>
+          </a>
+          <a href="index.html" class="text-orange-100 hover:text-white transition-colors" data-translate-key="home_page">Home Page</a>
+          <a href="categories.html" class="hover:text-orange-100 transition-colors" data-translate-key="abrexa_mall">ABREXAMall</a>
+          <a href="categories.html" class="hover:text-orange-100 transition-colors font-bold text-yellow-300" data-translate-key="flash_sale">Flash Sale Offers</a>
+          <a href="#" onclick="alert('Contacting ABREXA Support')" class="hover:text-orange-100 transition-colors" data-translate-key="help_support">Help & Support</a>
+        </div>
+        <div class="flex items-center gap-2 text-yellow-300">
+          <i class="fa-solid fa-fire-flame-curved text-sm animate-pulse"></i>
+          <span><span data-translate-key="save_promo">Save up to 60% today!</span></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ==============================================
+       MOBILE HEADER (Diagonal Split Style)
+       ============================================== -->
+  <header class="block lg:hidden relative w-full h-64 overflow-hidden bg-white shrink-0 z-10">
+    <!-- Diagonal Blue Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0d47a1] to-[#082d6b]" style="clip-path: polygon(55% 0, 100% 0, 100% 100%, 35% 100%);"></div>
+    
+    <div class="absolute inset-0 flex px-6 py-8">
+      <!-- Left Logo area -->
+      <div class="w-1/2 flex flex-col justify-start pt-6">
+        <div class="flex items-center gap-1.5">
+          <img src="images/logo.png" alt="ABREXA Logo" class="h-9 w-auto object-contain">
+          <div class="flex flex-col">
+            <span class="text-xs font-black text-slate-800 tracking-tight leading-none logo-font">ABRE<span class="text-orange-500">X</span>A</span>
+            <span class="text-[5px] text-slate-400 font-semibold tracking-tighter leading-none mt-0.5">Daily Deals, Anytime Shopping</span>
+          </div>
+        </div>
+      </div>
+      <!-- Right Text area -->
+      <div class="w-1/2 flex flex-col justify-center text-right pr-2">
+        <span id="mobile-auth-welcome-pre" class="text-xs font-bold uppercase tracking-wider text-blue-200">Welcome to</span>
+        <h2 id="mobile-auth-welcome-title" class="text-2xl font-black text-white tracking-tight mt-0.5 logo-font">ABRE<span class="text-orange-500">X</span>A</h2>
+        <p id="mobile-auth-welcome-sub" class="text-[10px] text-blue-100/80 mt-1">Connect to your account</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==============================================
+       MAIN RESPONSIVE CONTENT AREA
+       ============================================== -->
+  <main class="flex-grow w-full max-w-7xl mx-auto px-4 py-8 pb-24 lg:pb-12 flex items-center justify-center">
+
+    <!-- Card Container -->
+    <div class="w-full max-w-md bg-white rounded-[32px] border border-slate-100 shadow-[0_20px_50px_rgba(0,10,50,0.06)] p-6 md:p-8 flex flex-col justify-center relative z-20 -mt-16 lg:mt-0">
+
+      <!-- Card Title / Welcome Header (Hidden on mobile, visible on desktop) -->
+      <div class="hidden lg:block text-center mb-6">
+        <span id="auth-welcome-pre" class="text-xs font-bold uppercase tracking-wider text-slate-400">Welcome to</span>
+        <h2 id="auth-welcome-title" class="text-2xl font-black text-slate-800 tracking-tight mt-0.5">ABREXA</h2>
+        <p id="auth-welcome-sub" class="text-xs text-slate-500 mt-1">Connect to your account</p>
+      </div>
+
+      <!-- Micro Toast Banner -->
+      <div id="app-toast"
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-slate-800/95 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-lg opacity-0 pointer-events-none transition-all duration-300 transform translate-y-[-10px] border border-white/10 flex items-center gap-1.5">
+        Action Successful
+      </div>
+
+      <!-- ================= LOGIN CARD VIEW ================= -->
+      <div id="login-card-view" class="transition-opacity duration-300">
+        <form onsubmit="event.preventDefault(); window.submitLogin();" class="flex flex-col gap-4">
+          <!-- Email / Phone Input -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Email or Phone</label>
+            <div
+              class="relative flex items-center bg-[#f4f7fd] border border-transparent focus-within:border-blue-500 focus-within:bg-white rounded-full px-5 py-4 transition-all">
+              <i class="fa-solid fa-envelope text-slate-400 text-sm mr-3"></i>
+              <input type="text" id="login-email" value="fahim@example.com" placeholder="Enter your email"
+                class="w-full bg-transparent text-xs text-slate-800 font-semibold focus:outline-none placeholder-slate-400"
+                required>
+            </div>
+          </div>
+
+          <!-- Password Input -->
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between items-center px-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Password</label>
+            </div>
+            <div
+              class="relative flex items-center bg-[#f4f7fd] border border-transparent focus-within:border-blue-500 focus-within:bg-white rounded-full px-5 py-4 transition-all">
+              <i class="fa-solid fa-lock text-slate-400 text-sm mr-3"></i>
+              <input type="password" id="login-password" value="123456" placeholder="Enter your password"
+                class="w-full bg-transparent text-xs text-slate-800 font-semibold focus:outline-none placeholder-slate-400"
+                required>
+              <button type="button" onclick="window.toggleLoginPasswordVisibility()"
+                class="text-slate-400 hover:text-slate-600 focus:outline-none">
+                <i id="login-password-eye" class="fa-solid fa-eye-slash text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember me & Forgot Password -->
+          <div class="flex items-center justify-between text-[11px] text-slate-500 font-medium px-1">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" checked
+                class="w-4 h-4 rounded border-slate-300 text-[#050c26] focus:ring-0 accent-[#050c26]">
+              <span>Remember me</span>
+            </label>
+            <a href="#" onclick="alert('Reset link sent to your email!')"
+              class="text-[#0252b4] hover:underline font-semibold">Forgot password?</a>
+          </div>
+
+          <!-- Login Button -->
+          <button type="submit"
+            class="w-full py-4 bg-[#050c26] hover:bg-[#0c1436] text-white text-xs font-bold rounded-full transition-all shadow-md mt-2 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-right-to-bracket text-[10px]"></i> Login
+          </button>
+        </form>
+
+        <div class="relative flex py-4 items-center">
+          <div class="flex-grow border-t border-slate-100"></div>
+          <span class="flex-shrink mx-4 text-[9px] text-slate-400 font-bold uppercase tracking-widest">or</span>
+          <div class="flex-grow border-t border-slate-100"></div>
+        </div>
+
+
+        <!-- Social Buttons -->
+        <div class="flex flex-col gap-2.5">
+          <button onclick="window.quickDemoLogin()"
+            class="w-full py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-full transition-all flex items-center justify-center gap-2.5">
+            <svg class="w-4 h-4" viewBox="0 0 24 24">
+              <path fill="#EA4335"
+                d="M12 5.04c1.62 0 3.08.56 4.22 1.66l3.15-3.15C17.45 1.71 14.94 1 12 1 7.35 1 3.39 3.65 1.5 7.5l3.6 2.8C6.01 7.37 8.78 5.04 12 5.04z" />
+              <path fill="#4285F4"
+                d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.46c-.29 1.48-1.14 2.73-2.42 3.57l3.64 2.84c2.14-1.97 3.81-4.88 3.81-8.56z" />
+              <path fill="#FBBC05"
+                d="M5.1 14.8c-.25-.76-.39-1.57-.39-2.4s.14-1.64.39-2.4L1.5 7.2C.54 9.12 0 11.26 0 12.5s.54 3.38 1.5 5.3l3.6-2.8z" />
+              <path fill="#34A853"
+                d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.64-2.84c-1.01.67-2.31 1.09-4.32 1.09-3.22 0-5.99-2.33-6.9-5.46L1.5 15.68C3.39 19.35 7.35 22 12 22z" />
+            </svg>
+            Continue with Google
+          </button>
+          
+          <button onclick="alert('Facebook Login is currently unavailable.')"
+            class="w-full py-3 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-full transition-all flex items-center justify-center gap-2.5">
+            <i class="fa-brands fa-facebook text-[#1877F2] text-lg"></i>
+            Continue with Facebook
+          </button>
+        </div>
+
+        <p class="text-center text-xs text-slate-500 mt-6 font-semibold pb-4">
+          New to ABREXA?
+          <a href="#" onclick="event.preventDefault(); window.switchToSignUpForm();"
+            class="text-[#0252b4] font-extrabold hover:underline">Create Account</a>
+        </p>
+      </div>
+
+      <!-- ================= REGISTER CARD VIEW ================= -->
+      <div id="register-card-view" class="hidden transition-opacity duration-300">
+        <form onsubmit="event.preventDefault(); window.submitRegister();" class="flex flex-col gap-3.5"          <!-- Full Name -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Full Name</label>
+            <div
+              class="relative flex items-center bg-[#f4f7fd] border border-transparent focus-within:border-blue-500 focus-within:bg-white rounded-full px-5 py-4 transition-all">
+              <i class="fa-solid fa-user text-slate-400 text-sm mr-3"></i>
+              <input type="text" id="reg-name" placeholder="Full name"
+                class="w-full bg-transparent text-xs text-slate-800 font-semibold focus:outline-none placeholder-slate-400"
+                required>
+            </div>
+          </div>
+
+          <!-- Email Address -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Enter your email</label>
+            <div
+              class="relative flex items-center bg-[#f4f7fd] border border-transparent focus-within:border-blue-500 focus-within:bg-white rounded-full px-5 py-4 transition-all">
+              <i class="fa-solid fa-envelope text-slate-400 text-sm mr-3"></i>
+              <input type="email" id="reg-email" placeholder="Enter your email"
+                class="w-full bg-transparent text-xs text-slate-800 font-semibold focus:outline-none placeholder-slate-400"
+                required>
+            </div>
+          </div>
+
+          <!-- Phone Number -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Phone (optional)</label>
+            <div
+              class="relative flex items-center bg-[#f4f7fd] border border-transparent focus-within:border-blue-500 focus-within:bg-white rounded-full px-5 py-4 transition-all">
+              <i class="fa-solid fa-phone text-slate-400 text-sm mr-3"></i>
+              <input type="text" id="reg-phone" placeholder="Phone (optional)"
+                class="w-full bg-transparent text-xs text-slate-800 font-semibold focus:outline-none placeholder-slate-400">
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="flex flex-col gap-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider ml-1">Create password</label>
+            <div
+              class="relative flex items-center bg-[#f4f7fd] border border-transparent focus-within:border-blue-500 focus-within:bg-white rounded-full px-5 py-4 transition-all">
+              <i class="fa-solid fa-lock text-slate-400 text-sm mr-3"></i>
+              <input type="password" id="reg-password" placeholder="Create password"
+                class="w-full bg-transparent text-xs text-slate-800 font-semibold focus:outline-none placeholder-slate-400"
+                required>
+              <button type="button" onclick="window.toggleRegPasswordVisibility()"
+                class="text-slate-400 hover:text-slate-600 focus:outline-none">
+                <i id="reg-password-eye" class="fa-solid fa-eye-slash text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Register Button -->
+          <button type="submit"
+            class="w-full py-4 bg-[#050c26] hover:bg-[#0c1436] text-white text-xs font-bold rounded-full transition-all shadow-md mt-2 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-user-plus text-[10px]"></i> Register
+          </button>
+        </form>
+
+        <p class="text-[10px] text-center text-slate-400 mt-4 leading-normal">
+          By signing up you agree to our <a href="#" class="underline hover:text-slate-600">Terms</a> and <a href="#"
+            class="underline hover:text-slate-600">Privacy</a>.
+        </p>
+
+        <p class="text-center text-xs text-slate-500 mt-5 font-semibold">
+          Already have an account?
+          <a href="#" onclick="event.preventDefault(); window.switchToLoginForm();"
+            class="text-[#0252b4] font-extrabold hover:underline">Sign In</a>
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==============================================
+       BOTTOM NAVIGATION BAR (Visible ONLY on mobile devices)
+       ============================================== -->
+  <div class="block lg:hidden fixed bottom-0 inset-x-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 h-14 flex items-center justify-around z-40 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+    
+    <a id="nav-home" href="index.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-house text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="home_page">Home</span>
+    </a>
+
+    <a id="nav-categories" href="categories.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-list-ul text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="categories">Categories</span>
+    </a>
+
+    <a id="nav-chat" href="#" onclick="toggleChatWindow(event)" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-comments text-base text-slate-400 group-hover:text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="chat">Chat</span>
+    </a>
+
+    <a id="nav-cart" href="cart.html" class="flex flex-col items-center justify-center flex-1 py-1 group relative">
+      <div class="relative">
+        <i class="fa-solid fa-cart-shopping text-base text-slate-400 group-hover:text-orange-500 transition-colors cart-nav-icon"></i>
+        <span class="cart-badge absolute -top-2 -right-2.5 bg-orange-500 text-white text-[8px] font-extrabold rounded-full h-4 w-4 flex items-center justify-center border border-white hidden">0</span>
+      </div>
+      <span class="text-[9px] text-slate-400 group-hover:text-orange-500 mt-0.5 leading-none transition-colors" data-translate-key="cart" data-translate-key="cart">Cart</span>
+    </a>
+
+    <a id="nav-account" href="account.html" class="flex flex-col items-center justify-center flex-1 py-1 group">
+      <i class="fa-solid fa-user text-base text-orange-500 transition-colors"></i>
+      <span class="text-[9px] text-orange-500 font-semibold mt-0.5 leading-none transition-colors" data-translate-key="account">Account</span>
+    </a>
+
+  </div>
+
+  <!-- ==============================================
+       DESKTOP FOOTER
+       ============================================== -->
+  <footer class="hidden lg:block bg-slate-950 text-slate-400 text-xs py-10 mt-auto shrink-0">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-4 gap-8">
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="customer_care">Customer Care</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline"><span data-translate-key="help_center">Help Center</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="how_to_buy">How to Buy</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="returns_refunds">Returns & Refunds</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="contact_us">Contact Us</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="about_abrexa">ABREXA</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline"><span data-translate-key="about_abrexa">About ABREXA</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="careers">Careers</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="privacy_policy">Privacy Policy</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="terms_conditions">Terms & Conditions</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-3 text-sm"><span data-translate-key="make_money">Make Money With Us</span></h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:underline" data-translate-key="sell_abrexa"><span data-translate-key="sell_abrexa">Sell on ABREXA</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="join_affiliate">Join Affiliate Program</span></a></li>
+          <li><a href="#" class="hover:underline"><span data-translate-key="advertise_products">Advertise Your Products</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="flex items-center gap-2.5 mb-3">
+          <div class="w-9 h-9 rounded-lg bg-white flex items-center justify-center overflow-hidden border border-slate-800 shadow-inner">
+            <img src="images/logo.png" alt="ABREXA Logo" class="w-7 h-7 object-contain">
+          </div>
+          <span class="text-white font-extrabold text-sm tracking-tight"><span data-translate-key="abrexa_shopping">ABREXA Shopping</span>
+        </div>
+        <p class="leading-relaxed text-[11px]"><span data-translate-key="download_app">Download our App now to get exclusive discounts, daily flash sales, and free shipping vouchers.</span></p>
+        <div class="flex gap-2 mt-4">
+          <span class="bg-slate-900 border border-slate-800 text-white font-bold py-1.5 px-3.5 rounded text-[10px] cursor-pointer hover:bg-slate-800 transition-colors"><span data-translate-key="google_play">Google Play</span>
+          <span class="bg-slate-900 border border-slate-800 text-white font-bold py-1.5 px-3.5 rounded text-[10px] cursor-pointer hover:bg-slate-800 transition-colors"><span data-translate-key="app_store">App Store</span>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 border-t border-slate-900 mt-8 pt-6 text-center text-[10px]">
+      <span data-translate-key="all_rights_reserved">© 2026 ABREXA E-Commerce Ltd. All Rights Reserved. Styled like Amazon & Daraz.</span>
+    </div>
+  </footer>
+
+  <!-- Include Global App Script -->
+  <script src="js/app.js"></script>
+
+  <!-- Login page state toggler and routing -->
+  <script>
+    // Smooth toggling script
+    window.switchToSignUpForm = () => {
+      const loginView = document.getElementById('login-card-view');
+      const registerView = document.getElementById('register-card-view');
+
+      const welcomePre = document.getElementById('auth-welcome-pre');
+      const welcomeTitle = document.getElementById('auth-welcome-title');
+      const welcomeSub = document.getElementById('auth-welcome-sub');
+
+      const mobWelcomePre = document.getElementById('mobile-auth-welcome-pre');
+      const mobWelcomeTitle = document.getElementById('mobile-auth-welcome-title');
+      const mobWelcomeSub = document.getElementById('mobile-auth-welcome-sub');
+
+      if (loginView && registerView) {
+        loginView.classList.add('hidden');
+        registerView.classList.remove('hidden');
+
+        // Update header panel inside diagonal blue bg
+        if (welcomePre) welcomePre.textContent = 'Join';
+        if (welcomeTitle) welcomeTitle.textContent = 'ABREXA';
+        if (welcomeSub) welcomeSub.textContent = 'Create your premium account';
+
+        if (mobWelcomePre) mobWelcomePre.textContent = 'Join';
+        if (mobWelcomeTitle) mobWelcomeTitle.textContent = 'ABREXA';
+        if (mobWelcomeSub) mobWelcomeSub.textContent = 'Create your premium account';
+
+        document.title = 'ABREXA • Create Account';
+      }
+    };
+
+    window.switchToLoginForm = () => {
+      const loginView = document.getElementById('login-card-view');
+      const registerView = document.getElementById('register-card-view');
+
+      const welcomePre = document.getElementById('auth-welcome-pre');
+      const welcomeTitle = document.getElementById('auth-welcome-title');
+      const welcomeSub = document.getElementById('auth-welcome-sub');
+
+      const mobWelcomePre = document.getElementById('mobile-auth-welcome-pre');
+      const mobWelcomeTitle = document.getElementById('mobile-auth-welcome-title');
+      const mobWelcomeSub = document.getElementById('mobile-auth-welcome-sub');
+
+      if (loginView && registerView) {
+        registerView.classList.add('hidden');
+        loginView.classList.remove('hidden');
+
+        // Restore login header descriptions
+        if (welcomePre) welcomePre.textContent = 'Welcome to';
+        if (welcomeTitle) welcomeTitle.textContent = 'ABREXA';
+        if (welcomeSub) welcomeSub.textContent = 'Connect to your account';
+
+        if (mobWelcomePre) mobWelcomePre.textContent = 'Welcome to';
+        if (mobWelcomeTitle) mobWelcomeTitle.textContent = 'ABREXA';
+        if (mobWelcomeSub) mobWelcomeSub.textContent = 'Connect to your account';
+
+        document.title = 'ABREXA • Sign In';
+      }
+    };
+
+    // If query string has mode=signup, open signup form automatically
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('mode') === 'signup' || params.get('mode') === 'register') {
+        window.switchToSignUpForm();
+      }
+    });
+  </script>
+</body>
+
+</html>
